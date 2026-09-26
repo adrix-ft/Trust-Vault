@@ -213,7 +213,7 @@ export default function AdminDashboard() {
         ...formData,
         title: details.name || steamGame?.title || formData.title,
         description: rawDesc || formData.description,
-        customCoverUrl: steamGame?.header_image_url || formData.customCoverUrl,
+        customCoverUrl: steamGame?.library_image_url || steamGame?.header_image_url || formData.customCoverUrl,
         screenshots: screenshots,
         sysReqMinimum: sysReqMin,
         sysReqRecommended: sysReqRec,

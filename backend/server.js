@@ -462,6 +462,7 @@ app.get("/api/games/search", async (req, res) => {
         title: item.name,
         cover_image_url: item.tiny_image,
         header_image_url: `https://cdn.akamai.steamstatic.com/steam/apps/${item.id}/header.jpg`,
+        library_image_url: `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${item.id}/library_600x900_2x.jpg`,
       }));
       return res.json({ games });
     }
