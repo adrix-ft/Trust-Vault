@@ -94,7 +94,13 @@ export default function Hero() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url('${activeGame.customCoverUrl || getGameCoverUrl(activeGame.title)}')` }}
+              style={{ 
+                backgroundImage: `url('${
+                  activeGame.customCoverUrl?.includes('library_600x900') 
+                    ? activeGame.customCoverUrl.replace(/library_600x900(_2x)?\.jpg/, 'header.jpg')
+                    : (activeGame.customCoverUrl || getGameCoverUrl(activeGame.title))
+                }')` 
+              }}
             />
           </AnimatePresence>
           <div className="absolute inset-0 bg-gradient-to-t from-[#11212D] via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-[#11212D]" />
