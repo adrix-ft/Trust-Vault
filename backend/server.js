@@ -486,10 +486,22 @@ app.get("/api/games/details/:appid", async (req, res) => {
         }
       }
     );
-    const data = await response.json();
+    let data;
+    const text = await response.text();
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      console.log('Steam did not return JSON:', text.substring(0, 100));
+    }
     
-    if (data && data[appid] && data[appid].success) {
-      return res.json(data[appid].data);
+    // Steam sometimes redirects appids (e.g. 1020790 -> 2674900)
+    // Always use the first key returned by Steam instead of trusting the requested appid
+    const returnedAppId = data ? Object.keys(data)[0] : null;
+    
+    if (data && returnedAppId && data[returnedAppId].success) {
+      return res.json(data[returnedAppId].data);
+    } else {
+      console.log('Steam failed:', data ? (returnedAppId ? 'success is false' : 'appid missing') : 'no data');
     }
     
     res.status(404).json({ error: "Game details not found" });
