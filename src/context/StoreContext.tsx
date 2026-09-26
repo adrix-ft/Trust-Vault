@@ -140,23 +140,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     return defaultCollections;
   });
 
-  useEffect(() => {
-    const fetchCollections = async () => {
-      try {
-        const response = await fetch(`${API_BASE_URL}/api/collections`);
-        const data = await response.json();
-        if (Array.isArray(data) && data.length > 0) {
-          const formatted = data.map((c: any) => ({
-            ...c,
-            customBannerUrl: c.custom_banner_url || c.customBannerUrl
-          }));
-          setCollections(formatted);
-          localStorage.setItem('amin_game_collections', JSON.stringify(formatted));
-        }
-      } catch (error) { console.error(error); }
-    };
-    fetchCollections();
-  }, []);
+
 
   const updateCollection = async (id: string, updatedCollection: Collection) => {
     setCollections(prev => {
@@ -164,7 +148,6 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
       localStorage.setItem('amin_game_collections', JSON.stringify(next));
       return next;
     });
-    try { await fetch(`${API_BASE_URL}/api/collections/${encodeURIComponent(id)}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(updatedCollection) }); } catch (err) {}
   };
 
   const addCollection = async (newCollection: Collection) => {
@@ -173,7 +156,6 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
       localStorage.setItem('amin_game_collections', JSON.stringify(next));
       return next;
     });
-    try { await fetch(`${API_BASE_URL}/api/collections`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(newCollection) }); } catch (err) {}
   };
 
   const removeCollection = async (id: string) => {
@@ -182,7 +164,6 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
       localStorage.setItem('amin_game_collections', JSON.stringify(next));
       return next;
     });
-    try { await fetch(`${API_BASE_URL}/api/collections/${encodeURIComponent(id)}`, { method: 'DELETE' }); } catch (err) {}
   };
 
   useEffect(() => {

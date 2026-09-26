@@ -198,7 +198,8 @@ export default function AdminDashboard() {
         customCoverUrl: steamGame?.header_image_url || formData.customCoverUrl,
         screenshots: screenshots,
         sysReqMinimum: sysReqMin,
-        sysReqRecommended: sysReqRec
+        sysReqRecommended: sysReqRec,
+        categories: Array.from(new Set([...(formData.categories || []), 'PC', 'Steam']))
       });
       setSteamResults([]);
       showToast('Steam data populated', 'success');

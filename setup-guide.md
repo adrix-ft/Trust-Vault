@@ -57,33 +57,8 @@ CREATE TABLE products (
 );
 ```
 
-### Table 2: `upcoming` (Upcoming Games List)
-```sql
-CREATE TABLE upcoming (
-  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  title TEXT NOT NULL,
-  price TEXT,
-  release_date TEXT,
-  "customCoverUrl" TEXT,
-  description TEXT
-);
-```
 
-### Table 3: `collections` (Store Categories/Bundles)
-```sql
-CREATE TABLE collections (
-  id TEXT PRIMARY KEY,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  title TEXT NOT NULL,
-  description TEXT,
-  banner TEXT,
-  custom_banner_url TEXT,
-  keywords TEXT[]
-);
-```
-
-### Table 4: `orders` (Customer Orders)
+### Table 2: `orders` (Customer Orders)
 ```sql
 CREATE TABLE orders (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -96,7 +71,7 @@ CREATE TABLE orders (
 );
 ```
 
-### Table 5: `orderitem` (Items within an Order)
+### Table 3: `orderitem` (Items within an Order)
 ```sql
 CREATE TABLE orderitem (
   id UUID PRIMARY KEY,
