@@ -180,13 +180,26 @@ export default function AdminDashboard() {
     setIsSearchingSteam(true);
     try {
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
-      const res = await fetch(`${API_BASE_URL}/api/games/details/${appid}`);
+      let res = await fetch(`${API_BASE_URL}/api/games/details/${appid}`);
+      let details: any = null;
       
       if (!res.ok) {
-        throw new Error('Game details not found on server');
+        // Fallback: If Render backend is rate-limited by Steam, use a client-side CORS proxy
+        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://store.steampowered.com/api/appdetails?appids=${appid}&l=english`)}`;
+        const proxyRes = await fetch(proxyUrl);
+        if (!proxyRes.ok) throw new Error('Game details not found via proxy');
+        const proxyData = await proxyRes.json();
+        
+        // allorigins returns the raw string in `contents`
+        const rawSteamData = JSON.parse(proxyData.contents);
+        if (rawSteamData && rawSteamData[appid] && rawSteamData[appid].success) {
+          details = rawSteamData[appid].data;
+        } else {
+          throw new Error('Game details not found on server or proxy');
+        }
+      } else {
+        details = await res.json();
       }
-      
-      const details = await res.json();
       
       const steamGame = steamResults.find(g => g.steam_app_id === appid);
       
