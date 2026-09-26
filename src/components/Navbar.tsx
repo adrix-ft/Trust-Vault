@@ -80,7 +80,7 @@ export default function Navbar() {
               Store Vault
             </span>
             <span className="text-[9px] sm:text-[10px] uppercase font-extrabold tracking-widest px-2 py-0.5 rounded-full bg-[#253745]/50 border border-[#4A5C6A]/30 text-[#CCD0CF] whitespace-nowrap shadow-sm">
-              Game Store
+              VAULT
             </span>
           </motion.div>
         </motion.div>
