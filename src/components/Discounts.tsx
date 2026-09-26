@@ -5,7 +5,7 @@ import { getGameCoverUrl } from '../utils/image';
 import { useState } from 'react';
 
 export default function Discounts() {
-  const { addToCart, catalog, platformFilter, setSelectedCategory } = useStore();
+  const { addToCart, catalog, catalogLoaded, platformFilter, setSelectedCategory } = useStore();
   const [activeCard, setActiveCard] = useState<string | null>(null);
 
   const discountGames = catalog.filter(game => {
@@ -14,6 +14,28 @@ export default function Discounts() {
     if (platformFilter !== 'All' && !game.categories?.includes(platformFilter)) return false;
     return true;
   });
+
+  if (!catalogLoaded) {
+    return (
+      <section>
+        <SectionHeader title="SPECIAL OFFERS" />
+        <div className="flex md:grid md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 overflow-x-auto md:overflow-visible hide-scrollbar snap-x snap-mandatory py-12 -my-12 md:py-0 md:my-0 px-4 -mx-4 md:px-0 md:mx-0">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div key={i} className="relative min-w-[220px] md:min-w-0 shrink-0 snap-center col-span-1 h-[260px] md:h-[280px] rounded-xl overflow-hidden bg-[#11212D] border border-[#253745] animate-pulse">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_1.5s_infinite]" />
+              <div className="absolute inset-x-0 bottom-0 p-4 space-y-3">
+                <div className="h-4 bg-[#253745] rounded w-3/4"></div>
+                <div className="flex justify-between items-end">
+                  <div className="h-6 bg-[#253745] rounded w-1/3"></div>
+                  <div className="h-8 bg-[#253745] rounded-lg w-10"></div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    );
+  }
 
   if (discountGames.length === 0) return null;
 

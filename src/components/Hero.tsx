@@ -54,6 +54,38 @@ export default function Hero() {
     return () => clearInterval(timer);
   }, [activeIndex, heroGames.length]);
 
+  if (!catalogLoaded) {
+    return (
+      <div className="w-full mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 pt-6 md:pt-8 pb-4">
+        <div className="flex flex-col lg:flex-row gap-0 bg-[#11212D] rounded-2xl overflow-hidden border border-[#253745] shadow-2xl w-full animate-pulse h-[350px] lg:h-[400px]">
+           {/* Left Image Skeleton */}
+           <div className="w-full lg:w-2/3 h-full bg-[#06141B] relative overflow-hidden hidden lg:block">
+             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_1.5s_infinite]" />
+           </div>
+           {/* Right Content Skeleton */}
+           <div className="w-full lg:w-1/3 bg-[#11212D] p-6 lg:p-8 flex flex-col justify-center gap-4 relative">
+             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_1.5s_infinite]" />
+             <div className="h-4 bg-[#253745] rounded-md w-1/4"></div>
+             <div className="h-8 bg-[#253745] rounded-md w-3/4"></div>
+             <div className="space-y-2 mt-2">
+               <div className="h-3 bg-[#253745] rounded-md w-full"></div>
+               <div className="h-3 bg-[#253745] rounded-md w-5/6"></div>
+               <div className="h-3 bg-[#253745] rounded-md w-4/6"></div>
+             </div>
+             <div className="flex gap-2 mt-4">
+               <div className="h-6 bg-[#253745] rounded-md w-16"></div>
+               <div className="h-6 bg-[#253745] rounded-md w-24"></div>
+             </div>
+             <div className="flex items-center justify-between mt-auto pt-6">
+               <div className="h-8 bg-[#253745] rounded-md w-1/3"></div>
+               <div className="h-10 bg-[#253745] rounded-xl w-1/3"></div>
+             </div>
+           </div>
+        </div>
+      </div>
+    );
+  }
+
   if (heroGames.length === 0) return null;
 
   const safeIndex = activeIndex >= heroGames.length ? 0 : activeIndex;
@@ -61,11 +93,6 @@ export default function Hero() {
 
   return (
     <div className="w-full mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 pt-6 md:pt-8 pb-4">
-      {!catalogLoaded && (
-        <div className="text-[10px] text-[#9BA8AB] uppercase tracking-widest mb-1 text-right animate-pulse">
-          Loading live database sync...
-        </div>
-      )}
       
       <div className="flex flex-col lg:flex-row gap-0 bg-[#11212D] rounded-2xl overflow-hidden border border-[#253745] shadow-2xl w-full">
         

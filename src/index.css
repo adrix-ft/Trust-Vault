@@ -69,4 +69,14 @@
   .animate-sweep {
     animation: sweep 1.5s infinite ease-in-out;
   }
+
+  /* 3. Blink Bar for Global Loading */
+  @keyframes blink-bar {
+    0% { transform: translateX(-100%); width: 20%; }
+    50% { width: 50%; }
+    100% { transform: translateX(500%); width: 20%; }
+  }
+  .animate-blink-bar {
+    animation: blink-bar 1.2s infinite ease-in-out;
+  }
 }

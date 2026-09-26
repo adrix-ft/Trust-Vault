@@ -9,7 +9,7 @@ interface GameDetailsViewProps {
 }
 
 export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
-  const { catalog, addToCart, cart, setSelectedCategory, selectedCategory, platformFilter } = useStore();
+  const { catalog, addToCart, cart, setSelectedCategory, selectedCategory, platformFilter, catalogLoaded } = useStore();
   const game = catalog.find(g => g.title === gameTitle);
   
   const isAvailablePC = game?.categories?.some(c => c.includes('PC')) || false;
@@ -39,6 +39,34 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
     setRentMonths(1);
   }, [gameTitle, platformFilter, isAvailablePC, isAvailablePS, game?.variants]);
 
+  if (!catalogLoaded) {
+    return (
+      <div className="relative w-full max-w-7xl mx-auto pb-24 animate-pulse">
+        {/* Back Button Skeleton */}
+        <div className="absolute top-4 left-4 z-50">
+          <div className="w-32 h-10 bg-[#11212D] rounded-full border border-[#253745]"></div>
+        </div>
+        {/* Hero Banner Skeleton */}
+        <div className="relative w-full h-[50vh] min-h-[400px] md:h-[60vh] rounded-b-[3rem] overflow-hidden shadow-2xl bg-[#06141B]">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_1.5s_infinite]" />
+          <div className="absolute bottom-0 left-0 w-full p-6 md:p-12 lg:p-16 flex flex-col items-start z-10 space-y-4">
+             <div className="w-24 h-6 bg-[#253745] rounded-md"></div>
+             <div className="w-2/3 md:w-1/2 h-12 md:h-16 bg-[#11212D] rounded-xl border border-[#253745]"></div>
+             <div className="w-1/3 h-6 bg-[#253745] rounded-md"></div>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 p-4 sm:p-6 lg:p-8 -mt-16 md:-mt-24 relative z-20">
+          <div className="lg:col-span-2 space-y-6">
+             <div className="h-[200px] bg-[#11212D] rounded-3xl border border-[#253745]"></div>
+          </div>
+          <div className="lg:col-span-1 space-y-6">
+             <div className="h-[400px] bg-[#11212D] rounded-3xl border border-[#253745]"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (!game) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[50vh] text-[#9BA8AB]">
@@ -46,7 +74,7 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
         <p>The requested game could not be found in our catalog.</p>
         <button 
           onClick={() => setSelectedCategory('Store')}
-          className="mt-6 px-6 py-2 rounded-full bg-[#253745] hover:bg-[#4A5C6A] text-white font-bold transition-colors"
+          className="mt-6 px-6 py-2 rounded-full bg-[#253745] hover:bg-[#4A5C6A] text-white font-bold transition-colors cursor-pointer"
         >
           Return to Store
         </button>

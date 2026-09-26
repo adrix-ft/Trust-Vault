@@ -27,7 +27,7 @@ import { X } from 'lucide-react';
 import { useState } from 'react';
 
 function AppContent() {
-  const { selectedCategory, setSelectedCategory, isAdmin } = useStore();
+  const { selectedCategory, setSelectedCategory, isAdmin, catalogLoaded } = useStore();
   const [selectedProofImage, setSelectedProofImage] = useState<string | null>(null);
 
   // If Admin is logged in, show Dashboard but KEEP the Overlays so Toasts work!
@@ -43,6 +43,13 @@ function AppContent() {
   // Removed navLinks as we only have PC, PS, Proofs now
   return (
     <div className="bg-[#06141B] text-[#CCD0CF] min-h-screen font-sans selection:bg-[#253745] selection:text-[#CCD0CF] overflow-x-hidden relative">
+      {/* GLOBAL BLINK LOADING BAR */}
+      {!catalogLoaded && (
+        <div className="fixed top-0 left-0 right-0 h-1 z-[999999] bg-[#06141B] overflow-hidden">
+          <div className="h-full bg-emerald-500 rounded-full animate-blink-bar" />
+        </div>
+      )}
+
       <Navbar />
       
       {/* Mobile-only Sticky Navigation */}
