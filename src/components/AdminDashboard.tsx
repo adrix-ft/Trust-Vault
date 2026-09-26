@@ -427,7 +427,7 @@ export default function AdminDashboard() {
   };
 
   const currentCoverPreview = formData.customCoverUrl || (formData.title ? getGameCoverUrl(formData.title) : '');
-  const existingBundles = catalog.filter(g => g.categories?.includes('Bundles'));
+  const existingBundles = catalog.filter(g => g.categories?.includes('Bundle-Eligible'));
 
   return (
     <div className="min-h-screen bg-[#06141B] text-[#CCD0CF] p-4 sm:p-8 font-sans">
@@ -470,7 +470,7 @@ export default function AdminDashboard() {
         <div className="flex items-center gap-2 bg-[#11212D]/50 border border-[#253745] p-1.5 rounded-2xl overflow-x-auto">
           {[
             { id: 'catalog', label: 'Store Catalog', icon: Gamepad2, count: catalog.length },
-            { id: 'bundles', label: 'Game Bundles', icon: Package, count: existingBundles.length },
+            { id: 'bundles', label: 'Bundle Game List', icon: Package, count: existingBundles.length },
             { id: 'proofs', label: 'Customer Proofs', icon: ShieldCheck },
             { id: 'rents', label: 'Rent Tracking', icon: Database, count: rents.length }
           ].map(tab => {
@@ -506,7 +506,7 @@ export default function AdminDashboard() {
                   className="bg-[#06141B] border border-[#253745] rounded-xl px-4 py-2.5 text-xs text-white placeholder:text-[#4A5C6A] focus:outline-none focus:border-[#4A5C6A] w-full sm:w-72 shadow-inner"
                 />
                 <div className="flex items-center gap-1.5 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
-                  {['All', 'PC', 'PS5', 'PS4', 'Bundles'].map(platform => (
+                  {['All', 'PC', 'PS5', 'Bundle-Eligible'].map(platform => (
                     <button
                       key={platform}
                       onClick={() => { setSelectedPlatform(platform); setCurrentPage(1); }}
@@ -665,95 +665,68 @@ export default function AdminDashboard() {
               <div>
                 <h2 className="text-xl font-black tracking-wider text-white uppercase flex items-center gap-2.5">
                   <Package className="w-5 h-5 text-emerald-400" />
-                  Game Bundles Manager
+                  Bundle Game List
                 </h2>
-                <p className="text-[#9BA8AB] text-xs mt-1">Combine multiple games into special deals with one click.</p>
+                <p className="text-[#9BA8AB] text-xs mt-1">Games tagged for visitors to create their own custom bundles.</p>
               </div>
-              <button 
-                onClick={() => {
-                  setBundleFormData(defaultBundle);
-                  setBundleGameSearch('');
-                  setShowBundleForm(true);
-                }}
-                className="flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-green-500 hover:from-green-500 hover:to-emerald-400 text-white px-5 py-2.5 rounded-xl font-bold uppercase tracking-wider text-xs transition-all shadow-md cursor-pointer border border-emerald-500/50"
-              >
-                <Plus className="w-4 h-4" /> Create Bundle
-              </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {existingBundles.map(bundle => (
-                <div key={bundle.title} className="bg-[#11212D] rounded-2xl border border-[#253745] p-5 shadow-lg flex flex-col relative group">
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <h3 className="text-lg font-black text-white uppercase tracking-wider mb-1">{bundle.title}</h3>
-                      <div className="flex items-center gap-2 text-sm font-bold">
-                        {bundle.originalPrice && <span className="text-red-400 line-through">{bundle.originalPrice}</span>}
-                        <span className="text-white">{bundle.price}</span>
-                      </div>
-                    </div>
-                    <div className="flex gap-1">
-                      <button 
-                        onClick={() => {
-                          setBundleFormData({
-                            title: bundle.title,
-                            price: bundle.price,
-                            originalPrice: bundle.originalPrice || '',
-                            includedGames: bundle.description ? bundle.description.split(',').map(s => s.trim()) : [],
-                            originalTitle: bundle.title,
-                            platform: bundle.categories?.find(c => ['PC', 'PS5', 'PS4'].includes(c)) || 'All'
-                          });
-                          setBundleGameSearch('');
-                          setShowBundleForm(true);
-                        }}
-                        className="p-2 bg-[#06141B] hover:bg-[#253745] text-[#9BA8AB] hover:text-white rounded-lg transition-colors border border-[#253745] cursor-pointer"
-                      >
-                        <Edit2 className="w-4 h-4" />
-                      </button>
-                      <button 
-                        onClick={() => { 
-                          setConfirmReq({
-                            message: `Delete bundle "${bundle.title}"?`,
-                            onConfirm: () => {
-                              removeGame(bundle.title);
-                              showToast(`Deleted ${bundle.title}`, 'success');
-                            }
-                          });
-                        }}
-                        className="p-2 bg-[#06141B] hover:bg-red-500/20 text-red-400 rounded-lg transition-colors border border-[#253745] hover:border-red-500/30 cursor-pointer"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-auto bg-[#06141B] border border-[#253745] rounded-xl p-3">
-                    <div className="flex justify-between items-center mb-2">
-                       <span className="text-[10px] text-[#4A5C6A] font-bold uppercase tracking-wider block">Games Included:</span>
-                       {bundle.categories?.filter(c => ['PC', 'PS5', 'PS4'].includes(c)).map(plat => (
-                          <span key={plat} className="text-[9px] bg-[#4A5C6A] text-white px-1.5 py-0.5 rounded font-bold">{plat}</span>
-                       ))}
-                    </div>
-                    <div className="flex flex-wrap gap-1.5">
-                      {bundle.description?.split(',').map(g => g.trim()).map(gameName => (
-                        <span key={gameName} className="bg-[#253745] text-[#CCD0CF] text-[10px] px-2 py-1 rounded-md font-bold border border-[#4A5C6A]/50 truncate max-w-[150px]">
-                          {gameName}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              ))}
-
-              {existingBundles.length === 0 && (
-                <div className="col-span-full py-16 text-center text-[#9BA8AB] text-xs font-bold uppercase tracking-wider border border-[#253745] border-dashed rounded-2xl bg-[#06141B]/50">
-                  No bundles created yet. Click "Create Bundle" to combine games!
-                </div>
-              )}
+            <div className="overflow-x-auto bg-[#11212D] border border-[#253745] rounded-2xl shadow-2xl">
+              <table className="w-full text-left">
+                <thead className="bg-[#06141B]/80 text-[#9BA8AB] text-[11px] uppercase tracking-wider border-b border-[#253745]">
+                  <tr>
+                    <th className="p-4 font-bold">Cover</th>
+                    <th className="p-4 font-bold w-1/4">Title & Status</th>
+                    <th className="p-4 font-bold">Price</th>
+                    <th className="p-4 font-bold">Platforms</th>
+                    <th className="p-4 font-bold text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#253745]/60">
+                  {existingBundles.map(game => (
+                    <tr key={game.title} className="hover:bg-[#06141B]/40 transition-colors">
+                      <td className="p-4">
+                        <div 
+                          className="w-12 h-16 bg-cover bg-center rounded-lg border border-[#253745] shadow-md"
+                          style={{ backgroundImage: `url('${game.customCoverUrl || getGameCoverUrl(game.title)}')` }}
+                        />
+                      </td>
+                      <td className="p-4">
+                        <div className="font-bold text-sm tracking-wide text-white uppercase truncate" title={game.title}>{game.title}</div>
+                      </td>
+                      <td className="p-4">
+                        <div className="flex flex-col">
+                          <span className="font-bold text-white text-sm">{game.price}</span>
+                        </div>
+                      </td>
+                      <td className="p-4">
+                        <div className="flex flex-wrap gap-1 max-w-[150px]">
+                          {game.categories?.map(cat => (
+                            <span key={cat} className="bg-[#253745]/80 text-[#9BA8AB] text-[10px] px-2.5 py-0.5 rounded-md font-bold uppercase tracking-wider whitespace-nowrap border border-[#4A5C6A]/30">
+                              {cat}
+                            </span>
+                          ))}
+                        </div>
+                      </td>
+                      <td className="p-4 text-right">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <button onClick={() => openEditForm(game)} className="p-2 text-[#9BA8AB] hover:text-white hover:bg-[#253745] rounded-xl transition-colors cursor-pointer"><Edit2 className="w-4 h-4" /></button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                  {existingBundles.length === 0 && (
+                    <tr>
+                      <td colSpan={5} className="p-8 text-center text-[#9BA8AB] text-xs font-bold uppercase tracking-wider">
+                        No games tagged for custom bundles yet.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
           </div>
         )}
-
 
         {activeTab === 'proofs' && (
           <div className="bg-[#11212D] border border-[#253745] rounded-2xl p-8 shadow-2xl max-w-2xl mx-auto space-y-6">
@@ -896,113 +869,13 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        <AnimatePresence>
-          {showBundleForm && (
-            <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 overflow-y-auto">
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowBundleForm(false)} className="fixed inset-0 bg-[#06141B]/90 backdrop-blur-sm cursor-pointer" />
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="bg-[#11212D] border border-[#253745] rounded-2xl p-6 sm:p-8 shadow-2xl w-full max-w-2xl relative z-10 my-8">
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-xl font-black tracking-wider text-white uppercase flex items-center gap-2"><Package className="w-5 h-5 text-emerald-400" /> {bundleFormData.originalTitle ? 'Edit Bundle' : 'Create New Bundle'}</h2>
-                  <button onClick={() => setShowBundleForm(false)} className="text-[#9BA8AB] hover:text-white cursor-pointer"><X className="w-5 h-5" /></button>
-                </div>
-                
-                <form onSubmit={handleSaveBundle} className="space-y-5">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="sm:col-span-2">
-                      <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Bundle Name</label>
-                      <input type="text" value={bundleFormData.title} onChange={e => setBundleFormData({...bundleFormData, title: e.target.value})} className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-emerald-500" required placeholder="e.g. Spider-Man Ultimate Collection" />
-                    </div>
-                    
-                    <div className="sm:col-span-2">
-                      <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Target Platform</label>
-                      <select 
-                        value={bundleFormData.platform} 
-                        onChange={(e) => {
-                          setBundleFormData({ ...bundleFormData, platform: e.target.value, includedGames: [] });
-                        }} 
-                        className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-emerald-500"
-                      >
-                        <option value="All">All Platforms (Mixed Bundle)</option>
-                        <option value="PC">PC Games Only</option>
-                        <option value="PS5">PS5 Games Only</option>
-                        <option value="PS4">PS4 Games Only</option>
-                      </select>
-                      <p className="text-[10px] text-[#4A5C6A] mt-1.5 font-semibold">Only games matching the selected platform can be added to this bundle.</p>
-                    </div>
-
-                    <div>
-                      <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Bundle Price (Rs)</label>
-                      <input type="text" value={bundleFormData.price} onChange={e => setBundleFormData({...bundleFormData, price: e.target.value})} className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-emerald-500" required placeholder="199Rs" />
-                    </div>
-                    <div>
-                      <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Original Value (Rs) - Optional</label>
-                      <input type="text" value={bundleFormData.originalPrice} onChange={e => setBundleFormData({...bundleFormData, originalPrice: e.target.value})} className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-red-400 text-xs focus:outline-none focus:border-emerald-500" placeholder="399Rs" />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Select Games to Include</label>
-                    <div className="relative mb-3">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4A5C6A]" />
-                      <input 
-                        type="text" 
-                        placeholder={`Search ${bundleFormData.platform !== 'All' ? bundleFormData.platform : 'all'} catalog to add games...`} 
-                        value={bundleGameSearch}
-                        onChange={(e) => setBundleGameSearch(e.target.value)}
-                        className="w-full bg-[#06141B] border border-[#253745] rounded-lg py-2 pl-9 pr-3 text-white text-xs focus:outline-none focus:border-emerald-500 shadow-inner"
-                      />
-                    </div>
-                    <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto p-4 bg-[#06141B] border border-[#253745] rounded-xl shadow-inner">
-                      {catalog
-                        .filter(g => !g.categories?.includes('Bundles'))
-                        .filter(g => {
-                          if (bundleFormData.platform !== 'All') {
-                            return g.categories?.includes(bundleFormData.platform);
-                          }
-                          return true;
-                        })
-                        .filter(g => g.title.toLowerCase().includes(bundleGameSearch.toLowerCase()))
-                        .map(game => {
-                          const isSelected = bundleFormData.includedGames.includes(game.title);
-                          return (
-                            <button
-                              key={game.title} type="button"
-                              onClick={() => {
-                                const newIncluded = isSelected 
-                                  ? bundleFormData.includedGames.filter(t => t !== game.title)
-                                  : [...bundleFormData.includedGames, game.title];
-                                setBundleFormData({...bundleFormData, includedGames: newIncluded});
-                              }}
-                              className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all border shadow-sm cursor-pointer ${
-                                isSelected ? 'bg-emerald-500 text-black border-emerald-400' : 'bg-[#11212D] text-[#9BA8AB] border-[#253745] hover:border-[#4A5C6A]'
-                              }`}
-                            >
-                              {game.title}
-                            </button>
-                          );
-                      })}
-                    </div>
-                    <p className="text-[10px] text-[#4A5C6A] mt-2 font-semibold uppercase tracking-wider">
-                      Selected: {bundleFormData.includedGames.length} games
-                    </p>
-                  </div>
-
-                  <div className="flex justify-end pt-4 border-t border-[#253745]">
-                    <button type="submit" className="w-full bg-gradient-to-r from-emerald-600 to-green-500 hover:from-green-500 hover:to-emerald-400 text-white py-3 rounded-xl font-bold uppercase tracking-wider text-xs transition-all shadow-md cursor-pointer border border-emerald-500/50">
-                      Save Bundle
-                    </button>
-                  </div>
-                </form>
-              </motion.div>
-            </div>
-          )}
-        </AnimatePresence>
+        
 
         <AnimatePresence>
           {editingCollection && (
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setEditingCollection(null)} className="fixed inset-0 bg-[#06141B]/90 backdrop-blur-sm cursor-pointer" />
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="bg-[#11212D] border border-[#253745] rounded-2xl p-6 sm:p-8 shadow-2xl w-full max-w-xl relative z-10 my-8 space-y-5">
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="bg-[#11212D] border border-[#253745] rounded-2xl p-6 sm:p-8 shadow-2xl w-full max-w-xl relative z-10 my-8 space-y-5 max-h-[90vh] overflow-y-auto">
                 <div className="flex justify-between items-center mb-2">
                   <h2 className="text-xl font-black tracking-wider text-white uppercase">Edit Collection</h2>
                   <button onClick={() => setEditingCollection(null)} className="text-[#9BA8AB] hover:text-white p-2 cursor-pointer"><X className="w-5 h-5" /></button>
@@ -1103,7 +976,7 @@ export default function AdminDashboard() {
           {showForm && (
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowForm(false)} className="fixed inset-0 bg-[#06141B]/90 backdrop-blur-sm cursor-pointer" />
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="bg-[#11212D] border border-[#253745] rounded-2xl p-6 sm:p-8 shadow-2xl w-full max-w-3xl relative z-10 my-8">
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="bg-[#11212D] border border-[#253745] rounded-2xl p-6 sm:p-8 shadow-2xl w-full max-w-3xl relative z-10 my-8 max-h-[90vh] overflow-y-auto">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-xl font-black tracking-wider text-white uppercase">{editingTitle ? 'Edit Game' : 'Add New Game'}</h2>
                   <button onClick={() => setShowForm(false)} className="text-[#9BA8AB] hover:text-white cursor-pointer"><X className="w-5 h-5" /></button>
@@ -1323,7 +1196,7 @@ export default function AdminDashboard() {
                     <div>
                       <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Platforms & Categories</label>
                       <div className="flex gap-2 flex-wrap">
-                        {['PC', 'PS5', 'PS4', 'Bundles'].map(plat => (
+                        {['PC', 'PS5', 'Bundle-Eligible'].map(plat => (
                           <button 
                             key={plat} 
                             type="button" 

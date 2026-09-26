@@ -104,6 +104,9 @@ export default function CartDrawer() {
       if (item.onSale && item.originalPrice && item.purchaseType !== 'rent') {
          message += ` (Discounted from ${item.originalPrice})`;
       }
+      if (item.categories?.includes('Bundles') && item.description) {
+         message += `\n   📦 Included: ${item.description}`;
+      }
       message += `\n`;
     });
     

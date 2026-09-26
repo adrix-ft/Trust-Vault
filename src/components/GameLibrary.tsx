@@ -19,16 +19,8 @@ export default function GameLibrary() {
     if (game.categories?.some(cat => cat.toLowerCase() === 'bundles')) return false;
     if (!game.categories?.includes(selectedCategory)) return false;
     if (platformFilter !== 'All') {
-      if (platformFilter === 'PS5') {
-        const matchesPlayStation = game.categories?.some(cat => {
-          const upper = String(cat).toUpperCase();
-          return upper.includes('PS5') || upper.includes('PS4') || upper.includes('PLAYSTATION');
-        });
-        if (!matchesPlayStation) return false;
-      } else {
-        const matchesStrict = game.categories?.some(cat => String(cat).toUpperCase() === platformFilter.toUpperCase());
-        if (!matchesStrict) return false;
-      }
+      const matchesStrict = game.categories?.some(cat => String(cat).toUpperCase() === platformFilter.toUpperCase());
+      if (!matchesStrict) return false;
     }
     return true;
   });

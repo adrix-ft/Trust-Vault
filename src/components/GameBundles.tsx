@@ -13,14 +13,7 @@ export default function GameBundles() {
     if (!isBundle) return false;
 
     if (platformFilter !== 'All') {
-      if (platformFilter === 'PS5 & PS4') {
-        return game.categories?.some(cat => {
-          const upper = String(cat).toUpperCase();
-          return upper.includes('PS5') || upper.includes('PS4') || upper.includes('PLAYSTATION');
-        });
-      } else {
-        return game.categories?.some(cat => String(cat).toUpperCase() === platformFilter.toUpperCase());
-      }
+      return game.categories?.some(cat => String(cat).toUpperCase() === platformFilter.toUpperCase());
     }
     return true;
   });

@@ -1,4 +1,4 @@
-import { Search, ShoppingCart, Check, X, MessageCircle, Zap, TrendingUp, Monitor, Gamepad2, ShieldCheck, Clock } from 'lucide-react';
+import { Search, ShoppingCart, Check, X, MessageCircle, Zap, TrendingUp, Monitor, Gamepad2, ShieldCheck, Clock, Package } from 'lucide-react';
 import { useStore, Game } from '../context/StoreContext';
 import { motion, AnimatePresence } from 'motion/react';
 import { useState, useRef, useEffect, useMemo } from 'react';
@@ -16,6 +16,7 @@ export default function Navbar() {
   const filters = [
     { id: 'PC', label: 'PC Games', type: 'platform', icon: Monitor },
     { id: 'PS5', label: 'PS Games', type: 'platform', icon: Gamepad2 },
+    { id: 'Custom Bundle', label: 'Build Bundle', type: 'category', icon: Package, iconClass: 'text-emerald-400' },
     { id: 'Proofs', label: 'Proofs', type: 'category', icon: ShieldCheck, iconClass: 'text-green-400' },
     { id: 'Contact Us', label: 'Contact Us', type: 'category', icon: MessageCircle, iconClass: 'text-blue-400' }
   ];
@@ -210,7 +211,7 @@ export default function Navbar() {
                             <div className="flex flex-wrap gap-1 mt-1">
                               {game.categories?.map(cat => {
                                 const upper = String(cat).toUpperCase();
-                                if (upper === 'PC' || upper === 'PS5' || upper === 'PS4' || upper.includes('PS')) {
+                                if (upper === 'PC' || upper === 'PS5' || upper.includes('PS')) {
                                   return (
                                     <span
                                       key={cat}

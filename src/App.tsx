@@ -21,6 +21,7 @@ import AdminDashboard from './components/AdminDashboard';
 import AdminLogin from './components/AdminLogin';
 import UpcomingView from './components/UpcomingView';
 import GameDetailsView from './components/GameDetailsView';
+import CustomBundleBuilder from './components/CustomBundleBuilder';
 import { motion, AnimatePresence } from 'motion/react';
 import { X } from 'lucide-react';
 import { useState } from 'react';
@@ -84,6 +85,12 @@ function AppContent() {
           {selectedCategory === 'Contact Us' && (
             <main className="w-full mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 py-12 relative z-10">
               <ContactUs />
+            </main>
+          )}
+
+          {selectedCategory === 'Custom Bundle' && (
+            <main className="w-full relative z-10">
+              <CustomBundleBuilder />
             </main>
           )}
 

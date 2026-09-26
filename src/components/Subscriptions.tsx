@@ -6,14 +6,14 @@ export default function Subscriptions() {
   const gamingSubs = [
     {
       id: 'sub-ps-plus-1m',
-      platform: 'PS4 & PS5',
+      platform: 'PS5',
       title: 'PS Plus Extra (1 Month)',
       price: '499Rs',
       originalPrice: '999Rs',
       duration: '1 Month Access',
-      description: 'Access hundreds of PS4 & PS5 titles, classic catalog games, and online multiplayer perks.',
+      description: 'Access hundreds of PS5 titles, classic catalog games, and online multiplayer perks.',
       features: [
-        'Huge PS4 & PS5 Game Catalog access',
+        'Huge PS5 Game Catalog access',
         'Online Multiplayer enabled',
         'Monthly free games included',
         'Secure account delivery & verification'
@@ -23,14 +23,14 @@ export default function Subscriptions() {
     },
     {
       id: 'sub-ps-plus-1y',
-      platform: 'PS4 & PS5',
+      platform: 'PS5',
       title: 'PS Plus Extra (1 Year)',
       price: '3999Rs',
       originalPrice: '8709Rs',
       duration: '1 Year Access',
-      description: 'Full 1-year pass for PS4 & PS5 with uninterrupted gaming and complete access to the library.',
+      description: 'Full 1-year pass for PS5 with uninterrupted gaming and complete access to the library.',
       features: [
-        'Full 12 months access on PS4 & PS5',
+        'Full 12 months access on PS5',
         'Online Multiplayer enabled',
         'Maximum savings value',
         'Instant WhatsApp delivery & support'

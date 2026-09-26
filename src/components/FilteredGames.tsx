@@ -12,15 +12,7 @@ export default function FilteredGames({ category, genre, title, actionType = 'bu
     }
     
     if (platformFilter !== 'All') {
-      if (platformFilter === 'PS5 & PS4') {
-        const matchesPlayStation = game.categories?.some(cat => {
-          const upper = cat.toUpperCase();
-          return upper.includes('PS5') || upper.includes('PS4') || upper.includes('PLAYSTATION');
-        });
-        if (!matchesPlayStation) return false;
-      } else {
-        if (!game.categories?.some(cat => cat.toUpperCase() === platformFilter.toUpperCase())) return false;
-      }
+      if (!game.categories?.some(cat => cat.toUpperCase() === platformFilter.toUpperCase())) return false;
     }
     return true;
   });

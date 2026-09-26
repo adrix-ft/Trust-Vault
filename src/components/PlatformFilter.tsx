@@ -1,5 +1,5 @@
 import { useStore } from '../context/StoreContext';
-import { Monitor, Gamepad2, Layers, Crown, ShieldCheck } from 'lucide-react';
+import { Monitor, Gamepad2, Layers, Crown, ShieldCheck, Package, MessageCircle } from 'lucide-react';
 
 export default function PlatformFilter() {
   const { platformFilter, setPlatformFilter, selectedCategory, setSelectedCategory } = useStore();
@@ -7,7 +7,9 @@ export default function PlatformFilter() {
   const filters = [
     { id: 'PC', label: 'PC Games', icon: Monitor, type: 'platform' },
     { id: 'PS5', label: 'PS Games', icon: Gamepad2, type: 'platform' },
-    { id: 'Proofs', label: 'Proofs', icon: ShieldCheck, type: 'category', iconClass: 'text-green-400' }
+    { id: 'Custom Bundle', label: 'Build Bundle', icon: Package, type: 'category', iconClass: 'text-emerald-400' },
+    { id: 'Proofs', label: 'Proofs', icon: ShieldCheck, type: 'category', iconClass: 'text-green-400' },
+    { id: 'Contact Us', label: 'Contact Us', icon: MessageCircle, type: 'category', iconClass: 'text-blue-400' }
   ];
 
   return (
@@ -43,7 +45,7 @@ export default function PlatformFilter() {
             <Icon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors ${filter.iconClass || ''} ${isActive && filter.id === 'Proofs' ? 'text-green-300' : ''}`} />
             
             <span className="hidden sm:inline">{filter.label}</span>
-            <span className="sm:hidden">{filter.id}</span>
+            <span className="sm:hidden">{filter.id === 'Custom Bundle' ? 'Bundles' : filter.id}</span>
           </button>
         );
       })}
