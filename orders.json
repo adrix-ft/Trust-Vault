@@ -1,0 +1,54 @@
+[
+  {
+    "id": "ORD-1784956603220",
+    "customerName": "Guest Gamer",
+    "totalAmount": 199,
+    "items": [
+      {
+        "id": "03e6447c-cfc3-4e5c-a6a0-c22baa2fc810",
+        "title": "Spider-Man 2",
+        "price": "199Rs",
+        "categories": [
+          "Store",
+          "Top Sellers",
+          "Popular games",
+          "PS5"
+        ],
+        "description": "Both Peter Parker and Miles Morales return for an exhilarating new chapter in the acclaimed Marvels Spider-Man franchise.",
+        "onSale": true,
+        "originalPrice": "349Rs",
+        "customCoverUrl": "https://jtqpoqhoimqugwzyoavd.supabase.co/storage/v1/object/public/game-covers/spider-man-2-1784909951777.jpeg",
+        "showInHero": true,
+        "isFeaturedPromo": false,
+        "trailer": "https://www.youtube.com/watch?v=nq1M_Wc4FIc"
+      }
+    ],
+    "createdAt": "2026-07-25T05:16:43.220Z"
+  },
+  {
+    "id": "ORD-1784956562140",
+    "customerName": "Guest Gamer",
+    "totalAmount": 199,
+    "items": [
+      {
+        "id": "03e6447c-cfc3-4e5c-a6a0-c22baa2fc810",
+        "title": "Spider-Man 2",
+        "price": "199Rs",
+        "categories": [
+          "Store",
+          "Top Sellers",
+          "Popular games",
+          "PS5"
+        ],
+        "description": "Both Peter Parker and Miles Morales return for an exhilarating new chapter in the acclaimed Marvels Spider-Man franchise.",
+        "onSale": true,
+        "originalPrice": "349Rs",
+        "customCoverUrl": "https://jtqpoqhoimqugwzyoavd.supabase.co/storage/v1/object/public/game-covers/spider-man-2-1784909951777.jpeg",
+        "showInHero": true,
+        "isFeaturedPromo": false,
+        "trailer": "https://www.youtube.com/watch?v=nq1M_Wc4FIc"
+      }
+    ],
+    "createdAt": "2026-07-25T05:16:02.140Z"
+  }
+]

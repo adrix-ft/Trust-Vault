@@ -1,0 +1,381 @@
+[
+  {
+    "title": "God of War Ragnarök",
+    "price": "199Rs",
+    "categories": [
+      "Store",
+      "Top Sellers",
+      "Popular games",
+      "PC",
+      "PS5"
+    ],
+    "description": "",
+    "onSale": true,
+    "originalPrice": "399Rs",
+    "customCoverUrl": "/assets/images/god-of-war-ragnarok.jpg",
+    "showInHero": false,
+    "isFeaturedPromo": false,
+    "trailer": "https://youtu.be/K0u_kAWLJOA?si=ubntm37cl7d_V0k6"
+  },
+  {
+    "title": "Ghost of Tsushima",
+    "price": "199Rs",
+    "categories": [
+      "Store",
+      "Top Sellers",
+      "Popular games",
+      "PC",
+      "PS5"
+    ],
+    "customCoverUrl": "/assets/images/ghost-of-tsushima.jpg",
+    "trailer": "https://youtu.be/iqysmS4lxwQ?si=nybxaLnU7SbsH1ec"
+  },
+  {
+    "title": "Spider-Man Remastered",
+    "price": "99Rs",
+    "categories": [
+      "Store",
+      "Collections",
+      "PC",
+      "PS5"
+    ],
+    "description": "",
+    "onSale": false,
+    "customCoverUrl": "/assets/images/spider-man-remastered.jpg",
+    "showInHero": false,
+    "isFeaturedPromo": false,
+    "trailer": "https://youtu.be/mrT5q5xXb7Y?si=ENKxmPr4mdDt7hd1"
+  },
+  {
+    "title": "Spider-Man Miles Morales",
+    "price": "99Rs",
+    "categories": [
+      "Store",
+      "Collections",
+      "PC",
+      "PS5"
+    ],
+    "description": "",
+    "onSale": false,
+    "customCoverUrl": "/assets/images/spider-man-miles-morales.jpg",
+    "showInHero": false,
+    "isFeaturedPromo": false,
+    "trailer": "https://youtu.be/3wHL2VIaFcs?si=qugIc-8Pt6lWUiyf"
+  },
+  {
+    "title": "Black Myth Wukong",
+    "price": "199Rs",
+    "categories": [
+      "Store",
+      "Top Sellers",
+      "Popular games",
+      "PC",
+      "PS5"
+    ],
+    "description": "",
+    "onSale": true,
+    "originalPrice": "399Rs",
+    "customCoverUrl": "/assets/images/black-myth-wukong.jpeg",
+    "showInHero": false,
+    "isFeaturedPromo": false,
+    "trailer": "https://youtu.be/pnSsgRJmsCc?si=BVpb-WgjjWJoHzx4"
+  },
+  {
+    "title": "Spider-Man 2",
+    "price": "199Rs",
+    "categories": [
+      "Store",
+      "Top Sellers",
+      "Popular games",
+      "PC",
+      "PS5"
+    ],
+    "description": "",
+    "onSale": true,
+    "originalPrice": "349Rs",
+    "customCoverUrl": "/assets/images/Spider-Man-2.jpg",
+    "showInHero": false,
+    "isFeaturedPromo": false,
+    "trailer": ""
+  },
+  {
+    "title": "The Last of Us Part I",
+    "price": "149Rs",
+    "categories": [
+      "Store",
+      "Collections",
+      "PC",
+      "PS5"
+    ],
+    "description": "",
+    "onSale": false,
+    "customCoverUrl": "/assets/images/the-last-of-us-part-i.jpg",
+    "showInHero": false,
+    "isFeaturedPromo": false,
+    "trailer": ""
+  },
+  {
+    "title": "GTA V",
+    "price": "199Rs",
+    "categories": [
+      "Popular games",
+      "PC",
+      "Top Sellers",
+      "Store"
+    ],
+    "description": "",
+    "onSale": false,
+    "customCoverUrl": "",
+    "showInHero": false,
+    "isFeaturedPromo": false,
+    "trailer": "https://youtu.be/hvoD7ehZPcM?si=CO08ciRcCDZAh9-c"
+  },
+  {
+    "title": "The Last of Us Part II Remastered",
+    "price": "199Rs",
+    "categories": [
+      "Store",
+      "Collections",
+      "PC",
+      "PS5"
+    ],
+    "description": "",
+    "onSale": false,
+    "customCoverUrl": "/assets/images/the-last-of-us-part-ii-remastered.jpg",
+    "showInHero": false,
+    "isFeaturedPromo": false,
+    "trailer": ""
+  },
+  {
+    "title": "Resident Evil 4 Remake",
+    "price": "199Rs",
+    "categories": [
+      "Store",
+      "Top Sellers",
+      "PC",
+      "PS5"
+    ]
+  },
+  {
+    "title": "Resident Evil Requiem",
+    "price": "149Rs",
+    "categories": [
+      "Store",
+      "Collections",
+      "PC",
+      "PS5"
+    ],
+    "description": "",
+    "onSale": false,
+    "customCoverUrl": "/assets/images/resident-evil-requiem.jpg",
+    "showInHero": false,
+    "isFeaturedPromo": false,
+    "trailer": ""
+  },
+  {
+    "title": "Dead Space Remake",
+    "price": "149Rs",
+    "categories": [
+      "Store",
+      "Collections",
+      "PC",
+      "PS5"
+    ],
+    "description": "",
+    "onSale": false,
+    "customCoverUrl": "/assets/images/dead-space-remake.jpg",
+    "showInHero": false,
+    "isFeaturedPromo": false,
+    "trailer": ""
+  },
+  {
+    "title": "Horizon Zero Dawn",
+    "price": "99Rs",
+    "categories": [
+      "Store",
+      "Collections",
+      "PC",
+      "PS5"
+    ]
+  },
+  {
+    "title": "Horizon Forbidden West",
+    "price": "149Rs",
+    "categories": [
+      "Store",
+      "Collections",
+      "PC",
+      "PS5"
+    ]
+  },
+  {
+    "title": "Assassin’s Creed Mirage",
+    "price": "149Rs",
+    "categories": [
+      "Store",
+      "Collections",
+      "PC",
+      "PS5"
+    ]
+  },
+  {
+    "title": "Assassin’s Creed Valhalla",
+    "price": "99Rs",
+    "categories": [
+      "Store",
+      "Collections",
+      "PC",
+      "PS5"
+    ]
+  },
+  {
+    "title": "Cyberpunk 2077 Phantom Liberty",
+    "price": "199Rs",
+    "categories": [
+      "Store",
+      "Popular games",
+      "PC",
+      "PS5"
+    ],
+    "description": "",
+    "onSale": false,
+    "originalPrice": "299Rs",
+    "customCoverUrl": "/assets/images/cyberpunk-2077-phantom-liberty.webp",
+    "showInHero": false,
+    "isFeaturedPromo": false,
+    "trailer": ""
+  },
+  {
+    "title": "Elden Ring Shadow of the Erdtree",
+    "price": "199Rs",
+    "originalPrice": "299Rs",
+    "onSale": true,
+    "categories": [
+      "Store",
+      "Top Sellers",
+      "Popular games",
+      "PC",
+      "PS5"
+    ]
+  },
+  {
+    "title": "Silent Hill f",
+    "price": "199Rs",
+    "categories": [
+      "Store",
+      "Popular games",
+      "PC",
+      "PS5"
+    ]
+  },
+  {
+    "title": "Assassin’s Creed Shadows",
+    "price": "199Rs",
+    "categories": [
+      "Store",
+      "Popular games",
+      "PC",
+      "PS5"
+    ]
+  },
+  {
+    "title": "Doom The Dark Ages",
+    "price": "249Rs",
+    "categories": [
+      "Store",
+      "Popular games",
+      "PC"
+    ]
+  },
+  {
+    "title": "Elden Ring Nightreign",
+    "price": "199Rs",
+    "categories": [
+      "Store",
+      "Popular games",
+      "PC",
+      "PS5"
+    ]
+  },
+  {
+    "title": "FC 26",
+    "price": "199Rs",
+    "categories": [
+      "Store",
+      "Popular games",
+      "PC",
+      "PS5"
+    ],
+    "description": "",
+    "onSale": false,
+    "customCoverUrl": "/assets/images/fc-26.jpg",
+    "showInHero": false,
+    "isFeaturedPromo": false,
+    "trailer": ""
+  },
+  {
+    "title": "Cricket 26",
+    "price": "199Rs",
+    "categories": [
+      "Store",
+      "Popular games",
+      "PC",
+      "PS5"
+    ]
+  },
+  {
+    "title": "Mafia",
+    "price": "199Rs",
+    "categories": [
+      "Store",
+      "Popular games",
+      "PC"
+    ]
+  },
+  {
+    "title": "Kingdom Come Deliverance",
+    "price": "199Rs",
+    "categories": [
+      "Store",
+      "Popular games",
+      "PC"
+    ]
+  },
+  {
+    "title": "Dying Light The Beast",
+    "price": "149Rs",
+    "categories": [
+      "Store",
+      "Popular games",
+      "PC"
+    ]
+  },
+  {
+    "title": "Pragmata",
+    "price": "199Rs",
+    "categories": [
+      "Store",
+      "Popular games",
+      "PC",
+      "PS5"
+    ]
+  },
+  {
+    "title": "Battlefield 6",
+    "price": "249Rs",
+    "categories": [
+      "Store",
+      "Popular games",
+      "PC"
+    ]
+  },
+  {
+    "title": "Hollow Knight Silksong",
+    "price": "149Rs",
+    "categories": [
+      "Store",
+      "Popular games",
+      "PC"
+    ]
+  }
+]

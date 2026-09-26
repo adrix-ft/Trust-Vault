@@ -1,0 +1,6 @@
+{
+  "name": "Game Store Replica",
+  "description": "A dark-themed game store front page replica based on a reference image.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
