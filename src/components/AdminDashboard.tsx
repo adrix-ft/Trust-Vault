@@ -47,7 +47,7 @@ export default function AdminDashboard() {
         if (Array.isArray(data)) setUpcomingGames(data);
       }
     } catch (err) {
-      console.error("Failed to fetch upcoming catalog:", err);
+      // Upcoming endpoint removed, ignoring error
     }
   };
 
