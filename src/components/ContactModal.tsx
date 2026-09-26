@@ -10,7 +10,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   if (!isOpen) return null;
 
   const handleTelegramClick = () => {
-    window.open('https://telegram.me/amingamestore', '_blank');
+    window.open('https://telegram.me/storevault', '_blank');
     onClose();
   };
 

@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { getGameCoverUrl } from '../utils/image';
 import React, { useState } from 'react';
 
-const STORE_WHATSAPP_NUMBER = "916001189280";
+const STORE_WHATSAPP_NUMBER = "918824647379";
 
 // FIXED: Dynamically load the API URL from Vercel Environment Variables
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://amin-game-store-backend.onrender.com';

@@ -4,7 +4,7 @@ import { getGameCoverUrl } from '../utils/image';
 
 // FIXED: Dynamically load the API URL from Vercel Environment Variables
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://amin-game-store-backend.onrender.com';
-const STORE_WHATSAPP_NUMBER = "916001189280";
+const STORE_WHATSAPP_NUMBER = "918824647379";
 
 export default function UpcomingView() {
   const [upcomingGames, setUpcomingGames] = useState<any[]>([]);
@@ -43,7 +43,7 @@ export default function UpcomingView() {
         </div>
         <button 
           onClick={() => {
-            const text = encodeURIComponent("Hey Amin Game Store, I want to pre-order an upcoming game!");
+            const text = encodeURIComponent("Hey Store Vault, I want to pre-order an upcoming game!");
             window.location.href = `https://wa.me/${STORE_WHATSAPP_NUMBER}?text=${text}`;
           }}
           className="w-full md:w-auto flex items-center justify-center gap-2 bg-green-600 hover:bg-green-500 text-white px-6 py-3.5 rounded-xl font-bold uppercase tracking-wider text-xs transition-colors shadow-lg shrink-0 cursor-pointer border-none"
@@ -100,7 +100,7 @@ export default function UpcomingView() {
                     <span className="font-black text-[#CCD0CF] text-sm sm:text-base">{gamePrice}</span>
                     <button 
                       onClick={() => {
-                        const msg = `Hey Amin Game Store, I would like to pre-order "${game.title}" for ${gamePrice}!`;
+                        const msg = `Hey Store Vault, I would like to pre-order "${game.title}" for ${gamePrice}!`;
                         window.location.href = `https://wa.me/${STORE_WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
                       }}
                       className="w-full flex items-center justify-center gap-1.5 bg-green-600 hover:bg-green-500 text-white px-3 py-2 rounded-lg text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-colors shadow cursor-pointer border-none"

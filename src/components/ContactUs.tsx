@@ -21,7 +21,7 @@ export default function ContactUs() {
           
           <div className="mt-8">
             <a 
-              href="https://wa.me/916001189280?text=Hey%20Amin%20Game%20Store,%20I%20need%20some%20help!"
+              href="https://wa.me/918824647379?text=Hey%20Store Vault%20Game%20Store,%20I%20need%20some%20help!"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-500 text-white px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-xs transition-colors shadow-lg"
@@ -46,7 +46,7 @@ export default function ContactUs() {
           
           <div className="mt-8">
             <a 
-              href="https://telegram.me/amingamestore"
+              href="https://telegram.me/storevault"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-500 text-white px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-xs transition-colors shadow-lg"
@@ -67,11 +67,11 @@ export default function ContactUs() {
             </div>
             <h3 className="text-lg font-black text-[#CCD0CF] uppercase tracking-wider">Quick Support Details</h3>
           </div>
-          <p className="text-sm text-[#9BA8AB]">Support Line: +91 60011 89280 • Fast response via WhatsApp & Telegram</p>
+          <p className="text-sm text-[#9BA8AB]">Support Line: +91 88246 47379 • Fast response via WhatsApp & Telegram</p>
         </div>
         
         <div className="text-xs text-[#4A5C6A] font-bold uppercase tracking-wider bg-[#06141B] px-4 py-3 rounded-xl border border-[#253745]">
-          Amin Game Store Team
+          Store Vault Team
         </div>
       </div>
     </div>

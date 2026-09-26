@@ -17,7 +17,7 @@ export default function FooterModal({ type, onClose }: FooterModalProps) {
           content: (
             <div className="space-y-4 text-xs sm:text-sm text-[#9BA8AB] leading-relaxed">
               <p className="text-white font-semibold">
-                Welcome to Amin Game Store. By purchasing from us, you agree to the following terms and usage guidelines:
+                Welcome to Store Vault. By purchasing from us, you agree to the following terms and usage guidelines:
               </p>
               
               <div className="bg-[#06141B] p-4 rounded-xl border border-[#253745] space-y-2">
@@ -46,7 +46,7 @@ export default function FooterModal({ type, onClose }: FooterModalProps) {
               <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-amber-300 text-xs flex items-start gap-2.5">
                 <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
                 <span>
-                  <strong>Disclaimer of Ownership:</strong> Amin Game Store is an independent digital game store facilitator. We do not claim ownership of any third-party intellectual properties.
+                  <strong>Disclaimer of Ownership:</strong> Store Vault is an independent digital game store facilitator. We do not claim ownership of any third-party intellectual properties.
                 </span>
               </div>
 
@@ -79,7 +79,7 @@ export default function FooterModal({ type, onClose }: FooterModalProps) {
           content: (
             <div className="space-y-4 text-xs sm:text-sm text-[#9BA8AB] leading-relaxed">
               <p>
-                Your privacy is vital to us. Amin Game Store collects only necessary transaction details (such as contact handles and payment confirmations) required to deliver your game accounts or keys securely via WhatsApp or direct communication channels.
+                Your privacy is vital to us. Store Vault collects only necessary transaction details (such as contact handles and payment confirmations) required to deliver your game accounts or keys securely via WhatsApp or direct communication channels.
               </p>
               <p>
                 We never store sensitive banking credentials or passwords on our servers. All information provided by customers remains confidential and is never sold or shared with external marketing third parties.
@@ -95,7 +95,7 @@ export default function FooterModal({ type, onClose }: FooterModalProps) {
           content: (
             <div className="space-y-4 text-xs sm:text-sm text-[#9BA8AB] leading-relaxed">
               <p>
-                Prices and promotional discounts on Amin Game Store are subject to change based on regional availability, publisher updates, and special seasonal events. 
+                Prices and promotional discounts on Store Vault are subject to change based on regional availability, publisher updates, and special seasonal events. 
               </p>
               <p>
                 Discounts marked with original price strikethroughs reflect promotional savings calculated directly against standard retail benchmarks at the time of catalog updates.
@@ -106,7 +106,7 @@ export default function FooterModal({ type, onClose }: FooterModalProps) {
 
       case 'about':
         return {
-          title: 'About Amin Game Store',
+          title: 'About Store Vault',
           icon: Info,
           content: (
             <div className="space-y-4 text-xs sm:text-sm text-[#9BA8AB] leading-relaxed">
@@ -114,7 +114,7 @@ export default function FooterModal({ type, onClose }: FooterModalProps) {
                 Your trusted gateway to affordable, high-speed, next-gen gaming.
               </p>
               <p>
-                Amin Game Store was built by gamers, for gamers. We bridge the gap between high-end entertainment and accessibility, ensuring quick verification, secure customer proofs, and seamless support for every title you play.
+                Store Vault was built by gamers, for gamers. We bridge the gap between high-end entertainment and accessibility, ensuring quick verification, secure customer proofs, and seamless support for every title you play.
               </p>
             </div>
           )

@@ -77,7 +77,7 @@ export default function Navbar() {
             className="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center gap-1.5 whitespace-nowrap"
           >
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-[#CCD0CF] to-[#9BA8AB] group-hover:opacity-90 transition-opacity">
-              Amin
+              Store Vault
             </span>
             <span className="text-[9px] sm:text-[10px] uppercase font-extrabold tracking-widest px-2 py-0.5 rounded-full bg-[#253745]/50 border border-[#4A5C6A]/30 text-[#CCD0CF] whitespace-nowrap shadow-sm">
               Game Store
@@ -311,7 +311,7 @@ export default function Navbar() {
                         No titles found matching "{searchQuery}". Ask us directly and we'll get it for you!
                       </p>
                       <a 
-                        href={`https://wa.me/916001189280?text=${encodeURIComponent(`Hey, I am looking for a game not found in your store: "${searchQuery}"`)}`}
+                        href={`https://wa.me/918824647379?text=${encodeURIComponent(`Hey, I am looking for a game not found in your store: "${searchQuery}"`)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-500 text-white px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-lg"

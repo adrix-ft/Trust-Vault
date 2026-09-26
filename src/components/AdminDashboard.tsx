@@ -281,7 +281,7 @@ export default function AdminDashboard() {
             </div>
             <div>
               <h1 className="text-2xl font-black tracking-wider uppercase text-white">Admin Management Hub</h1>
-              <p className="text-[#9BA8AB] text-xs font-semibold tracking-wide mt-0.5">Amin Game Store Control Center</p>
+              <p className="text-[#9BA8AB] text-xs font-semibold tracking-wide mt-0.5">Store Vault Control Center</p>
             </div>
           </div>
           <div className="flex items-center gap-3">

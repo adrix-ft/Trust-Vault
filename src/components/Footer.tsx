@@ -22,7 +22,7 @@ export default function Footer() {
             {/* MATCHED BRAND NAME */}
             <div className="flex items-center gap-1.5 whitespace-nowrap mb-1">
               <span className="text-xl sm:text-2xl font-black tracking-tight text-white">
-                Amin
+                Store Vault
               </span>
               <span className="text-[9px] sm:text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-[#253745] border border-[#4A5C6A]/30 text-[#CCD0CF] whitespace-nowrap">
                 GAME STORE
@@ -94,7 +94,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left text-[11px]">
           <div className="text-[#4A5C6A]">
-            &copy; {new Date().getFullYear()} Amin Game Store. All Rights Reserved.
+            &copy; {new Date().getFullYear()} Store Vault. All Rights Reserved.
           </div>
 
           {/* UPDATED GITHUB LINK */}
