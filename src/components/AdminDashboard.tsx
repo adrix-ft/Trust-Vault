@@ -181,6 +181,11 @@ export default function AdminDashboard() {
     try {
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
       const res = await fetch(`${API_BASE_URL}/api/games/details/${appid}`);
+      
+      if (!res.ok) {
+        throw new Error('Game details not found on server');
+      }
+      
       const details = await res.json();
       
       const steamGame = steamResults.find(g => g.steam_app_id === appid);

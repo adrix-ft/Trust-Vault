@@ -478,7 +478,13 @@ app.get("/api/games/details/:appid", async (req, res) => {
   try {
     const { appid } = req.params;
     const response = await fetch(
-      `https://store.steampowered.com/api/appdetails?appids=${appid}&l=english`
+      `https://store.steampowered.com/api/appdetails?appids=${appid}&l=english`,
+      {
+        headers: {
+          // Bypass Steam's age gate for M-rated games like God of War
+          Cookie: "birthtime=283993201; lastagecheckage=1-January-1979; mature_content=1"
+        }
+      }
     );
     const data = await response.json();
     
