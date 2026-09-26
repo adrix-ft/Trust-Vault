@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { useStore } from '../context/StoreContext';
 import { getGameCoverUrl } from '../utils/image';
-import { ArrowLeft, ShoppingCart, Clock, Check, Star, ShieldCheck, Gamepad2, Minus, Plus } from 'lucide-react';
+import { ArrowLeft, ShoppingCart, Clock, Check, Star, ShieldCheck, Gamepad2, Minus, Plus, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 interface GameDetailsViewProps {
@@ -13,6 +13,7 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
   const game = catalog.find(g => g.title === gameTitle);
   const [selectedVariantIndex, setSelectedVariantIndex] = useState<number>(-1);
   const [rentMonths, setRentMonths] = useState<number>(1);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -117,6 +118,30 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
         
         {/* Left Column: Description & Media */}
         <div className="lg:col-span-2 space-y-8">
+          {/* Screenshots Gallery */}
+          {game.screenshots && game.screenshots.length > 0 && (
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25 }}
+              className="mb-8"
+            >
+              <h2 className="text-xl font-black text-white uppercase tracking-wider mb-4 px-2">Gallery</h2>
+              <div className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-[#4A5C6A] scrollbar-track-[#11212D]">
+                {game.screenshots.map((src, idx) => (
+                  <img 
+                    key={idx} 
+                    src={src} 
+                    alt={`Screenshot ${idx}`} 
+                    onClick={() => setSelectedImage(src)} 
+                    className="h-40 md:h-56 w-auto rounded-xl snap-center border border-[#253745] shadow-lg object-cover cursor-pointer hover:opacity-80 transition-opacity" 
+                  />
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -154,23 +179,6 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
             </motion.div>
           )}
 
-          {/* Screenshots Gallery */}
-          {game.screenshots && game.screenshots.length > 0 && (
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.38 }}
-              className="mt-6"
-            >
-              <h2 className="text-xl font-black text-white uppercase tracking-wider mb-4 px-2">Gallery</h2>
-              <div className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory hide-scrollbar">
-                {game.screenshots.map((src, idx) => (
-                  <img key={idx} src={src} alt={`Screenshot ${idx}`} className="h-40 md:h-56 w-auto rounded-xl snap-center border border-[#253745] shadow-lg object-cover" />
-                ))}
-              </div>
-            </motion.div>
-          )}
-          
           {/* Trust Badges */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
