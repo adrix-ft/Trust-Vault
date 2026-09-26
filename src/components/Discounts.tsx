@@ -63,7 +63,7 @@ export default function Discounts() {
                       </div>
                     </div>
                     <button 
-                      onClick={(e) => { e.stopPropagation(); addToCart(game); }}
+                      onClick={(e) => { e.stopPropagation(); setSelectedCategory('Game: ' + game.title); }}
                       className={`w-8 h-8 rounded-full bg-[#253745]/90 flex items-center justify-center text-[#9BA8AB] transition-all duration-200 border border-transparent shrink-0 backdrop-blur-sm shadow-md ${isSelected ? 'opacity-0 scale-75' : 'group-hover:opacity-0'}`}
                     >
                       <ShoppingCart className="w-4 h-4" />
@@ -72,7 +72,7 @@ export default function Discounts() {
                   
                   <div className={`flex flex-col gap-1.5 transition-all duration-300 ${isSelected ? 'opacity-100 max-h-24 mt-2' : 'opacity-0 max-h-0 mt-0 group-hover:opacity-100 group-hover:max-h-24 group-hover:mt-2'}`}>
                     <button 
-                      onClick={(e) => { e.stopPropagation(); addToCart(game, 'permanent'); }}
+                      onClick={(e) => { e.stopPropagation(); setSelectedCategory('Game: ' + game.title); }}
                       className="relative overflow-hidden w-full py-2 px-3 rounded-lg bg-[#253745] hover:bg-[#4A5C6A] border border-[#4A5C6A] text-[#CCD0CF] hover:text-white text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-lg"
                     >
                       <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer pointer-events-none" />

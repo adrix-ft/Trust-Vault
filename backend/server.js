@@ -21,7 +21,8 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // SECURED: Supabase Connection Configuration (Secondary Proofs Database)
 const PROOF_SUPABASE_URL = process.env.VITE_PROOF_SUPABASE_URL;
-const PROOF_SUPABASE_KEY = process.env.VITE_PROOF_SUPABASE_KEY;
+// Use Secret Key to bypass RLS for admin uploads
+const PROOF_SUPABASE_KEY = process.env.PROOF_SUPABASE_SECRET_KEY || process.env.SUPABASE_SECRET_KEY || process.env.VITE_PROOF_SUPABASE_KEY;
 const proofSupabase = createClient(PROOF_SUPABASE_URL, PROOF_SUPABASE_KEY);
 
 // RATE LIMITER: Protect orders endpoint from bot spam and carding attacks
@@ -206,7 +207,7 @@ app.post('/api/upload-proof', async (req, res) => {
     const fileName = `proof-${Date.now()}.${fileExtension}`;
 
     const { error: uploadError } = await proofSupabase.storage
-      .from('proof')
+      .from('proofs')
       .upload(fileName, base64Data, {
         contentType: `image/${fileExtension}`,
         upsert: true
@@ -215,7 +216,7 @@ app.post('/api/upload-proof', async (req, res) => {
     if (uploadError) throw uploadError;
 
     const { data: publicURLData } = proofSupabase.storage
-      .from('proof')
+      .from('proofs')
       .getPublicUrl(fileName);
 
     const { error: dbError } = await proofSupabase
@@ -235,7 +236,7 @@ app.post('/api/upload-proof', async (req, res) => {
 // ==================== GET PROOFS ENDPOINT ====================
 app.get('/api/proofs', async (req, res) => {
   try {
-    const { data, error } = await proofSupabase.storage.from('proof').list('', {
+    const { data, error } = await proofSupabase.storage.from('proofs').list('', {
       limit: 100,
       sortBy: { column: 'created_at', order: 'desc' },
     });
@@ -247,7 +248,7 @@ app.get('/api/proofs', async (req, res) => {
       .filter(file => file.name !== '.emptyFolderPlaceholder')
       .map(file => {
         const { data: publicUrlData } = proofSupabase.storage
-          .from('proof')
+          .from('proofs')
           .getPublicUrl(file.name);
         return publicUrlData.publicUrl;
       });

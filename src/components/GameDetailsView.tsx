@@ -9,17 +9,35 @@ interface GameDetailsViewProps {
 }
 
 export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
-  const { catalog, addToCart, cart, setSelectedCategory } = useStore();
+  const { catalog, addToCart, cart, setSelectedCategory, selectedCategory, platformFilter } = useStore();
   const game = catalog.find(g => g.title === gameTitle);
-  const [selectedVariantIndex, setSelectedVariantIndex] = useState<number>(-1);
+  
+  const isAvailablePC = game?.categories?.some(c => c.includes('PC')) || false;
+  const isAvailablePS = game?.categories?.some(c => c.includes('PS')) || false;
+
+  const [activePlatform, setActivePlatform] = useState<'PC' | 'PS'>(() => {
+    if (platformFilter === 'PS5' && isAvailablePS) return 'PS';
+    if (platformFilter === 'PC' && isAvailablePC) return 'PC';
+    return isAvailablePC ? 'PC' : 'PS';
+  });
+
+  const isPSMode = activePlatform === 'PS';
+  const defaultIdx = isPSMode && game?.variants && game.variants.length > 0 ? 0 : -1;
+  const [selectedVariantIndex, setSelectedVariantIndex] = useState<number>(defaultIdx);
   const [rentMonths, setRentMonths] = useState<number>(1);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    setSelectedVariantIndex(-1); // Reset on game change
+    // Auto-detect platform again if game changes
+    let newPlat: 'PC' | 'PS' = isAvailablePC ? 'PC' : 'PS';
+    if (platformFilter === 'PS5' && isAvailablePS) newPlat = 'PS';
+    if (platformFilter === 'PC' && isAvailablePC) newPlat = 'PC';
+    
+    setActivePlatform(newPlat);
+    setSelectedVariantIndex(newPlat === 'PS' && game?.variants && game.variants.length > 0 ? 0 : -1);
     setRentMonths(1);
-  }, [gameTitle]);
+  }, [gameTitle, platformFilter, isAvailablePC, isAvailablePS, game?.variants]);
 
   if (!game) {
     return (
@@ -44,7 +62,7 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
     ? { ...game, title: `${game.title} - ${activeVariant.name}`, price: activeVariant.price, originalPrice: activeVariant.originalPrice }
     : game;
 
-  const coverUrl = game.customCoverUrl || getGameCoverUrl(game.title);
+  const coverUrl = selectedImage || game.horizontalCoverUrl || (game.screenshots && game.screenshots.length > 0 ? game.screenshots[0] : (game.customCoverUrl || getGameCoverUrl(game.title)));
   const inCartPermanent = cart.some(item => item.title === gameToAdd.title && item.purchaseType === 'permanent');
   const inCartRent = cart.some(item => item.title === gameToAdd.title && item.purchaseType === 'rent');
 
@@ -157,44 +175,9 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
             />
           </motion.div>
 
-          {/* System Requirements */}
-          {(game.sysReqMinimum || game.sysReqRecommended) && (
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.35 }}
-              className="bg-[#11212D] border border-[#253745] p-6 sm:p-8 rounded-3xl shadow-xl mt-6"
-            >
-              <h2 className="text-xl font-black text-white uppercase tracking-wider mb-4 border-b border-[#253745] pb-4 flex items-center gap-2">
-                System Requirements
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-[#9BA8AB] text-sm">
-                {game.sysReqMinimum && (
-                  <div dangerouslySetInnerHTML={{ __html: game.sysReqMinimum }} className="prose prose-invert max-w-none prose-strong:text-white prose-ul:list-disc prose-ul:pl-4 text-xs" />
-                )}
-                {game.sysReqRecommended && (
-                  <div dangerouslySetInnerHTML={{ __html: game.sysReqRecommended }} className="prose prose-invert max-w-none prose-strong:text-white prose-ul:list-disc prose-ul:pl-4 text-xs" />
-                )}
-              </div>
-            </motion.div>
-          )}
 
-          {/* Trust Badges */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-4"
-          >
-            <div className="bg-[#11212D]/50 border border-[#253745] rounded-2xl p-4 flex flex-col items-center justify-center text-center gap-2 hover:bg-[#11212D] hover:border-[#4A5C6A] transition-colors">
-              <ShieldCheck className="w-8 h-8 text-green-400" />
-              <span className="text-[10px] font-black uppercase text-[#CCD0CF] tracking-wider">Secure Delivery</span>
-            </div>
-            <div className="bg-[#11212D]/50 border border-[#253745] rounded-2xl p-4 flex flex-col items-center justify-center text-center gap-2 hover:bg-[#11212D] hover:border-[#4A5C6A] transition-colors">
-              <Star className="w-8 h-8 text-amber-400" />
-              <span className="text-[10px] font-black uppercase text-[#CCD0CF] tracking-wider">Top Rated</span>
-            </div>
-          </motion.div>
+
+
         </div>
 
         {/* Right Column: Purchasing Panel */}
@@ -205,28 +188,34 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
             transition={{ delay: 0.3 }}
             className="bg-gradient-to-b from-[#11212D] to-[#06141B] border border-[#253745] p-6 sm:p-8 rounded-3xl shadow-[0_0_40px_rgba(0,0,0,0.5)] sticky top-[100px]"
           >
+
+            {/* Platform Toggle */}
+            {isAvailablePC && isAvailablePS && (
+              <div className="mb-6 flex p-1 bg-[#06141B] rounded-xl border border-[#253745]">
+                <button
+                  onClick={() => { setActivePlatform('PC'); setSelectedVariantIndex(-1); }}
+                  className={`flex-1 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all cursor-pointer ${
+                    !isPSMode ? 'bg-[#253745] text-white shadow-md' : 'text-[#9BA8AB] hover:text-[#CCD0CF]'
+                  }`}
+                >
+                  PC Version
+                </button>
+                <button
+                  onClick={() => { setActivePlatform('PS'); setSelectedVariantIndex(game.variants && game.variants.length > 0 ? 0 : -1); }}
+                  className={`flex-1 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all cursor-pointer ${
+                    isPSMode ? 'bg-[#253745] text-white shadow-md' : 'text-[#9BA8AB] hover:text-[#CCD0CF]'
+                  }`}
+                >
+                  PlayStation Version
+                </button>
+              </div>
+            )}
+
             {/* Edition / Variant Selection */}
-            {game.variants && game.variants.length > 0 && (
+            {isPSMode && game.variants && game.variants.length > 0 && (
               <div className="mb-6 space-y-2">
                 <h3 className="text-[11px] font-black text-[#9BA8AB] uppercase tracking-widest mb-3">Select Edition</h3>
                 
-                <button
-                  onClick={() => setSelectedVariantIndex(-1)}
-                  className={`w-full flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer ${
-                    selectedVariantIndex === -1 
-                      ? 'bg-[#253745] border-[#4A5C6A] shadow-md' 
-                      : 'bg-[#11212D] border-[#253745] hover:border-[#4A5C6A]'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className={`w-3 h-3 rounded-full border-2 flex items-center justify-center ${selectedVariantIndex === -1 ? 'border-emerald-400' : 'border-[#4A5C6A]'}`}>
-                      {selectedVariantIndex === -1 && <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />}
-                    </div>
-                    <span className={`text-xs font-bold uppercase tracking-wider ${selectedVariantIndex === -1 ? 'text-white' : 'text-[#CCD0CF]'}`}>Standard Edition</span>
-                  </div>
-                  <span className="text-sm font-black text-white">{game.price}</span>
-                </button>
-
                 {game.variants.map((variant, idx) => (
                   <button
                     key={idx}
@@ -253,7 +242,16 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
             <div className="mb-8">
               <div className="flex justify-between items-end mb-4">
                 <div>
-                  <h3 className="text-sm font-black text-[#9BA8AB] uppercase tracking-widest mb-1">Buy Permanent</h3>
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="text-sm font-black text-[#9BA8AB] uppercase tracking-widest">Buy Permanent</h3>
+                    <span className={`text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-widest border ${
+                      isPSMode 
+                        ? 'bg-blue-500/20 text-blue-400 border-blue-500/50' 
+                        : 'bg-stone-500/20 text-stone-300 border-stone-500/50'
+                    }`}>
+                      {isPSMode ? 'PlayStation' : 'PC'}
+                    </span>
+                  </div>
                   <div className="flex items-center gap-2">
                     {displayOriginalPrice && (
                       <span className="text-sm font-bold text-red-400 line-through decoration-red-400/50">{displayOriginalPrice}</span>
@@ -283,36 +281,26 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
             </div>
 
             {/* Rental Purchase (If Available) */}
-            {game.isRentable && game.rentPrice && (
+            {isPSMode && game.isRentable && game.rentPrice && (
               <div className="border-t border-[#253745] pt-8">
                 <div className="flex justify-between items-end mb-4">
                   <div>
-                    <h3 className="text-sm font-black text-blue-300 uppercase tracking-widest mb-1 flex items-center gap-1">
-                      <Clock className="w-4 h-4" /> Rent Game
-                    </h3>
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-3xl font-black text-white">{calculatedRentPrice}</span>
-                      <span className="text-xs font-bold text-[#9BA8AB] uppercase">/ {rentMonths} Month{rentMonths > 1 ? 's' : ''}</span>
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="text-sm font-black text-blue-300 uppercase tracking-widest flex items-center gap-1">
+                        <Clock className="w-4 h-4" /> Secondary access - 30 days
+                      </h3>
+                      <span className={`text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-widest border ${
+                        isPSMode 
+                          ? 'bg-blue-500/20 text-blue-400 border-blue-500/50' 
+                          : 'bg-stone-500/20 text-stone-300 border-stone-500/50'
+                      }`}>
+                        {isPSMode ? 'PlayStation' : 'PC'}
+                      </span>
                     </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between bg-[#11212D] border border-[#253745] rounded-xl p-2 mb-4">
-                  <span className="text-xs font-bold text-[#9BA8AB] uppercase tracking-wider ml-2">Duration (Months)</span>
-                  <div className="flex items-center gap-3">
-                    <button 
-                      onClick={() => setRentMonths(Math.max(1, rentMonths - 1))}
-                      className="w-8 h-8 rounded-lg bg-[#253745] hover:bg-[#4A5C6A] flex items-center justify-center text-white transition-colors cursor-pointer"
-                    >
-                      <Minus className="w-4 h-4" />
-                    </button>
-                    <span className="text-lg font-black text-white w-8 text-center">{rentMonths}</span>
-                    <button 
-                      onClick={() => setRentMonths(Math.min(120, rentMonths + 1))}
-                      className="w-8 h-8 rounded-lg bg-[#253745] hover:bg-[#4A5C6A] flex items-center justify-center text-white transition-colors cursor-pointer"
-                    >
-                      <Plus className="w-4 h-4" />
-                    </button>
+                    <div className="flex items-baseline gap-1 mb-4">
+                      <span className="text-3xl font-black text-white">{game.rentPrice}</span>
+                      <span className="text-xs font-bold text-[#9BA8AB] uppercase">/ 1 Month</span>
+                    </div>
                   </div>
                 </div>
                 
@@ -326,13 +314,52 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
                   }`}
                 >
                   {inCartRent ? <Check className="w-5 h-5" /> : <Clock className="w-5 h-5" />}
-                  {inCartRent ? 'In Cart (Rental)' : 'Rent Now'}
+                  {inCartRent ? 'In Cart (30 Days)' : 'Secondary Access - 30 Days'}
                 </button>
                 <p className="text-center mt-3 text-[10px] text-[#4A5C6A] uppercase font-bold tracking-wider">
                   Digital Delivery • Secure Access
                 </p>
               </div>
             )}
+          </motion.div>
+
+          {/* System Requirements */}
+          {(game.sysReqMinimum || game.sysReqRecommended) && (
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.35 }}
+              className="bg-[#11212D] border border-[#253745] p-6 sm:p-8 rounded-3xl shadow-xl"
+            >
+              <h2 className="text-sm font-black text-[#9BA8AB] uppercase tracking-widest mb-4 border-b border-[#253745] pb-4 flex items-center gap-2">
+                System Requirements
+              </h2>
+              <div className="grid grid-cols-1 gap-4 text-[#9BA8AB] text-sm">
+                {game.sysReqMinimum && (
+                  <div dangerouslySetInnerHTML={{ __html: game.sysReqMinimum }} className="prose prose-invert max-w-none prose-strong:text-white prose-ul:list-disc prose-ul:pl-4 text-xs" />
+                )}
+                {game.sysReqRecommended && (
+                  <div dangerouslySetInnerHTML={{ __html: game.sysReqRecommended }} className="prose prose-invert max-w-none prose-strong:text-white prose-ul:list-disc prose-ul:pl-4 text-xs" />
+                )}
+              </div>
+            </motion.div>
+          )}
+
+          {/* Trust Badges */}
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4 }}
+            className="grid grid-cols-2 gap-4"
+          >
+            <div className="bg-[#11212D] border border-[#253745] rounded-2xl p-4 flex flex-col items-center justify-center text-center gap-2 hover:bg-[#1A2C38] hover:border-[#4A5C6A] transition-colors shadow-lg">
+              <ShieldCheck className="w-8 h-8 text-green-400" />
+              <span className="text-[10px] font-black uppercase text-[#CCD0CF] tracking-wider">Secure Delivery</span>
+            </div>
+            <div className="bg-[#11212D] border border-[#253745] rounded-2xl p-4 flex flex-col items-center justify-center text-center gap-2 hover:bg-[#1A2C38] hover:border-[#4A5C6A] transition-colors shadow-lg">
+              <Star className="w-8 h-8 text-amber-400" />
+              <span className="text-[10px] font-black uppercase text-[#CCD0CF] tracking-wider">Top Rated</span>
+            </div>
           </motion.div>
         </div>
         

@@ -16,6 +16,7 @@ export type Game = {
   originalPrice?: string;
   onSale?: boolean;
   customCoverUrl?: string;
+  horizontalCoverUrl?: string;
   showInHero?: boolean;
   isFeaturedPromo?: boolean;
   isPlayerReview?: boolean;

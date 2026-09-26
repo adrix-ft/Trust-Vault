@@ -115,12 +115,21 @@ export default function GameLibrary() {
                       </div>
                       
                       <div className="mt-4 flex items-center justify-between">
-                        <div className="flex flex-col">
-                          {game.onSale && game.originalPrice && (
-                            <span className="text-[10px] font-bold text-red-400 line-through decoration-red-400/50 mb-0.5">{game.originalPrice}</span>
-                          )}
-                          <span className="text-base font-black text-[#CCD0CF] tracking-wider">{game.price}</span>
-                        </div>
+                        {(() => {
+                          const isAvailablePS = game.categories?.some(c => c.includes('PS'));
+                          const showPSPrice = platformFilter === 'PS5' && isAvailablePS && game.variants && game.variants.length > 0;
+                          const displayPrice = showPSPrice ? game.variants![0].price : game.price;
+                          const displayOriginalPrice = showPSPrice ? game.variants![0].originalPrice : (game.onSale ? game.originalPrice : undefined);
+                          
+                          return (
+                            <div className="flex flex-col">
+                              {displayOriginalPrice && (
+                                <span className="text-[10px] font-bold text-red-400 line-through decoration-red-400/50 mb-0.5">{displayOriginalPrice}</span>
+                              )}
+                              <span className="text-base font-black text-[#CCD0CF] tracking-wider">{displayPrice}</span>
+                            </div>
+                          );
+                        })()}
                       </div>
 
                       <div className="mt-3 flex gap-2">
@@ -129,7 +138,7 @@ export default function GameLibrary() {
                           whileTap={{ scale: 0.97 }}
                           onClick={(e) => {
                             e.stopPropagation();
-                            addToCart(game, 'permanent');
+                            setSelectedCategory('Game: ' + game.title);
                           }}
                           className={`relative overflow-hidden flex-1 py-2 px-2 rounded-lg font-bold text-[10px] uppercase tracking-wider transition-all border ${
                             inCart 
@@ -155,20 +164,7 @@ export default function GameLibrary() {
                           </span>
                         </motion.button>
                         
-                        {game.isRentable && game.rentPrice && (
-                          <motion.button 
-                            whileTap={{ scale: 0.97 }}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedCategory('Game: ' + game.title);
-                            }}
-                            className={`relative overflow-hidden flex-1 py-2 px-2 rounded-lg font-bold text-[10px] uppercase tracking-wider transition-all border bg-[#253745] hover:bg-[#4A5C6A] text-[#CCD0CF] hover:text-white border-[#4A5C6A]/50 shadow-[0_0_10px_rgba(37,55,69,0.3)]`}
-                          >
-                            <span className="relative z-10 flex flex-col items-center justify-center line-clamp-1 leading-tight">
-                              <span>Rent</span>
-                            </span>
-                          </motion.button>
-                        )}
+
                       </div>
                     </div>
                   </div>

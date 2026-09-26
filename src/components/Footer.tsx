@@ -12,20 +12,20 @@ export default function Footer() {
   return (
     <footer className="mt-20 border-t border-[#253745]/80 bg-[#06141B] pt-10 pb-8 relative text-[#9BA8AB]">
       <div className="w-full mx-auto px-4 sm:px-6 lg:px-12 xl:px-24">
-        
+
         {/* Compact Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-8 border-b border-[#253745]/40 items-start">
-          
+
           {/* Brand & Terms Badge (Cols 1-5) */}
           <div className="md:col-span-5 flex flex-col space-y-3">
-            
+
             {/* MATCHED BRAND NAME */}
             <div className="flex items-center gap-1.5 whitespace-nowrap mb-1">
               <span className="text-xl sm:text-2xl font-black tracking-tight text-white">
-                Store Vault
+                Store
               </span>
               <span className="text-[9px] sm:text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-[#253745] border border-[#4A5C6A]/30 text-[#CCD0CF] whitespace-nowrap">
-                GAME STORE
+                Vault
               </span>
             </div>
 
@@ -42,7 +42,7 @@ export default function Footer() {
 
           {/* Inline Quick Links (Cols 6-12) */}
           <div className="md:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-6 text-xs">
-            
+
             <div className="flex flex-col space-y-2.5">
               <span className="text-white font-bold uppercase tracking-wider text-[11px]">Policies</span>
               <button onClick={() => setActiveModal('discount')} className="text-left hover:text-white transition-colors bg-transparent border-none p-0 text-[#9BA8AB] cursor-pointer">
@@ -58,7 +58,7 @@ export default function Footer() {
 
             <div className="flex flex-col space-y-2.5">
               <span className="text-white font-bold uppercase tracking-wider text-[11px]">Support</span>
-              
+
               {/* RESTORED NORMAL CONTACT BUTTON */}
               <button onClick={() => setIsContactModalOpen(true)} className="text-left hover:text-white transition-colors bg-transparent border-none p-0 text-[#9BA8AB] cursor-pointer">
                 Contact Us
@@ -77,12 +77,12 @@ export default function Footer() {
               <div className="flex items-center gap-2 text-[#9BA8AB] hover:text-white transition-colors cursor-pointer">
                 <span className="w-3.5 h-2.5 bg-blue-600 rounded-sm relative overflow-hidden inline-block border border-[#4A5C6A]">
                   <span className="absolute top-0 left-0 w-1/3 h-1/3 bg-red-600" />
-                </span> 
+                </span>
                 <span>English</span>
                 <Globe className="w-3 h-3 opacity-70" />
               </div>
               <button onClick={() => setShowAdminLogin(true)} className="text-left hover:text-white transition-colors bg-transparent border-none p-0 text-[#9BA8AB] flex items-center gap-1.5 cursor-pointer">
-                <Shield className="w-3 h-3 text-[#4A5C6A]" /> 
+                <Shield className="w-3 h-3 text-[#4A5C6A]" />
                 <span>Admin Login</span>
               </button>
             </div>
@@ -98,9 +98,9 @@ export default function Footer() {
           </div>
 
           {/* UPDATED GITHUB LINK */}
-          <a 
-            href="https://github.com/adrix-ft" 
-            target="_blank" 
+          <a
+            href="https://github.com/adrix-ft"
+            target="_blank"
             rel="noopener noreferrer"
             className="px-3.5 py-2 rounded-lg bg-[#11212D]/80 border border-[#253745] hover:border-[#4A5C6A] transition-all flex items-center gap-2.5 group shadow-sm"
           >

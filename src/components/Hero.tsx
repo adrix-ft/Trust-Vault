@@ -96,9 +96,10 @@ export default function Hero() {
               className="absolute inset-0 bg-cover bg-center"
               style={{ 
                 backgroundImage: `url('${
-                  activeGame.customCoverUrl?.includes('library_600x900') 
+                  activeGame.horizontalCoverUrl || 
+                  (activeGame.customCoverUrl?.includes('library_600x900') 
                     ? activeGame.customCoverUrl.replace(/library_600x900(_2x)?\.jpg/, 'header.jpg')
-                    : (activeGame.customCoverUrl || getGameCoverUrl(activeGame.title))
+                    : (activeGame.customCoverUrl || getGameCoverUrl(activeGame.title)))
                 }')` 
               }}
             />
@@ -142,37 +143,35 @@ export default function Hero() {
                   EXPERIENCE THE JOURNEY
                 </p>
                 <p className="text-[#9BA8AB] text-[11px] sm:text-sm leading-relaxed line-clamp-3">
-                  {activeGame.description || 'Dive into an unforgettable adventure.'}
+                  {(activeGame.description || 'Dive into an unforgettable adventure.').replace(/<[^>]*>?/gm, '')}
                 </p>
               </div>
               
               <div className="pt-2 sm:pt-4 mt-auto">
-                <div className="flex items-baseline gap-3 mb-3 sm:mb-4">
-                  {activeGame.onSale && activeGame.originalPrice && (
-                    <span className="text-[11px] sm:text-xs font-bold text-red-400 line-through decoration-red-400/50">{activeGame.originalPrice}</span>
-                  )}
-                  <span className="text-2xl sm:text-3xl font-black text-white">{activeGame.price}</span>
-                </div>
+                {(() => {
+                  const isAvailablePS = activeGame.categories?.some(c => c.includes('PS'));
+                  const showPSPrice = platformFilter === 'PS5' && isAvailablePS && activeGame.variants && activeGame.variants.length > 0;
+                  const displayPrice = showPSPrice ? activeGame.variants![0].price : activeGame.price;
+                  const displayOriginalPrice = showPSPrice ? activeGame.variants![0].originalPrice : (activeGame.onSale ? activeGame.originalPrice : undefined);
+                  
+                  return (
+                    <div className="flex items-baseline gap-3 mb-3 sm:mb-4">
+                      {displayOriginalPrice && (
+                        <span className="text-[11px] sm:text-xs font-bold text-red-400 line-through decoration-red-400/50">{displayOriginalPrice}</span>
+                      )}
+                      <span className="text-2xl sm:text-3xl font-black text-white">{displayPrice}</span>
+                    </div>
+                  );
+                })()}
                 
                 <div className="flex gap-2">
                   <button
-                    onClick={() => addToCart(activeGame, 'permanent')}
+                    onClick={() => setSelectedCategory('Game: ' + activeGame.title)}
                     className={`flex-1 py-3.5 rounded-xl bg-gradient-to-r from-[#253745] to-[#4A5C6A] hover:from-[#4A5C6A] hover:to-[#596F80] border border-[#4A5C6A]/60 text-white font-bold transition-all shadow-[0_4px_20px_rgba(37,55,69,0.4)] flex items-center justify-center gap-2.5 uppercase tracking-wider text-xs sm:text-sm cursor-pointer group`}
                   >
                     <ShoppingCart className="w-4 h-4 text-[#CCD0CF] group-hover:scale-110 transition-transform" />
                     <span>Buy Now</span>
                   </button>
-                  
-                  {activeGame.isRentable && activeGame.rentPrice && (
-                    <button
-                      onClick={() => setSelectedCategory('Game: ' + activeGame.title)}
-                      className={`flex-1 py-3.5 rounded-xl bg-gradient-to-r from-[#253745] to-[#4A5C6A] hover:from-[#4A5C6A] hover:to-[#596F80] border border-[#4A5C6A]/60 text-white font-bold transition-all shadow-[0_4px_20px_rgba(37,55,69,0.4)] flex items-center justify-center gap-2.5 uppercase tracking-wider text-xs sm:text-sm cursor-pointer group`}
-                    >
-                      <span className="flex flex-col items-center justify-center line-clamp-1 leading-tight">
-                        <span>Rent</span>
-                      </span>
-                    </button>
-                  )}
                 </div>
               </div>
             </motion.div>

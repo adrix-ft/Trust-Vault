@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useStore, Game } from '../context/StoreContext';
 import { motion, AnimatePresence } from 'motion/react';
-import { LogOut, Plus, Trash2, Edit2, Copy, X, RefreshCw, Image as ImageIcon, Upload, ChevronLeft, ChevronRight, ShieldCheck, Clock, Layers, Gamepad2, Database, Package, Search } from 'lucide-react';
+import { LogOut, Plus, Trash2, Edit2, Copy, X, RefreshCw, Image as ImageIcon, Upload, ChevronLeft, ChevronRight, ShieldCheck, Clock, Layers, Gamepad2, Database, Package, Search, MessageCircle, CheckCircle } from 'lucide-react';
 import { getGameCoverUrl } from '../utils/image';
 
 // FIXED: Dynamically load the API URL from Vercel Environment Variables
@@ -10,7 +10,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://amin-game-sto
 export default function AdminDashboard() {
   const { catalog, updateGame, addGame, removeGame, resetCatalog, setIsAdmin, collections, updateCollection, addCollection, removeCollection, showToast, setConfirmReq } = useStore();
   
-  const [activeTab, setActiveTab] = useState<'catalog' | 'bundles' | 'upcoming' | 'collections' | 'proofs'>('bundles');
+  const [activeTab, setActiveTab] = useState<'catalog' | 'bundles' | 'proofs' | 'rents'>('bundles');
   const [showForm, setShowForm] = useState(false);
   const [editingTitle, setEditingTitle] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -34,6 +34,102 @@ export default function AdminDashboard() {
   const [bundleFormData, setBundleFormData] = useState(defaultBundle);
   const [bundleGameSearch, setBundleGameSearch] = useState('');
 
+  const [showBulkAdd, setShowBulkAdd] = useState(false);
+  const [bulkGamesList, setBulkGamesList] = useState('');
+  const [bulkProgress, setBulkProgress] = useState<string | null>(null);
+
+  const handleBulkAddSubmit = async () => {
+    const lines = bulkGamesList.split('\n').map(l => l.trim()).filter(Boolean);
+    if (lines.length === 0) {
+      showToast('Please enter at least one game name', 'error');
+      return;
+    }
+    
+    setBulkProgress(`Starting... 0/${lines.length}`);
+    let successCount = 0;
+    
+    for (let i = 0; i < lines.length; i++) {
+      const query = lines[i];
+      setBulkProgress(`Searching Steam for "${query}" (${i + 1}/${lines.length})...`);
+      
+      try {
+        const searchRes = await fetch(`${API_BASE_URL}/api/games/search?q=${encodeURIComponent(query)}`);
+        const searchData = await searchRes.json();
+        
+        if (searchData.games && searchData.games.length > 0) {
+          const bestMatch = searchData.games[0];
+
+          // 🛡️ Deduplication Check: Skip if already in store
+          const alreadyListed = catalog.some(game => game.title.toLowerCase() === bestMatch.title.toLowerCase());
+          if (alreadyListed) {
+            console.log(`Skipping ${bestMatch.title}, already in catalog`);
+            continue;
+          }
+
+          setBulkProgress(`Fetching details for "${bestMatch.title}"...`);
+          
+          let res = await fetch(`${API_BASE_URL}/api/games/details/${bestMatch.steam_app_id}`);
+          let details: any = null;
+          
+          if (!res.ok) {
+            const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://store.steampowered.com/api/appdetails?appids=${bestMatch.steam_app_id}&l=english`)}`;
+            const proxyRes = await fetch(proxyUrl);
+            const proxyData = await proxyRes.json();
+            const rawSteamData = JSON.parse(proxyData.contents);
+            if (rawSteamData && rawSteamData[bestMatch.steam_app_id]) {
+              details = rawSteamData[bestMatch.steam_app_id].data;
+            }
+          } else {
+            details = await res.json();
+          }
+          
+          if (details) {
+            const priceFinal = details.price_overview?.final;
+            const priceRs = priceFinal ? Math.round(priceFinal / 100) : 0;
+            const originalPriceFinal = details.price_overview?.initial;
+            const originalPriceRs = originalPriceFinal && originalPriceFinal !== priceFinal ? Math.round(originalPriceFinal / 100) : undefined;
+            
+            const reqs = details.pc_requirements || {};
+            const screenshots = details.screenshots?.map((s: any) => s.path_full) || [];
+            const rawDesc = details.detailed_description || details.about_the_game || details.short_description || '';
+            
+            const gameObj: Game = {
+              title: details.name,
+              price: priceRs ? `${priceRs}Rs` : 'Free',
+              onSale: !!originalPriceRs,
+              originalPrice: originalPriceRs ? `${originalPriceRs}Rs` : undefined,
+              categories: ['Store', 'PC', 'Steam'],
+              description: rawDesc,
+              customCoverUrl: bestMatch.library_image_url || bestMatch.header_image_url,
+              horizontalCoverUrl: details.header_image || '',
+              sysReqMinimum: reqs.minimum || '',
+              sysReqRecommended: reqs.recommended || '',
+              screenshots: screenshots,
+              isRentable: false,
+              variants: [
+                { name: 'Primary online', price: '' },
+                { name: 'Primary offline', price: '' },
+                { name: 'Secondary access', price: '' }
+              ]
+            };
+            
+            await addGame(gameObj);
+            successCount++;
+          }
+        } else {
+          console.warn('No match found for: ' + query);
+        }
+      } catch (err) {
+        console.error('Failed to add ' + query, err);
+      }
+    }
+    
+    setBulkProgress(null);
+    setShowBulkAdd(false);
+    setBulkGamesList('');
+    showToast(`Bulk add complete. Added ${successCount} games.`, 'success');
+  };
+
   useEffect(() => {
     fetchUpcomingAdmin();
     fetch(`${API_BASE_URL}/api/rents`).then(res => res.json()).then(data => { if(Array.isArray(data)) setRents(data); }).catch(e => console.error('Failed to fetch rents', e));
@@ -49,6 +145,55 @@ export default function AdminDashboard() {
     } catch (err) {
       // Upcoming endpoint removed, ignoring error
     }
+  };
+
+  const calculateRemaining = (createdAt: string, rentPeriod: string) => {
+    if (!rentPeriod || rentPeriod === 'Limited') return null;
+    const start = new Date(createdAt);
+    const end = new Date(start);
+    
+    const parts = rentPeriod.split(' ');
+    const num = parseInt(parts[0]);
+    const unit = parts[1]?.toLowerCase();
+    
+    if (unit?.includes('month')) {
+      end.setMonth(end.getMonth() + num);
+    } else if (unit?.includes('day')) {
+      end.setDate(end.getDate() + num);
+    } else if (unit?.includes('week')) {
+      end.setDate(end.getDate() + (num * 7));
+    } else if (unit?.includes('year')) {
+      end.setFullYear(end.getFullYear() + num);
+    } else {
+      return null;
+    }
+    
+    const now = new Date();
+    const diffTime = end.getTime() - now.getTime();
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  };
+
+  const markRentAsDone = (id: string) => {
+    setConfirmReq({
+      message: 'Are you sure you want to mark this rent as Final Done?',
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`${API_BASE_URL}/api/rents/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: 'DONE' })
+          });
+          if (res.ok) {
+            setRents(rents.map(r => r.id === id ? { ...r, status: 'DONE' } : r));
+            showToast('Rent marked as done', 'success');
+          } else {
+            showToast('Failed to update rent', 'error');
+          }
+        } catch (err) {
+          showToast('Network error updating rent', 'error');
+        }
+      }
+    });
   };
 
   const handleSaveUpcoming = async (e: React.FormEvent) => {
@@ -129,7 +274,14 @@ export default function AdminDashboard() {
     setShowBundleForm(false);
   };
 
-  const defaultGame: Game = { title: '', price: '', categories: ['Store'], description: '', onSale: false, originalPrice: '', customCoverUrl: '', showInHero: false, isFeaturedPromo: false, isPlayerReview: false, trailer: '' };
+  const defaultGame: Game = { 
+    title: '', price: '', categories: ['Store'], description: '', onSale: false, originalPrice: '', customCoverUrl: '', horizontalCoverUrl: '', showInHero: false, isFeaturedPromo: false, isPlayerReview: false, trailer: '',
+    variants: [
+      { name: 'Primary online', price: '' },
+      { name: 'Primary offline', price: '' },
+      { name: 'Secondary access', price: '' }
+    ]
+  };
   const [formData, setFormData] = useState<Game>(defaultGame);
 
   const parsePriceNum = (priceStr?: string) => {
@@ -156,7 +308,7 @@ export default function AdminDashboard() {
   const currentTableData = filteredCatalog.slice(startIndex, startIndex + itemsPerPage);
 
   const openAddForm = () => { setEditingTitle(null); setFormData(defaultGame); setShowForm(true); };
-  const openEditForm = (game: Game) => { setEditingTitle(game.title); setFormData({ ...defaultGame, ...game }); setShowForm(true); };
+  const openEditForm = (game: Game) => { setEditingTitle(game.title); setFormData({ ...defaultGame, ...game, variants: game.variants?.length ? game.variants : defaultGame.variants }); setShowForm(true); };
 
   const [steamResults, setSteamResults] = useState<any[]>([]);
   const [isSearchingSteam, setIsSearchingSteam] = useState(false);
@@ -236,11 +388,18 @@ export default function AdminDashboard() {
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.title && formData.price) {
+    const isPSGame = formData.categories?.some(c => c.includes('PS'));
+    const isPCGame = formData.categories?.some(c => c.includes('PC'));
+    const hasPrice = (isPCGame || !isPSGame) ? formData.price : (formData.variants && formData.variants.length > 0 && formData.variants[0].price);
+    
+    if (formData.title && hasPrice) {
+      const basePrice = (isPCGame || !isPSGame) ? formData.price : formData.variants![0].price;
+      const baseOriginal = (isPCGame || !isPSGame) ? formData.originalPrice : undefined;
+
       const savedGame = {
         ...formData,
-        price: formData.price.endsWith('Rs') ? formData.price : `${formData.price}Rs`,
-        originalPrice: formData.onSale && formData.originalPrice ? (formData.originalPrice.endsWith('Rs') ? formData.originalPrice : `${formData.originalPrice}Rs`) : undefined,
+        price: basePrice.endsWith('Rs') ? basePrice : `${basePrice}Rs`,
+        originalPrice: (formData.onSale && baseOriginal) ? (baseOriginal.endsWith('Rs') ? baseOriginal : `${baseOriginal}Rs`) : undefined,
         variants: formData.variants?.map(v => ({
           ...v,
           price: v.price.endsWith('Rs') ? v.price : `${v.price}Rs`,
@@ -312,8 +471,6 @@ export default function AdminDashboard() {
           {[
             { id: 'catalog', label: 'Store Catalog', icon: Gamepad2, count: catalog.length },
             { id: 'bundles', label: 'Game Bundles', icon: Package, count: existingBundles.length },
-            { id: 'upcoming', label: 'Upcoming Pre-Orders', icon: Clock, count: upcomingGames.length },
-            { id: 'collections', label: 'Curated Collections', icon: Layers, count: collections.length },
             { id: 'proofs', label: 'Customer Proofs', icon: ShieldCheck },
             { id: 'rents', label: 'Rent Tracking', icon: Database, count: rents.length }
           ].map(tab => {
@@ -377,6 +534,12 @@ export default function AdminDashboard() {
               
               <div className="flex items-center justify-between w-full lg:w-auto gap-4">
                 <span className="text-xs text-[#9BA8AB]">Showing {startIndex + 1}-{Math.min(startIndex + itemsPerPage, filteredCatalog.length)} of {filteredCatalog.length}</span>
+                <button 
+                  onClick={() => setShowBulkAdd(true)}
+                  className="flex items-center gap-2 bg-gradient-to-r from-emerald-900 to-emerald-700 hover:from-emerald-700 hover:to-emerald-600 text-white px-5 py-2.5 rounded-xl font-bold uppercase tracking-wider text-xs transition-all shadow-md whitespace-nowrap cursor-pointer border border-emerald-600/50"
+                >
+                  <Database className="w-4 h-4" /> Bulk Add
+                </button>
                 <button 
                   onClick={openAddForm}
                   className="flex items-center gap-2 bg-gradient-to-r from-[#253745] to-[#4A5C6A] hover:from-[#4A5C6A] hover:to-[#596F80] text-white px-5 py-2.5 rounded-xl font-bold uppercase tracking-wider text-xs transition-all shadow-md whitespace-nowrap cursor-pointer border border-[#4A5C6A]/50"
@@ -591,124 +754,6 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {activeTab === 'upcoming' && (
-          <div className="bg-[#11212D] border border-[#253745] rounded-2xl overflow-hidden shadow-2xl">
-            <div className="p-6 border-b border-[#253745] flex flex-col sm:flex-row justify-between items-center gap-4 bg-[#11212D]">
-              <div>
-                <h2 className="text-xl font-black tracking-wider text-white uppercase flex items-center gap-2.5">
-                  <Clock className="w-5 h-5 text-amber-400" />
-                  Upcoming Pre-Order Games Catalog
-                </h2>
-                <p className="text-[#9BA8AB] text-xs mt-1">Manage upcoming games displayed on the client pre-order page</p>
-              </div>
-              <button 
-                onClick={() => {
-                  setEditingUpcomingId(null);
-                  setUpcomingFormData(defaultUpcoming);
-                  setShowUpcomingForm(true);
-                }}
-                className="flex items-center gap-2 bg-gradient-to-r from-[#253745] to-[#4A5C6A] hover:from-[#4A5C6A] hover:to-[#596F80] text-white px-5 py-2.5 rounded-xl font-bold uppercase tracking-wider text-xs transition-all shadow-md cursor-pointer border border-[#4A5C6A]/50"
-              >
-                <Plus className="w-4 h-4" /> Add Upcoming Game
-              </button>
-            </div>
-            
-            <div className="overflow-x-auto">
-              <table className="w-full text-left">
-                <thead className="bg-[#06141B]/80 text-[#9BA8AB] text-[11px] uppercase tracking-wider border-b border-[#253745]">
-                  <tr>
-                    <th className="p-4 font-bold">Cover</th>
-                    <th className="p-4 font-bold">Title</th>
-                    <th className="p-4 font-bold">Price / Value</th>
-                    <th className="p-4 font-bold">Expected Release Window</th>
-                    <th className="p-4 font-bold text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[#253745]/60">
-                  {upcomingGames.map((item) => (
-                    <tr key={item.id} className="hover:bg-[#06141B]/40 transition-colors">
-                      <td className="p-4">
-                        <div className="w-12 h-16 bg-cover bg-center rounded-lg border border-[#253745] shadow-md" style={{ backgroundImage: `url('${item.customCoverUrl || getGameCoverUrl(item.title)}')` }} />
-                      </td>
-                      <td className="p-4">
-                        <div className="font-bold text-sm text-white uppercase">{item.title}</div>
-                        <span className="inline-block mt-1 bg-amber-500/15 text-amber-400 text-[9px] px-2 py-0.5 rounded-full font-black tracking-widest uppercase border border-amber-500/30">PRE-ORDER</span>
-                      </td>
-                      <td className="p-4 font-bold text-white text-sm">{item.price || 'TBA'}</td>
-                      <td className="p-4 font-semibold text-amber-400 text-xs">{item.release_date || 'TBA'}</td>
-                      <td className="p-4 text-right">
-                        <div className="flex items-center justify-end gap-1.5">
-                          <button onClick={() => { setEditingUpcomingId(item.id); setUpcomingFormData({ title: item.title, price: item.price || '', release_date: item.release_date || '', customCoverUrl: item.customCoverUrl || '' }); setShowUpcomingForm(true); }} className="p-2.5 text-[#9BA8AB] hover:text-white hover:bg-[#253745] rounded-xl transition-colors border border-transparent hover:border-[#4A5C6A] cursor-pointer"><Edit2 className="w-4 h-4" /></button>
-                          <button onClick={() => handleDeleteUpcoming(item.id, item.title)} className="p-2.5 text-red-400 hover:bg-red-500/20 rounded-xl transition-colors border border-transparent hover:border-red-500/30 cursor-pointer"><Trash2 className="w-4 h-4" /></button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'collections' && (
-          <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-center bg-[#11212D] border border-[#253745] p-6 rounded-2xl shadow-xl gap-4">
-              <div>
-                <h2 className="text-xl font-black tracking-wider text-white uppercase flex items-center gap-2.5">
-                  <Layers className="w-5 h-5 text-[#4A5C6A]" /> Curated Collections Manager
-                </h2>
-              </div>
-              <button 
-                onClick={() => {
-                  setCollectionGameSearch('');
-                  addCollection({ id: Date.now().toString(), title: 'New Collection', description: '', banner: 'default.jpg', keywords: [] });
-                }} 
-                className="flex items-center gap-2 bg-gradient-to-r from-[#253745] to-[#4A5C6A] text-white px-5 py-2.5 rounded-xl font-bold uppercase text-xs transition-all shadow-md cursor-pointer"
-              >
-                <Plus className="w-4 h-4" /> Add Collection
-              </button>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {collections.map(collection => (
-                <div key={collection.id} className="bg-[#11212D] border border-[#253745] rounded-2xl overflow-hidden shadow-2xl flex flex-col group relative">
-                  <div className="aspect-[16/9] w-full relative overflow-hidden bg-[#06141B]">
-                    <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105 saturate-[1.2]" style={{ backgroundImage: `url('${collection.customBannerUrl || getGameCoverUrl(collection.banner)}')` }} />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#11212D] via-[#11212D]/30 to-black/40" />
-                    <div className="absolute top-3 right-3 flex items-center gap-1.5 z-20">
-                      <button 
-                        onClick={() => {
-                          setCollectionGameSearch('');
-                          setEditingCollection(collection);
-                        }} 
-                        className="p-2.5 bg-[#06141B]/90 hover:bg-[#253745] text-white rounded-xl shadow-lg border border-[#4A5C6A]/50 cursor-pointer"
-                      >
-                        <Edit2 className="w-4 h-4" />
-                      </button>
-                      <button 
-                        onClick={() => { 
-                          setConfirmReq({
-                            message: `Delete collection "${collection.title}"?`,
-                            onConfirm: () => {
-                              removeCollection(collection.id);
-                              showToast(`Deleted ${collection.title}`, 'success');
-                            }
-                          });
-                        }} 
-                        className="p-2.5 bg-[#06141B]/90 hover:bg-red-500/20 text-red-400 rounded-xl shadow-lg border border-red-500/30 cursor-pointer"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                    <div className="absolute inset-x-0 bottom-0 p-5 z-10 space-y-1">
-                      <h3 className="text-lg font-black text-white uppercase tracking-wider">{collection.title}</h3>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
 
         {activeTab === 'proofs' && (
           <div className="bg-[#11212D] border border-[#253745] rounded-2xl p-8 shadow-2xl max-w-2xl mx-auto space-y-6">
@@ -781,22 +826,69 @@ export default function AdminDashboard() {
                       <th className="p-4 font-bold">Amount</th>
                       <th className="p-4 font-bold">Date</th>
                       <th className="p-4 font-bold">Status</th>
+                      <th className="p-4 font-bold text-right">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#253745]">
-                    {rents.map((rent: any) => (
+                    {rents.map((rent: any) => {
+                      const isDone = rent.status === 'DONE';
+                      return (
                       <tr key={rent.id} className="hover:bg-[#06141B]/50 transition-colors">
                         <td className="p-4 text-white font-bold">{rent.customerName} <br/><span className="text-[#9BA8AB] font-normal">{rent.mobileNumber}</span></td>
                         <td className="p-4 text-white">
-                          {rent.items?.map((item: any) => (
-                            <div key={item.title}>{item.title} - {item.rentPeriod || 'Limited'}</div>
-                          ))}
+                          {rent.items?.map((item: any) => {
+                             const remainingDays = calculateRemaining(rent.created_at, item.rentPeriod);
+                             const isOver = remainingDays !== null && remainingDays <= 0;
+                             
+                             return (
+                               <div key={item.title} className="mb-2">
+                                 <div>{item.title} - {item.rentPeriod || 'Limited'}</div>
+                                 {!isDone && remainingDays !== null && (
+                                   <div className={`text-[10px] font-bold ${isOver ? 'text-red-400' : 'text-emerald-400'}`}>
+                                     {isOver ? 'Period Over' : `${remainingDays} Days Remaining`}
+                                   </div>
+                                 )}
+                               </div>
+                             );
+                          })}
                         </td>
                         <td className="p-4 text-orange-400 font-bold">{rent.totalAmount}Rs</td>
                         <td className="p-4 text-[#9BA8AB]">{new Date(rent.created_at).toLocaleDateString()}</td>
-                        <td className="p-4"><span className="px-2 py-1 bg-green-500/20 text-green-400 rounded-md font-bold uppercase">{rent.status}</span></td>
+                        <td className="p-4">
+                          <span className={`px-2 py-1 rounded-md font-bold uppercase ${isDone ? 'bg-gray-500/20 text-gray-400' : 'bg-green-500/20 text-green-400'}`}>
+                            {rent.status}
+                          </span>
+                        </td>
+                        <td className="p-4 text-right">
+                          <div className="flex items-center justify-end gap-2">
+                            {!isDone && rent.items?.some((item: any) => {
+                               const days = calculateRemaining(rent.created_at, item.rentPeriod);
+                               return days !== null && days <= 0;
+                            }) && (
+                              <a 
+                                href={`https://wa.me/${rent.mobileNumber}?text=${encodeURIComponent('Hi ' + rent.customerName + ', your game rent period is over. Please renew or return.')}`} 
+                                target="_blank" 
+                                rel="noreferrer"
+                                className="bg-green-500/20 text-green-400 p-2 rounded-lg hover:bg-green-500/40 transition-colors cursor-pointer"
+                                title="Send WhatsApp Reminder"
+                              >
+                                <MessageCircle className="w-4 h-4" />
+                              </a>
+                            )}
+                            
+                            {!isDone && (
+                              <button 
+                                onClick={() => markRentAsDone(rent.id)}
+                                className="bg-orange-500/20 text-orange-400 p-2 rounded-lg hover:bg-orange-500/40 transition-colors cursor-pointer"
+                                title="Mark as Final Done"
+                              >
+                                <CheckCircle className="w-4 h-4" />
+                              </button>
+                            )}
+                          </div>
+                        </td>
                       </tr>
-                    ))}
+                    )})}
                   </tbody>
                 </table>
               </div>
@@ -1084,6 +1176,13 @@ export default function AdminDashboard() {
                       </div>
                     </div>
 
+                    <div className="mt-4">
+                      <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Hero Horizontal Cover URL</label>
+                      <div className="flex gap-2">
+                        <input type="text" value={formData.horizontalCoverUrl || ''} onChange={e => setFormData({...formData, horizontalCoverUrl: e.target.value})} className="flex-1 bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" placeholder="Horizontal Image URL (for Hero Banner)" />
+                      </div>
+                    </div>
+
                     {/* UPGRADE: New section for Store Placements inside the Edit Game modal */}
                     <div>
                       <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Store Placements</label>
@@ -1105,25 +1204,29 @@ export default function AdminDashboard() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Price (Rs)</label>
-                        <input type="text" value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})} className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" placeholder="199Rs" required />
-                      </div>
-                      <div>
-                        <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Sale Status</label>
-                        <label className="flex items-center gap-2 bg-[#06141B] border border-[#253745] rounded-xl p-3 cursor-pointer text-white text-xs h-[42px]">
-                          <input type="checkbox" checked={formData.onSale || false} onChange={e => setFormData({...formData, onSale: e.target.checked})} className="accent-[#4A5C6A] cursor-pointer" />
-                          <span>Mark On Sale</span>
-                        </label>
-                      </div>
-                    </div>
+                    {(formData.categories?.some(c => c.includes('PC')) || !formData.categories?.some(c => c.includes('PS'))) && (
+                      <>
+                        <div className="grid grid-cols-2 gap-3">
+                          <div>
+                            <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Price (Rs)</label>
+                            <input type="text" value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})} className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" placeholder="199Rs" required />
+                          </div>
+                          <div>
+                            <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Sale Status</label>
+                            <label className="flex items-center gap-2 bg-[#06141B] border border-[#253745] rounded-xl p-3 cursor-pointer text-white text-xs h-[42px]">
+                              <input type="checkbox" checked={formData.onSale || false} onChange={e => setFormData({...formData, onSale: e.target.checked})} className="accent-[#4A5C6A] cursor-pointer" />
+                              <span>Mark On Sale</span>
+                            </label>
+                          </div>
+                        </div>
 
-                    {formData.onSale && (
-                      <div>
-                        <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Original Price (Rs)</label>
-                        <input type="text" value={formData.originalPrice || ''} onChange={e => setFormData({...formData, originalPrice: e.target.value})} className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-red-400 text-xs focus:outline-none focus:border-[#4A5C6A]" placeholder="399Rs" />
-                      </div>
+                        {formData.onSale && (
+                          <div>
+                            <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Original Price (Rs)</label>
+                            <input type="text" value={formData.originalPrice || ''} onChange={e => setFormData({...formData, originalPrice: e.target.value})} className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-red-400 text-xs focus:outline-none focus:border-[#4A5C6A]" placeholder="399Rs" />
+                          </div>
+                        )}
+                      </>
                     )}
 
                     <div>
@@ -1143,77 +1246,79 @@ export default function AdminDashboard() {
                       </div>
                     )}
 
-                    <div className="pt-4 border-t border-[#253745]">
-                      <div className="flex items-center justify-between mb-3">
-                        <label className="block text-[#9BA8AB] text-[11px] font-bold uppercase">Game Variants (Editions)</label>
-                        <button 
-                          type="button" 
-                          onClick={() => {
-                            const currentVariants = formData.variants || [];
-                            setFormData({...formData, variants: [...currentVariants, { name: 'New Edition', price: '' }]});
-                          }}
-                          className="bg-[#253745] hover:bg-[#4A5C6A] text-white px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-colors"
-                        >
-                          + Add Variant
-                        </button>
-                      </div>
-                      
-                      {formData.variants && formData.variants.length > 0 && (
-                        <div className="space-y-3 mb-4">
-                          {formData.variants.map((variant, index) => (
-                            <div key={index} className="flex gap-2 items-start bg-[#06141B] border border-[#253745] p-3 rounded-xl">
-                              <div className="flex-1 space-y-2">
-                                <input 
-                                  type="text" 
-                                  value={variant.name} 
-                                  onChange={e => {
-                                    const newVariants = [...(formData.variants || [])];
-                                    newVariants[index].name = e.target.value;
-                                    setFormData({...formData, variants: newVariants});
-                                  }} 
-                                  placeholder="Edition Name" 
-                                  className="w-full bg-[#11212D] border border-[#253745] rounded-lg p-2 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" 
-                                />
-                                <div className="flex gap-2">
-                                  <input 
-                                    type="text" 
-                                    value={variant.price} 
-                                    onChange={e => {
-                                      const newVariants = [...(formData.variants || [])];
-                                      newVariants[index].price = e.target.value;
-                                      setFormData({...formData, variants: newVariants});
-                                    }} 
-                                    placeholder="Price" 
-                                    className="w-1/2 bg-[#11212D] border border-[#253745] rounded-lg p-2 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" 
-                                  />
-                                  <input 
-                                    type="text" 
-                                    value={variant.originalPrice || ''} 
-                                    onChange={e => {
-                                      const newVariants = [...(formData.variants || [])];
-                                      newVariants[index].originalPrice = e.target.value;
-                                      setFormData({...formData, variants: newVariants});
-                                    }} 
-                                    placeholder="Original Price" 
-                                    className="w-1/2 bg-[#11212D] border border-[#253745] rounded-lg p-2 text-red-400 text-xs focus:outline-none focus:border-[#4A5C6A]" 
-                                  />
-                                </div>
-                              </div>
-                              <button 
-                                type="button" 
-                                onClick={() => {
-                                  const newVariants = (formData.variants || []).filter((_, i) => i !== index);
-                                  setFormData({...formData, variants: newVariants});
-                                }}
-                                className="text-red-400 hover:text-white hover:bg-red-500/20 p-2 rounded-lg transition-colors"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </button>
-                            </div>
-                          ))}
+                    {formData.categories?.some(c => c.includes('PS')) && (
+                      <div className="pt-4 border-t border-[#253745]">
+                        <div className="flex items-center justify-between mb-3">
+                          <label className="block text-[#9BA8AB] text-[11px] font-bold uppercase">Game Variants (Editions)</label>
+                          <button 
+                            type="button" 
+                            onClick={() => {
+                              const currentVariants = formData.variants || [];
+                              setFormData({...formData, variants: [...currentVariants, { name: 'New Edition', price: '' }]});
+                            }}
+                            className="bg-[#253745] hover:bg-[#4A5C6A] text-white px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-colors"
+                          >
+                            + Add Variant
+                          </button>
                         </div>
-                      )}
-                    </div>
+                        
+                        {formData.variants && formData.variants.length > 0 && (
+                          <div className="space-y-3 mb-4">
+                            {formData.variants.map((variant, index) => (
+                              <div key={index} className="flex gap-2 items-start bg-[#06141B] border border-[#253745] p-3 rounded-xl">
+                                <div className="flex-1 space-y-2">
+                                  <input 
+                                    type="text" 
+                                    value={variant.name} 
+                                    onChange={e => {
+                                      const newVariants = [...(formData.variants || [])];
+                                      newVariants[index].name = e.target.value;
+                                      setFormData({...formData, variants: newVariants});
+                                    }} 
+                                    placeholder="Edition Name" 
+                                    className="w-full bg-[#11212D] border border-[#253745] rounded-lg p-2 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" 
+                                  />
+                                  <div className="flex gap-2">
+                                    <input 
+                                      type="text" 
+                                      value={variant.price} 
+                                      onChange={e => {
+                                        const newVariants = [...(formData.variants || [])];
+                                        newVariants[index].price = e.target.value;
+                                        setFormData({...formData, variants: newVariants});
+                                      }} 
+                                      placeholder="Price" 
+                                      className="w-1/2 bg-[#11212D] border border-[#253745] rounded-lg p-2 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" 
+                                    />
+                                    <input 
+                                      type="text" 
+                                      value={variant.originalPrice || ''} 
+                                      onChange={e => {
+                                        const newVariants = [...(formData.variants || [])];
+                                        newVariants[index].originalPrice = e.target.value;
+                                        setFormData({...formData, variants: newVariants});
+                                      }} 
+                                      placeholder="Original Price" 
+                                      className="w-1/2 bg-[#11212D] border border-[#253745] rounded-lg p-2 text-red-400 text-xs focus:outline-none focus:border-[#4A5C6A]" 
+                                    />
+                                  </div>
+                                </div>
+                                <button 
+                                  type="button" 
+                                  onClick={() => {
+                                    const newVariants = (formData.variants || []).filter((_, i) => i !== index);
+                                    setFormData({...formData, variants: newVariants});
+                                  }}
+                                  className="text-red-400 hover:text-white hover:bg-red-500/20 p-2 rounded-lg transition-colors"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )}
 
                     <div>
                       <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Platforms & Categories</label>
@@ -1247,7 +1352,71 @@ export default function AdminDashboard() {
             </div>
           )}
         </AnimatePresence>
+        {showBundleForm && (
+          // existing code... omitted here to preserve context!
+          null
+        )}
       </div>
+
+      {showBulkAdd && (
+        <div className="fixed inset-0 bg-[#06141B]/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
+            className="bg-[#11212D] w-full max-w-xl rounded-3xl shadow-2xl border border-[#253745] overflow-hidden flex flex-col max-h-[90vh]"
+          >
+            <div className="p-6 border-b border-[#253745] flex justify-between items-center bg-[#06141B]/50 sticky top-0 z-10">
+              <h2 className="text-xl font-black text-white uppercase tracking-wider flex items-center gap-2">
+                <Database className="w-5 h-5 text-emerald-400" />
+                Bulk Add from Steam
+              </h2>
+              <button 
+                onClick={() => !bulkProgress && setShowBulkAdd(false)} 
+                disabled={!!bulkProgress}
+                className="text-[#9BA8AB] hover:text-white transition-colors cursor-pointer disabled:opacity-50"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            
+            <div className="p-6 overflow-y-auto">
+              <div className="space-y-4">
+                <p className="text-sm text-[#9BA8AB]">
+                  Paste a list of game names (one per line). The system will automatically search Steam for the best match, pull all data (images, descriptions, system requirements, prices), and add them to your Store Catalog.
+                </p>
+                <textarea
+                  value={bulkGamesList}
+                  onChange={(e) => setBulkGamesList(e.target.value)}
+                  disabled={!!bulkProgress}
+                  placeholder="e.g.&#10;Grand Theft Auto V&#10;Red Dead Redemption 2&#10;God of War"
+                  className="w-full h-64 bg-[#06141B] border border-[#253745] rounded-xl p-4 text-sm text-white placeholder-[#4A5C6A] focus:outline-none focus:border-emerald-500 transition-colors"
+                />
+                
+                {bulkProgress && (
+                  <div className="bg-[#06141B] border border-emerald-500/30 rounded-xl p-4 flex items-center gap-3">
+                    <RefreshCw className="w-5 h-5 text-emerald-400 animate-spin" />
+                    <span className="text-sm font-bold text-emerald-400 uppercase tracking-wider">{bulkProgress}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            <div className="p-6 border-t border-[#253745] flex justify-end gap-3 bg-[#06141B]/50 sticky bottom-0">
+              <button 
+                type="button" onClick={() => setShowBulkAdd(false)} disabled={!!bulkProgress}
+                className="px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-xs border border-[#253745] text-[#9BA8AB] hover:text-white hover:bg-[#253745] transition-all cursor-pointer disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={handleBulkAddSubmit} disabled={!!bulkProgress || !bulkGamesList.trim()}
+                className="px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-xs bg-emerald-600 hover:bg-emerald-500 text-white transition-all shadow-lg cursor-pointer disabled:opacity-50 flex items-center gap-2"
+              >
+                {bulkProgress ? 'Processing...' : 'Start Bulk Import'}
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }
