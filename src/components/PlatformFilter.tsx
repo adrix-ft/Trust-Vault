@@ -14,7 +14,7 @@ export default function PlatformFilter() {
   ];
 
   return (
-    <div className="flex items-center justify-start sm:justify-center gap-2 sm:gap-3 w-full sm:w-auto overflow-x-auto sm:overflow-visible hide-scrollbar flex-nowrap sm:flex-wrap">
+    <div className="flex items-center justify-center gap-2 sm:gap-3 w-full sm:w-auto flex-wrap">
       {filters.map(filter => {
         const Icon = filter.icon;
         
