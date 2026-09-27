@@ -9,7 +9,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://amin-game-sto
 
 export default function AdminDashboard() {
   const { catalog, updateGame, addGame, removeGame, resetCatalog, setIsAdmin, collections, updateCollection, addCollection, removeCollection, bundleDiscounts, updateBundleDiscounts, showToast, setConfirmReq } = useStore();
-  
+
   const [activeTab, setActiveTab] = useState<'catalog' | 'bundles' | 'proofs' | 'rents' | 'subscriptions'>('bundles');
   const [showForm, setShowForm] = useState(false);
   const [editingTitle, setEditingTitle] = useState<string | null>(null);
@@ -49,7 +49,7 @@ export default function AdminDashboard() {
       showToast('Name and at least one pricing option are required', 'error');
       return;
     }
-    
+
     const newSub = {
       id: editingSubId || Date.now().toString(),
       name: subFormData.name,
@@ -69,7 +69,7 @@ export default function AdminDashboard() {
       addSubscription(newSub);
       showToast('Subscription added', 'success');
     }
-    
+
     setSubFormData(defaultSubscription);
     setEditingSubId(null);
   };
@@ -80,18 +80,18 @@ export default function AdminDashboard() {
       showToast('Please enter at least one game name', 'error');
       return;
     }
-    
+
     setBulkProgress(`Starting... 0/${lines.length}`);
     let successCount = 0;
-    
+
     for (let i = 0; i < lines.length; i++) {
       const query = lines[i];
       setBulkProgress(`Searching Steam for "${query}" (${i + 1}/${lines.length})...`);
-      
+
       try {
         const searchRes = await fetch(`${API_BASE_URL}/api/games/search?q=${encodeURIComponent(query)}`);
         const searchData = await searchRes.json();
-        
+
         if (searchData.games && searchData.games.length > 0) {
           const bestMatch = searchData.games[0];
 
@@ -103,10 +103,10 @@ export default function AdminDashboard() {
           }
 
           setBulkProgress(`Fetching details for "${bestMatch.title}"...`);
-          
+
           let res = await fetch(`${API_BASE_URL}/api/games/details/${bestMatch.steam_app_id}`);
           let details: any = null;
-          
+
           if (!res.ok) {
             const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://store.steampowered.com/api/appdetails?appids=${bestMatch.steam_app_id}&l=english`)}`;
             const proxyRes = await fetch(proxyUrl);
@@ -118,17 +118,17 @@ export default function AdminDashboard() {
           } else {
             details = await res.json();
           }
-          
+
           if (details) {
             const priceFinal = details.price_overview?.final;
             const priceRs = priceFinal ? Math.round(priceFinal / 100) : 0;
             const originalPriceFinal = details.price_overview?.initial;
             const originalPriceRs = originalPriceFinal && originalPriceFinal !== priceFinal ? Math.round(originalPriceFinal / 100) : undefined;
-            
+
             const reqs = details.pc_requirements || {};
             const screenshots = details.screenshots?.map((s: any) => s.path_full) || [];
             const rawDesc = details.detailed_description || details.about_the_game || details.short_description || '';
-            
+
             const gameObj: Game = {
               title: details.name,
               price: priceRs ? `${priceRs}Rs` : 'Free',
@@ -148,7 +148,7 @@ export default function AdminDashboard() {
                 { name: 'Secondary access', price: '' }
               ]
             };
-            
+
             await addGame(gameObj);
             successCount++;
           }
@@ -159,7 +159,7 @@ export default function AdminDashboard() {
         console.error('Failed to add ' + query, err);
       }
     }
-    
+
     setBulkProgress(null);
     setShowBulkAdd(false);
     setBulkGamesList('');
@@ -168,7 +168,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     fetchUpcomingAdmin();
-    fetch(`${API_BASE_URL}/api/rents`).then(res => res.json()).then(data => { if(Array.isArray(data)) setRents(data); }).catch(e => console.error('Failed to fetch rents', e));
+    fetch(`${API_BASE_URL}/api/rents`).then(res => res.json()).then(data => { if (Array.isArray(data)) setRents(data); }).catch(e => console.error('Failed to fetch rents', e));
   }, []);
 
   const fetchUpcomingAdmin = async () => {
@@ -187,11 +187,11 @@ export default function AdminDashboard() {
     if (!rentPeriod || rentPeriod === 'Limited') return null;
     const start = new Date(createdAt);
     const end = new Date(start);
-    
+
     const parts = rentPeriod.split(' ');
     const num = parseInt(parts[0]);
     const unit = parts[1]?.toLowerCase();
-    
+
     if (unit?.includes('month')) {
       end.setMonth(end.getMonth() + num);
     } else if (unit?.includes('day')) {
@@ -203,7 +203,7 @@ export default function AdminDashboard() {
     } else {
       return null;
     }
-    
+
     const now = new Date();
     const diffTime = end.getTime() - now.getTime();
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -292,9 +292,9 @@ export default function AdminDashboard() {
       price: bundleFormData.price.endsWith('Rs') ? bundleFormData.price : `${bundleFormData.price}Rs`,
       originalPrice: bundleFormData.originalPrice ? (bundleFormData.originalPrice.endsWith('Rs') ? bundleFormData.originalPrice : `${bundleFormData.originalPrice}Rs`) : undefined,
       onSale: !!bundleFormData.originalPrice,
-      description: bundleFormData.includedGames.join(', '), 
+      description: bundleFormData.includedGames.join(', '),
       categories: bundleCategories,
-      customCoverUrl: '', 
+      customCoverUrl: '',
       showInHero: false,
       isFeaturedPromo: false,
       trailer: ''
@@ -310,7 +310,7 @@ export default function AdminDashboard() {
     setShowBundleForm(false);
   };
 
-  const defaultGame: Game = { 
+  const defaultGame: Game = {
     title: '', price: '', categories: ['Store'], description: '', onSale: false, originalPrice: '', customCoverUrl: '', horizontalCoverUrl: '', showInHero: false, isFeaturedPromo: false, isPlayerReview: false, trailer: '',
     variants: [
       { name: 'Primary online', price: '' },
@@ -328,7 +328,7 @@ export default function AdminDashboard() {
   const filteredCatalog = catalog.filter(game => {
     const matchesSearch = game.title.toLowerCase().includes(searchTerm.toLowerCase());
     if (!matchesSearch) return false;
-    
+
     if (selectedPlatform === 'All') return true;
     return game.categories?.some(cat => cat.toLowerCase() === selectedPlatform.toLowerCase());
   }).sort((a, b) => {
@@ -370,14 +370,14 @@ export default function AdminDashboard() {
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
       let res = await fetch(`${API_BASE_URL}/api/games/details/${appid}`);
       let details: any = null;
-      
+
       if (!res.ok) {
         // Fallback: If Render backend is rate-limited by Steam, use a client-side CORS proxy
         const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://store.steampowered.com/api/appdetails?appids=${appid}&l=english`)}`;
         const proxyRes = await fetch(proxyUrl);
         if (!proxyRes.ok) throw new Error('Game details not found via proxy');
         const proxyData = await proxyRes.json();
-        
+
         // allorigins returns the raw string in `contents`
         const rawSteamData = JSON.parse(proxyData.contents);
         if (rawSteamData && rawSteamData[appid] && rawSteamData[appid].success) {
@@ -388,11 +388,11 @@ export default function AdminDashboard() {
       } else {
         details = await res.json();
       }
-      
+
       const steamGame = steamResults.find(g => g.steam_app_id === appid);
-      
+
       const rawDesc = details.detailed_description || details.about_the_game || details.short_description || '';
-      
+
       const screenshots = details.screenshots?.map((s: any) => s.path_full) || [];
       const sysReqMin = details.pc_requirements?.minimum || '';
       const sysReqRec = details.pc_requirements?.recommended || '';
@@ -427,7 +427,7 @@ export default function AdminDashboard() {
     const isPSGame = formData.categories?.some(c => c.includes('PS'));
     const isPCGame = formData.categories?.some(c => c.includes('PC'));
     const hasPrice = (isPCGame || !isPSGame) ? formData.price : (formData.variants && formData.variants.length > 0 && formData.variants[0].price);
-    
+
     if (formData.title && hasPrice) {
       const basePrice = (isPCGame || !isPSGame) ? formData.price : formData.variants![0].price;
       const baseOriginal = (isPCGame || !isPSGame) ? formData.originalPrice : undefined;
@@ -442,7 +442,7 @@ export default function AdminDashboard() {
           originalPrice: v.originalPrice ? (v.originalPrice.endsWith('Rs') ? v.originalPrice : `${v.originalPrice}Rs`) : undefined
         }))
       };
-      
+
       if (editingTitle) {
         updateGame(editingTitle, savedGame);
         showToast('Game updated', 'success');
@@ -468,7 +468,7 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-[#06141B] text-[#CCD0CF] p-4 sm:p-8 font-sans">
       <div className="max-w-7xl mx-auto space-y-8">
-        
+
         <div className="flex flex-col md:flex-row justify-between items-center bg-[#11212D]/80 backdrop-blur-md border border-[#253745] p-6 rounded-2xl shadow-xl gap-4">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#253745] to-[#4A5C6A] border border-[#4A5C6A]/50 flex items-center justify-center text-white shadow-lg">
@@ -476,11 +476,11 @@ export default function AdminDashboard() {
             </div>
             <div>
               <h1 className="text-2xl font-black tracking-wider uppercase text-white">Admin Management Hub</h1>
-              <p className="text-[#9BA8AB] text-xs font-semibold tracking-wide mt-0.5">Store Vault Control Center</p>
+              <p className="text-[#9BA8AB] text-xs font-semibold tracking-wide mt-0.5">Trust Vault Control Center</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <button 
+            <button
               onClick={() => {
                 setConfirmReq({
                   message: 'Reset catalog to default? All custom changes will be lost permanently.',
@@ -494,7 +494,7 @@ export default function AdminDashboard() {
             >
               <RefreshCw className="w-3.5 h-3.5" /> Reset Catalog
             </button>
-            <button 
+            <button
               onClick={() => setIsAdmin(false)}
               className="flex items-center gap-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 px-4 py-2.5 rounded-xl font-bold uppercase tracking-wider text-xs transition-all border border-red-500/30 cursor-pointer shadow-sm"
             >
@@ -517,9 +517,8 @@ export default function AdminDashboard() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center gap-2.5 px-5 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap ${
-                  isActive ? 'bg-gradient-to-r from-[#253745] to-[#4A5C6A] text-white shadow-lg border border-[#4A5C6A]' : 'text-[#9BA8AB] hover:text-white hover:bg-[#11212D] border border-transparent'
-                }`}
+                className={`flex items-center gap-2.5 px-5 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap ${isActive ? 'bg-gradient-to-r from-[#253745] to-[#4A5C6A] text-white shadow-lg border border-[#4A5C6A]' : 'text-[#9BA8AB] hover:text-white hover:bg-[#11212D] border border-transparent'
+                  }`}
               >
                 <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-[#4A5C6A]'}`} />
                 <span>{tab.label}</span>
@@ -537,61 +536,61 @@ export default function AdminDashboard() {
           <div className="bg-[#11212D] border border-[#253745] rounded-2xl overflow-hidden shadow-2xl p-6">
             <h2 className="text-xl font-bold text-white mb-4">Manage Subscriptions</h2>
             <p className="text-[#9BA8AB] text-sm">Add, edit, or remove subscription offerings from your store.</p>
-            
+
             <div className="mt-6 border border-[#253745] p-6 rounded-xl bg-[#06141B]">
               <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">{editingSubId ? 'Edit Subscription' : 'Add New Subscription'}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[#9BA8AB] text-[10px] font-bold uppercase tracking-wider mb-1">Name</label>
-                  <input type="text" value={subFormData.name} onChange={e => setSubFormData({...subFormData, name: e.target.value})} className="w-full bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="e.g. Netflix Premium" />
+                  <input type="text" value={subFormData.name} onChange={e => setSubFormData({ ...subFormData, name: e.target.value })} className="w-full bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="e.g. Netflix Premium" />
                 </div>
                 <div>
                   <label className="block text-[#9BA8AB] text-[10px] font-bold uppercase tracking-wider mb-1">Logo URL</label>
-                  <input type="text" value={subFormData.logoUrl} onChange={e => setSubFormData({...subFormData, logoUrl: e.target.value})} className="w-full bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="https://..." />
+                  <input type="text" value={subFormData.logoUrl} onChange={e => setSubFormData({ ...subFormData, logoUrl: e.target.value })} className="w-full bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="https://..." />
                 </div>
                 <div>
                   <label className="block text-[#9BA8AB] text-[10px] font-bold uppercase tracking-wider mb-1">Banner Image URL</label>
-                  <input type="text" value={subFormData.bannerUrl} onChange={e => setSubFormData({...subFormData, bannerUrl: e.target.value})} className="w-full bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="https://..." />
+                  <input type="text" value={subFormData.bannerUrl} onChange={e => setSubFormData({ ...subFormData, bannerUrl: e.target.value })} className="w-full bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="https://..." />
                 </div>
                 <div className="flex gap-4">
                   <div className="flex-1">
                     <label className="block text-[#9BA8AB] text-[10px] font-bold uppercase tracking-wider mb-1">Theme Color</label>
                     <div className="flex items-center gap-2">
-                      <input type="color" value={subFormData.themeColor || '#10b981'} onChange={e => setSubFormData({...subFormData, themeColor: e.target.value})} className="w-10 h-10 rounded cursor-pointer border border-[#253745] bg-[#11212D]" />
-                      <input type="text" value={subFormData.themeColor} onChange={e => setSubFormData({...subFormData, themeColor: e.target.value})} className="flex-1 bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="#HEX" />
+                      <input type="color" value={subFormData.themeColor || '#10b981'} onChange={e => setSubFormData({ ...subFormData, themeColor: e.target.value })} className="w-10 h-10 rounded cursor-pointer border border-[#253745] bg-[#11212D]" />
+                      <input type="text" value={subFormData.themeColor} onChange={e => setSubFormData({ ...subFormData, themeColor: e.target.value })} className="flex-1 bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="#HEX" />
                     </div>
                   </div>
                   <div className="flex-1">
                     <label className="block text-[#9BA8AB] text-[10px] font-bold uppercase tracking-wider mb-1">Badge Text</label>
-                    <input type="text" value={subFormData.badge} onChange={e => setSubFormData({...subFormData, badge: e.target.value})} className="w-full bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="e.g. Popular" />
+                    <input type="text" value={subFormData.badge} onChange={e => setSubFormData({ ...subFormData, badge: e.target.value })} className="w-full bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="e.g. Popular" />
                   </div>
                 </div>
                 <div className="md:col-span-2">
                   <label className="block text-[#9BA8AB] text-[10px] font-bold uppercase tracking-wider mb-1">Short Description</label>
-                  <input type="text" value={subFormData.description} onChange={e => setSubFormData({...subFormData, description: e.target.value})} className="w-full bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="A short catchy description of the plan..." />
+                  <input type="text" value={subFormData.description} onChange={e => setSubFormData({ ...subFormData, description: e.target.value })} className="w-full bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="A short catchy description of the plan..." />
                 </div>
-                
+
                 <div className="md:col-span-2 space-y-2">
                   <div className="flex items-center justify-between">
                     <label className="block text-[#9BA8AB] text-[10px] font-bold uppercase tracking-wider">Pricing Options</label>
-                    <button onClick={() => setSubFormData({...subFormData, pricing: [...subFormData.pricing, {duration: '', price: ''}]})} className="text-emerald-400 hover:text-emerald-300 text-xs font-bold flex items-center gap-1 cursor-pointer"><Plus className="w-3 h-3"/> Add Option</button>
+                    <button onClick={() => setSubFormData({ ...subFormData, pricing: [...subFormData.pricing, { duration: '', price: '' }] })} className="text-emerald-400 hover:text-emerald-300 text-xs font-bold flex items-center gap-1 cursor-pointer"><Plus className="w-3 h-3" /> Add Option</button>
                   </div>
                   {(subFormData.pricing || []).map((p, idx) => (
                     <div key={idx} className="flex items-center gap-2">
-                      <input type="text" value={p.duration} onChange={e => { const newP = [...subFormData.pricing]; newP[idx].duration = e.target.value; setSubFormData({...subFormData, pricing: newP}); }} className="flex-1 bg-[#11212D] text-white px-4 py-2 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="Duration (1 Month)" />
-                      <input type="text" value={p.price} onChange={e => { const newP = [...subFormData.pricing]; newP[idx].price = e.target.value; setSubFormData({...subFormData, pricing: newP}); }} className="flex-1 bg-[#11212D] text-white px-4 py-2 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="Price (500Rs)" />
-                      <input type="text" value={p.originalPrice || ''} onChange={e => { const newP = [...subFormData.pricing]; newP[idx].originalPrice = e.target.value; setSubFormData({...subFormData, pricing: newP}); }} className="flex-1 bg-[#11212D] text-[#9BA8AB] px-4 py-2 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="Old Price (Optional)" />
-                      <button onClick={() => setSubFormData({...subFormData, pricing: subFormData.pricing.filter((_, i) => i !== idx)})} className="p-2 bg-red-500/10 text-red-400 rounded-xl hover:bg-red-500/20 cursor-pointer"><Trash2 className="w-4 h-4"/></button>
+                      <input type="text" value={p.duration} onChange={e => { const newP = [...subFormData.pricing]; newP[idx].duration = e.target.value; setSubFormData({ ...subFormData, pricing: newP }); }} className="flex-1 bg-[#11212D] text-white px-4 py-2 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="Duration (1 Month)" />
+                      <input type="text" value={p.price} onChange={e => { const newP = [...subFormData.pricing]; newP[idx].price = e.target.value; setSubFormData({ ...subFormData, pricing: newP }); }} className="flex-1 bg-[#11212D] text-white px-4 py-2 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="Price (500Rs)" />
+                      <input type="text" value={p.originalPrice || ''} onChange={e => { const newP = [...subFormData.pricing]; newP[idx].originalPrice = e.target.value; setSubFormData({ ...subFormData, pricing: newP }); }} className="flex-1 bg-[#11212D] text-[#9BA8AB] px-4 py-2 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="Old Price (Optional)" />
+                      <button onClick={() => setSubFormData({ ...subFormData, pricing: subFormData.pricing.filter((_, i) => i !== idx) })} className="p-2 bg-red-500/10 text-red-400 rounded-xl hover:bg-red-500/20 cursor-pointer"><Trash2 className="w-4 h-4" /></button>
                     </div>
                   ))}
                 </div>
 
                 <div className="md:col-span-2">
                   <label className="block text-[#9BA8AB] text-[10px] font-bold uppercase tracking-wider mb-1">Subscription Details (One feature per line)</label>
-                  <textarea value={subFormData.details} onChange={e => setSubFormData({...subFormData, details: e.target.value})} className="w-full bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none h-24" placeholder="4K Ultra HD&#10;4 Screens&#10;No Ads"></textarea>
+                  <textarea value={subFormData.details} onChange={e => setSubFormData({ ...subFormData, details: e.target.value })} className="w-full bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none h-24" placeholder="4K Ultra HD&#10;4 Screens&#10;No Ads"></textarea>
                 </div>
               </div>
-              
+
               <div className="flex gap-2 mt-4">
                 <button onClick={handleSaveSubscription} className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold uppercase tracking-wider text-xs px-6 py-2.5 rounded-xl shadow-lg transition-colors cursor-pointer">
                   {editingSubId ? 'Update Subscription' : 'Save Subscription'}
@@ -603,7 +602,7 @@ export default function AdminDashboard() {
                 )}
               </div>
             </div>
-            
+
             <div className="mt-8 space-y-4">
               <h3 className="text-sm font-bold text-white uppercase tracking-wider">Current Subscriptions ({subscriptions.length})</h3>
               {subscriptions.length === 0 ? (
@@ -628,15 +627,15 @@ export default function AdminDashboard() {
                         <div className="flex items-center gap-2">
                           <button onClick={() => {
                             setEditingSubId(sub.id);
-                            setSubFormData({ 
-                              name: sub.name || sub.title || '', 
-                              logoUrl: sub.logoUrl || '', 
+                            setSubFormData({
+                              name: sub.name || sub.title || '',
+                              logoUrl: sub.logoUrl || '',
                               bannerUrl: sub.bannerUrl || '',
                               themeColor: sub.themeColor || '#10b981',
                               badge: sub.badge || '',
                               description: sub.description || '',
-                              pricing: Array.isArray(sub.pricing) ? sub.pricing : [], 
-                              details: (sub.details || sub.features || []).join('\n') 
+                              pricing: Array.isArray(sub.pricing) ? sub.pricing : [],
+                              details: (sub.details || sub.features || []).join('\n')
                             });
                           }} className="p-1.5 text-blue-400 hover:bg-blue-500/10 rounded-lg cursor-pointer">
                             <Edit2 className="w-4 h-4" />
@@ -664,7 +663,7 @@ export default function AdminDashboard() {
           <div className="bg-[#11212D] border border-[#253745] rounded-2xl overflow-hidden shadow-2xl space-y-0">
             <div className="p-5 border-b border-[#253745] flex flex-col lg:flex-row justify-between items-center gap-4 bg-[#11212D]">
               <div className="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
-                <input 
+                <input
                   type="text" placeholder="Search store inventory..." value={searchTerm}
                   onChange={e => { setSearchTerm(e.target.value); setCurrentPage(1); }}
                   className="bg-[#06141B] border border-[#253745] rounded-xl px-4 py-2.5 text-xs text-white placeholder:text-[#4A5C6A] focus:outline-none focus:border-[#4A5C6A] w-full sm:w-72 shadow-inner"
@@ -674,9 +673,8 @@ export default function AdminDashboard() {
                     <button
                       key={platform}
                       onClick={() => { setSelectedPlatform(platform); setCurrentPage(1); }}
-                      className={`px-3.5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap border cursor-pointer ${
-                        selectedPlatform === platform ? 'bg-[#253745] border-[#4A5C6A] text-white shadow-md' : 'bg-[#06141B] border-[#253745] text-[#9BA8AB] hover:border-[#4A5C6A]'
-                      }`}
+                      className={`px-3.5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap border cursor-pointer ${selectedPlatform === platform ? 'bg-[#253745] border-[#4A5C6A] text-white shadow-md' : 'bg-[#06141B] border-[#253745] text-[#9BA8AB] hover:border-[#4A5C6A]'
+                        }`}
                     >
                       {platform}
                     </button>
@@ -695,16 +693,16 @@ export default function AdminDashboard() {
                   </select>
                 </div>
               </div>
-              
+
               <div className="flex items-center justify-between w-full lg:w-auto gap-4">
                 <span className="text-xs text-[#9BA8AB]">Showing {startIndex + 1}-{Math.min(startIndex + itemsPerPage, filteredCatalog.length)} of {filteredCatalog.length}</span>
-                <button 
+                <button
                   onClick={() => setShowBulkAdd(true)}
                   className="flex items-center gap-2 bg-gradient-to-r from-emerald-900 to-emerald-700 hover:from-emerald-700 hover:to-emerald-600 text-white px-5 py-2.5 rounded-xl font-bold uppercase tracking-wider text-xs transition-all shadow-md whitespace-nowrap cursor-pointer border border-emerald-600/50"
                 >
                   <Database className="w-4 h-4" /> Bulk Add
                 </button>
-                <button 
+                <button
                   onClick={openAddForm}
                   className="flex items-center gap-2 bg-gradient-to-r from-[#253745] to-[#4A5C6A] hover:from-[#4A5C6A] hover:to-[#596F80] text-white px-5 py-2.5 rounded-xl font-bold uppercase tracking-wider text-xs transition-all shadow-md whitespace-nowrap cursor-pointer border border-[#4A5C6A]/50"
                 >
@@ -729,7 +727,7 @@ export default function AdminDashboard() {
                   {currentTableData.map(game => (
                     <tr key={game.title} className="hover:bg-[#06141B]/40 transition-colors">
                       <td className="p-4">
-                        <div 
+                        <div
                           className="w-12 h-16 bg-cover bg-center rounded-lg border border-[#253745] shadow-md"
                           style={{ backgroundImage: `url('${game.customCoverUrl || getGameCoverUrl(game.title)}')` }}
                         />
@@ -762,7 +760,7 @@ export default function AdminDashboard() {
                       <td className="p-4 text-center">
                         <div className="flex items-center justify-center gap-1.5 flex-wrap w-full max-w-[170px] mx-auto">
                           <label className={`flex items-center gap-1.5 cursor-pointer px-2 py-1 rounded-md border transition-all ${game.showInHero ? 'bg-[#4A5C6A] border-[#4A5C6A]' : 'bg-[#06141B] border-[#253745]'}`}>
-                            <input 
+                            <input
                               type="checkbox" checked={game.showInHero || false}
                               onChange={(e) => updateGame(game.title, { ...game, showInHero: e.target.checked })}
                               className="hidden"
@@ -770,7 +768,7 @@ export default function AdminDashboard() {
                             <span className={`text-[9px] font-bold uppercase ${game.showInHero ? 'text-white' : 'text-[#9BA8AB]'}`}>Hero</span>
                           </label>
                           <label className={`flex items-center gap-1.5 cursor-pointer px-2 py-1 rounded-md border transition-all ${game.isFeaturedPromo ? 'bg-[#4A5C6A] border-[#4A5C6A]' : 'bg-[#06141B] border-[#253745]'}`}>
-                            <input 
+                            <input
                               type="checkbox" checked={game.isFeaturedPromo || false}
                               onChange={(e) => updateGame(game.title, { ...game, isFeaturedPromo: e.target.checked })}
                               className="hidden"
@@ -778,7 +776,7 @@ export default function AdminDashboard() {
                             <span className={`text-[9px] font-bold uppercase ${game.isFeaturedPromo ? 'text-white' : 'text-[#9BA8AB]'}`}>Promo</span>
                           </label>
                           <label className={`flex items-center gap-1.5 cursor-pointer px-2 py-1 rounded-md border transition-all ${game.isPlayerReview ? 'bg-[#4A5C6A] border-[#4A5C6A]' : 'bg-[#06141B] border-[#253745]'}`}>
-                            <input 
+                            <input
                               type="checkbox" checked={game.isPlayerReview || false}
                               onChange={(e) => updateGame(game.title, { ...game, isPlayerReview: e.target.checked })}
                               className="hidden"
@@ -791,7 +789,7 @@ export default function AdminDashboard() {
                         <div className="flex items-center justify-end gap-1.5">
                           <button onClick={() => handleDuplicateGame(game)} className="p-2 text-[#9BA8AB] hover:text-white hover:bg-[#253745] rounded-xl transition-colors cursor-pointer"><Copy className="w-4 h-4" /></button>
                           <button onClick={() => openEditForm(game)} className="p-2 text-[#9BA8AB] hover:text-white hover:bg-[#253745] rounded-xl transition-colors cursor-pointer"><Edit2 className="w-4 h-4" /></button>
-                          <button 
+                          <button
                             onClick={() => {
                               setConfirmReq({
                                 message: `Are you sure you want to permanently remove ${game.title}?`,
@@ -800,7 +798,7 @@ export default function AdminDashboard() {
                                   showToast(`${game.title} removed`, 'success');
                                 }
                               });
-                            }} 
+                            }}
                             className="p-2 text-red-400 hover:bg-red-500/20 rounded-xl transition-colors cursor-pointer"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -842,9 +840,9 @@ export default function AdminDashboard() {
                   <div key={idx} className="flex items-center gap-3 bg-[#06141B] p-3 rounded-xl border border-[#253745]">
                     <div className="flex flex-col flex-1">
                       <label className="text-[10px] uppercase text-[#9BA8AB] font-bold">Minimum Games</label>
-                      <input 
-                        type="number" 
-                        value={discount.minGames} 
+                      <input
+                        type="number"
+                        value={discount.minGames}
                         onChange={(e) => {
                           const val = parseInt(e.target.value);
                           if (val >= 3) {
@@ -859,9 +857,9 @@ export default function AdminDashboard() {
                     </div>
                     <div className="flex flex-col flex-1 border-l border-[#253745] pl-3">
                       <label className="text-[10px] uppercase text-[#9BA8AB] font-bold">Discount %</label>
-                      <input 
-                        type="number" 
-                        value={discount.discountPercentage} 
+                      <input
+                        type="number"
+                        value={discount.discountPercentage}
                         onChange={(e) => {
                           const val = parseInt(e.target.value);
                           if (val >= 0 && val <= 100) {
@@ -874,7 +872,7 @@ export default function AdminDashboard() {
                         min="0" max="100"
                       />
                     </div>
-                    <button 
+                    <button
                       onClick={() => {
                         const newDiscounts = bundleDiscounts.filter((_, i) => i !== idx);
                         updateBundleDiscounts(newDiscounts);
@@ -886,7 +884,7 @@ export default function AdminDashboard() {
                   </div>
                 ))}
               </div>
-              <button 
+              <button
                 onClick={() => {
                   const newDiscounts = [...bundleDiscounts, { minGames: 3, discountPercentage: 10 }];
                   updateBundleDiscounts(newDiscounts);
@@ -912,7 +910,7 @@ export default function AdminDashboard() {
                   {existingBundles.map(game => (
                     <tr key={game.title} className="hover:bg-[#06141B]/40 transition-colors">
                       <td className="p-4">
-                        <div 
+                        <div
                           className="w-12 h-16 bg-cover bg-center rounded-lg border border-[#253745] shadow-md"
                           style={{ backgroundImage: `url('${game.customCoverUrl || getGameCoverUrl(game.title)}')` }}
                         />
@@ -963,7 +961,7 @@ export default function AdminDashboard() {
               <h2 className="text-xl font-black text-white uppercase tracking-wider">Upload Customer Proof</h2>
               <p className="text-[#9BA8AB] text-xs max-w-sm mx-auto">Publish transaction screenshots directly to the verification feed.</p>
             </div>
-            
+
             <div className="bg-[#06141B] border border-[#253745] p-6 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="space-y-1 text-center sm:text-left">
                 <span className="text-xs font-bold text-white uppercase tracking-wider block">Select Screenshot</span>
@@ -972,8 +970,8 @@ export default function AdminDashboard() {
               <label className="cursor-pointer bg-gradient-to-r from-[#253745] to-[#4A5C6A] hover:from-[#4A5C6A] hover:to-[#596F80] text-white px-6 py-3 rounded-xl flex items-center justify-center font-bold text-xs uppercase transition-all shadow-md shrink-0 border border-[#4A5C6A]/50">
                 <Upload className="w-4 h-4 mr-2" />
                 <span>Upload Screenshot</span>
-                <input 
-                  type="file" 
+                <input
+                  type="file"
                   accept="image/*"
                   className="hidden"
                   onChange={async (e) => {
@@ -1032,62 +1030,63 @@ export default function AdminDashboard() {
                     {rents.map((rent: any) => {
                       const isDone = rent.status === 'DONE';
                       return (
-                      <tr key={rent.id} className="hover:bg-[#06141B]/50 transition-colors">
-                        <td className="p-4 text-white font-bold">{rent.customerName} <br/><span className="text-[#9BA8AB] font-normal">{rent.mobileNumber}</span></td>
-                        <td className="p-4 text-white">
-                          {rent.items?.map((item: any) => {
-                             const remainingDays = calculateRemaining(rent.created_at, item.rentPeriod);
-                             const isOver = remainingDays !== null && remainingDays <= 0;
-                             
-                             return (
-                               <div key={item.title} className="mb-2">
-                                 <div>{item.title} - {item.rentPeriod || 'Limited'}</div>
-                                 {!isDone && remainingDays !== null && (
-                                   <div className={`text-[10px] font-bold ${isOver ? 'text-red-400' : 'text-emerald-400'}`}>
-                                     {isOver ? 'Period Over' : `${remainingDays} Days Remaining`}
-                                   </div>
-                                 )}
-                               </div>
-                             );
-                          })}
-                        </td>
-                        <td className="p-4 text-orange-400 font-bold">{rent.totalAmount}Rs</td>
-                        <td className="p-4 text-[#9BA8AB]">{new Date(rent.created_at).toLocaleDateString()}</td>
-                        <td className="p-4">
-                          <span className={`px-2 py-1 rounded-md font-bold uppercase ${isDone ? 'bg-gray-500/20 text-gray-400' : 'bg-green-500/20 text-green-400'}`}>
-                            {rent.status}
-                          </span>
-                        </td>
-                        <td className="p-4 text-right">
-                          <div className="flex items-center justify-end gap-2">
-                            {!isDone && rent.items?.some((item: any) => {
-                               const days = calculateRemaining(rent.created_at, item.rentPeriod);
-                               return days !== null && days <= 0;
-                            }) && (
-                              <a 
-                                href={`https://wa.me/${rent.mobileNumber}?text=${encodeURIComponent('Hi ' + rent.customerName + ', your game rent period is over. Please renew or return.')}`} 
-                                target="_blank" 
-                                rel="noreferrer"
-                                className="bg-green-500/20 text-green-400 p-2 rounded-lg hover:bg-green-500/40 transition-colors cursor-pointer"
-                                title="Send WhatsApp Reminder"
-                              >
-                                <MessageCircle className="w-4 h-4" />
-                              </a>
-                            )}
-                            
-                            {!isDone && (
-                              <button 
-                                onClick={() => markRentAsDone(rent.id)}
-                                className="bg-orange-500/20 text-orange-400 p-2 rounded-lg hover:bg-orange-500/40 transition-colors cursor-pointer"
-                                title="Mark as Final Done"
-                              >
-                                <CheckCircle className="w-4 h-4" />
-                              </button>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    )})}
+                        <tr key={rent.id} className="hover:bg-[#06141B]/50 transition-colors">
+                          <td className="p-4 text-white font-bold">{rent.customerName} <br /><span className="text-[#9BA8AB] font-normal">{rent.mobileNumber}</span></td>
+                          <td className="p-4 text-white">
+                            {rent.items?.map((item: any) => {
+                              const remainingDays = calculateRemaining(rent.created_at, item.rentPeriod);
+                              const isOver = remainingDays !== null && remainingDays <= 0;
+
+                              return (
+                                <div key={item.title} className="mb-2">
+                                  <div>{item.title} - {item.rentPeriod || 'Limited'}</div>
+                                  {!isDone && remainingDays !== null && (
+                                    <div className={`text-[10px] font-bold ${isOver ? 'text-red-400' : 'text-emerald-400'}`}>
+                                      {isOver ? 'Period Over' : `${remainingDays} Days Remaining`}
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </td>
+                          <td className="p-4 text-orange-400 font-bold">{rent.totalAmount}Rs</td>
+                          <td className="p-4 text-[#9BA8AB]">{new Date(rent.created_at).toLocaleDateString()}</td>
+                          <td className="p-4">
+                            <span className={`px-2 py-1 rounded-md font-bold uppercase ${isDone ? 'bg-gray-500/20 text-gray-400' : 'bg-green-500/20 text-green-400'}`}>
+                              {rent.status}
+                            </span>
+                          </td>
+                          <td className="p-4 text-right">
+                            <div className="flex items-center justify-end gap-2">
+                              {!isDone && rent.items?.some((item: any) => {
+                                const days = calculateRemaining(rent.created_at, item.rentPeriod);
+                                return days !== null && days <= 0;
+                              }) && (
+                                  <a
+                                    href={`https://wa.me/${rent.mobileNumber}?text=${encodeURIComponent('Hi ' + rent.customerName + ', your game rent period is over. Please renew or return.')}`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="bg-green-500/20 text-green-400 p-2 rounded-lg hover:bg-green-500/40 transition-colors cursor-pointer"
+                                    title="Send WhatsApp Reminder"
+                                  >
+                                    <MessageCircle className="w-4 h-4" />
+                                  </a>
+                                )}
+
+                              {!isDone && (
+                                <button
+                                  onClick={() => markRentAsDone(rent.id)}
+                                  className="bg-orange-500/20 text-orange-400 p-2 rounded-lg hover:bg-orange-500/40 transition-colors cursor-pointer"
+                                  title="Mark as Final Done"
+                                >
+                                  <CheckCircle className="w-4 h-4" />
+                                </button>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      )
+                    })}
                   </tbody>
                 </table>
               </div>
@@ -1095,7 +1094,7 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        
+
 
         <AnimatePresence>
           {editingCollection && (
@@ -1106,32 +1105,32 @@ export default function AdminDashboard() {
                   <h2 className="text-xl font-black tracking-wider text-white uppercase">Edit Collection</h2>
                   <button onClick={() => setEditingCollection(null)} className="text-[#9BA8AB] hover:text-white p-2 cursor-pointer"><X className="w-5 h-5" /></button>
                 </div>
-                
+
                 <div className="space-y-4">
                   <div>
                     <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Collection Title</label>
-                    <input 
-                      type="text" 
-                      value={editingCollection.title} 
-                      onChange={(e) => setEditingCollection({...editingCollection, title: e.target.value})}
-                      className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" 
+                    <input
+                      type="text"
+                      value={editingCollection.title}
+                      onChange={(e) => setEditingCollection({ ...editingCollection, title: e.target.value })}
+                      className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]"
                     />
                   </div>
                   <div>
                     <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Description</label>
-                    <textarea 
-                      value={editingCollection.description || ''} 
-                      onChange={(e) => setEditingCollection({...editingCollection, description: e.target.value})}
-                      className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A] h-20 resize-none" 
+                    <textarea
+                      value={editingCollection.description || ''}
+                      onChange={(e) => setEditingCollection({ ...editingCollection, description: e.target.value })}
+                      className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A] h-20 resize-none"
                     />
                   </div>
                   <div>
                     <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Banner Image URL</label>
-                    <input 
-                      type="text" 
-                      value={editingCollection.customBannerUrl || ''} 
-                      onChange={(e) => setEditingCollection({...editingCollection, customBannerUrl: e.target.value})}
-                      className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" 
+                    <input
+                      type="text"
+                      value={editingCollection.customBannerUrl || ''}
+                      onChange={(e) => setEditingCollection({ ...editingCollection, customBannerUrl: e.target.value })}
+                      className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]"
                       placeholder="https://..."
                     />
                   </div>
@@ -1140,9 +1139,9 @@ export default function AdminDashboard() {
                     <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Assigned Games (Toggle Keywords)</label>
                     <div className="relative mb-3">
                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4A5C6A]" />
-                      <input 
-                        type="text" 
-                        placeholder="Search catalog to assign..." 
+                      <input
+                        type="text"
+                        placeholder="Search catalog to assign..."
                         value={collectionGameSearch}
                         onChange={(e) => setCollectionGameSearch(e.target.value)}
                         className="w-full bg-[#06141B] border border-[#253745] rounded-lg py-2 pl-9 pr-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A] shadow-inner"
@@ -1159,29 +1158,28 @@ export default function AdminDashboard() {
                               type="button"
                               onClick={() => {
                                 const currentKw = editingCollection.keywords || [];
-                                const updatedKw = isAssigned 
+                                const updatedKw = isAssigned
                                   ? currentKw.filter((k: string) => !game.title.includes(k))
                                   : [...currentKw, game.title];
-                                setEditingCollection({...editingCollection, keywords: updatedKw});
+                                setEditingCollection({ ...editingCollection, keywords: updatedKw });
                               }}
-                              className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase transition-colors border cursor-pointer ${
-                                isAssigned 
-                                  ? 'bg-[#4A5C6A] text-white border-[#4A5C6A]' 
+                              className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase transition-colors border cursor-pointer ${isAssigned
+                                  ? 'bg-[#4A5C6A] text-white border-[#4A5C6A]'
                                   : 'bg-[#11212D] text-[#9BA8AB] border-[#253745] hover:border-[#4A5C6A]'
-                              }`}
+                                }`}
                             >
                               {game.title} {isAssigned ? ' ' : '+'}
                             </button>
                           );
-                      })}
+                        })}
                       {catalog.filter(g => g.title.toLowerCase().includes(collectionGameSearch.toLowerCase())).length === 0 && (
-                         <div className="text-xs text-[#4A5C6A] italic py-2">No games found matching your search.</div>
+                        <div className="text-xs text-[#4A5C6A] italic py-2">No games found matching your search.</div>
                       )}
                     </div>
                   </div>
 
                   <div className="flex justify-end pt-4 border-t border-[#253745]">
-                    <button 
+                    <button
                       onClick={() => {
                         updateCollection(editingCollection.id, editingCollection);
                         setEditingCollection(null);
@@ -1207,7 +1205,7 @@ export default function AdminDashboard() {
                   <h2 className="text-xl font-black tracking-wider text-white uppercase">{editingTitle ? 'Edit Game' : 'Add New Game'}</h2>
                   <button onClick={() => setShowForm(false)} className="text-[#9BA8AB] hover:text-white cursor-pointer"><X className="w-5 h-5" /></button>
                 </div>
-                
+
                 <form onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="space-y-3">
                     <label className="block text-[#9BA8AB] text-[11px] font-bold uppercase tracking-wide">Cover Preview</label>
@@ -1227,7 +1225,7 @@ export default function AdminDashboard() {
                     <div>
                       <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Game Title</label>
                       <div className="flex gap-2">
-                        <input type="text" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="flex-1 bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" required />
+                        <input type="text" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} className="flex-1 bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" required />
                         <button type="button" onClick={() => searchSteam(formData.title)} disabled={isSearchingSteam} className="bg-blue-600 hover:bg-blue-500 text-white rounded-xl px-4 py-3 flex items-center justify-center font-bold text-xs uppercase shrink-0 transition-colors disabled:opacity-50">
                           <Search className="w-3.5 h-3.5 mr-1.5" /> Steam
                         </button>
@@ -1237,10 +1235,10 @@ export default function AdminDashboard() {
                         <div className="mt-2 bg-[#06141B] border border-[#253745] rounded-xl max-h-40 overflow-y-auto z-50 p-1 shadow-2xl relative">
                           <button type="button" onClick={() => setSteamResults([])} className="absolute right-2 top-2 text-[#4A5C6A] hover:text-white"><X className="w-3 h-3" /></button>
                           {steamResults.map(game => (
-                             <div key={game.steam_app_id} onClick={() => selectSteamGame(game.steam_app_id)} className="flex items-center gap-3 p-2 hover:bg-[#11212D] cursor-pointer rounded-lg transition-colors mt-4 first:mt-0">
-                               <img src={game.cover_image_url} alt={game.title} className="w-8 h-10 object-cover rounded" />
-                               <span className="text-xs text-white font-bold">{game.title}</span>
-                             </div>
+                            <div key={game.steam_app_id} onClick={() => selectSteamGame(game.steam_app_id)} className="flex items-center gap-3 p-2 hover:bg-[#11212D] cursor-pointer rounded-lg transition-colors mt-4 first:mt-0">
+                              <img src={game.cover_image_url} alt={game.title} className="w-8 h-10 object-cover rounded" />
+                              <span className="text-xs text-white font-bold">{game.title}</span>
+                            </div>
                           ))}
                         </div>
                       )}
@@ -1249,7 +1247,7 @@ export default function AdminDashboard() {
                     <div>
                       <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Cover URL / Upload</label>
                       <div className="flex gap-2">
-                        <input type="text" value={formData.customCoverUrl || ''} onChange={e => setFormData({...formData, customCoverUrl: e.target.value})} className="flex-1 bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" placeholder="Image URL" />
+                        <input type="text" value={formData.customCoverUrl || ''} onChange={e => setFormData({ ...formData, customCoverUrl: e.target.value })} className="flex-1 bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" placeholder="Image URL" />
                         <label className="cursor-pointer bg-[#253745] hover:bg-[#4A5C6A] border border-[#4A5C6A] text-white rounded-xl px-4 py-3 flex items-center justify-center font-bold text-xs uppercase transition-colors shrink-0">
                           <Upload className="w-3.5 h-3.5 mr-1.5" /> Upload
                           <input type="file" accept="image/*" className="hidden" onChange={(e) => {
@@ -1265,7 +1263,7 @@ export default function AdminDashboard() {
                                     body: JSON.stringify({ title: formData.title || 'untitled', base64Image })
                                   });
                                   const data = await res.json();
-                                  if (data.url) setFormData({...formData, customCoverUrl: data.url});
+                                  if (data.url) setFormData({ ...formData, customCoverUrl: data.url });
                                 } catch (err) { console.error(err); }
                               };
                               reader.readAsDataURL(file);
@@ -1278,7 +1276,7 @@ export default function AdminDashboard() {
                     <div className="mt-4">
                       <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Hero Horizontal Cover URL</label>
                       <div className="flex gap-2">
-                        <input type="text" value={formData.horizontalCoverUrl || ''} onChange={e => setFormData({...formData, horizontalCoverUrl: e.target.value})} className="flex-1 bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" placeholder="Horizontal Image URL (for Hero Banner)" />
+                        <input type="text" value={formData.horizontalCoverUrl || ''} onChange={e => setFormData({ ...formData, horizontalCoverUrl: e.target.value })} className="flex-1 bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" placeholder="Horizontal Image URL (for Hero Banner)" />
                       </div>
                     </div>
 
@@ -1287,17 +1285,17 @@ export default function AdminDashboard() {
                       <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Store Placements</label>
                       <div className="flex items-center gap-3 bg-[#06141B] border border-[#253745] rounded-xl p-3 h-[42px]">
                         <label className="flex items-center gap-2 cursor-pointer text-white text-xs">
-                          <input type="checkbox" checked={formData.showInHero || false} onChange={e => setFormData({...formData, showInHero: e.target.checked})} className="accent-[#4A5C6A] cursor-pointer" />
+                          <input type="checkbox" checked={formData.showInHero || false} onChange={e => setFormData({ ...formData, showInHero: e.target.checked })} className="accent-[#4A5C6A] cursor-pointer" />
                           <span>Hero Carousel</span>
                         </label>
                         <div className="w-px h-4 bg-[#253745]" />
                         <label className="flex items-center gap-2 cursor-pointer text-white text-xs">
-                          <input type="checkbox" checked={formData.isFeaturedPromo || false} onChange={e => setFormData({...formData, isFeaturedPromo: e.target.checked})} className="accent-[#4A5C6A] cursor-pointer" />
+                          <input type="checkbox" checked={formData.isFeaturedPromo || false} onChange={e => setFormData({ ...formData, isFeaturedPromo: e.target.checked })} className="accent-[#4A5C6A] cursor-pointer" />
                           <span>Promo Banner</span>
                         </label>
                         <div className="w-px h-4 bg-[#253745]" />
                         <label className="flex items-center gap-2 cursor-pointer text-white text-xs">
-                          <input type="checkbox" checked={formData.isPlayerReview || false} onChange={e => setFormData({...formData, isPlayerReview: e.target.checked})} className="accent-[#4A5C6A] cursor-pointer" />
+                          <input type="checkbox" checked={formData.isPlayerReview || false} onChange={e => setFormData({ ...formData, isPlayerReview: e.target.checked })} className="accent-[#4A5C6A] cursor-pointer" />
                           <span>Player Review</span>
                         </label>
                       </div>
@@ -1308,12 +1306,12 @@ export default function AdminDashboard() {
                         <div className="grid grid-cols-2 gap-3">
                           <div>
                             <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Price (Rs)</label>
-                            <input type="text" value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})} className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" placeholder="199Rs" required />
+                            <input type="text" value={formData.price} onChange={e => setFormData({ ...formData, price: e.target.value })} className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" placeholder="199Rs" required />
                           </div>
                           <div>
                             <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Sale Status</label>
                             <label className="flex items-center gap-2 bg-[#06141B] border border-[#253745] rounded-xl p-3 cursor-pointer text-white text-xs h-[42px]">
-                              <input type="checkbox" checked={formData.onSale || false} onChange={e => setFormData({...formData, onSale: e.target.checked})} className="accent-[#4A5C6A] cursor-pointer" />
+                              <input type="checkbox" checked={formData.onSale || false} onChange={e => setFormData({ ...formData, onSale: e.target.checked })} className="accent-[#4A5C6A] cursor-pointer" />
                               <span>Mark On Sale</span>
                             </label>
                           </div>
@@ -1322,7 +1320,7 @@ export default function AdminDashboard() {
                         {formData.onSale && (
                           <div>
                             <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Original Price (Rs)</label>
-                            <input type="text" value={formData.originalPrice || ''} onChange={e => setFormData({...formData, originalPrice: e.target.value})} className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-red-400 text-xs focus:outline-none focus:border-[#4A5C6A]" placeholder="399Rs" />
+                            <input type="text" value={formData.originalPrice || ''} onChange={e => setFormData({ ...formData, originalPrice: e.target.value })} className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-red-400 text-xs focus:outline-none focus:border-[#4A5C6A]" placeholder="399Rs" />
                           </div>
                         )}
                       </>
@@ -1331,7 +1329,7 @@ export default function AdminDashboard() {
                     <div>
                       <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Rent Options</label>
                       <label className="flex items-center gap-2 bg-[#06141B] border border-[#253745] rounded-xl p-3 cursor-pointer text-white text-xs h-[42px] mb-3">
-                        <input type="checkbox" checked={formData.isRentable || false} onChange={e => setFormData({...formData, isRentable: e.target.checked})} className="accent-[#4A5C6A] cursor-pointer" />
+                        <input type="checkbox" checked={formData.isRentable || false} onChange={e => setFormData({ ...formData, isRentable: e.target.checked })} className="accent-[#4A5C6A] cursor-pointer" />
                         <span>Enable Renting</span>
                       </label>
                     </div>
@@ -1340,7 +1338,7 @@ export default function AdminDashboard() {
                       <div className="grid grid-cols-1 gap-3 mb-4">
                         <div>
                           <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Rent Price Per Month (Rs)</label>
-                          <input type="text" value={formData.rentPrice || ''} onChange={e => setFormData({...formData, rentPrice: e.target.value})} className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" placeholder="99Rs" />
+                          <input type="text" value={formData.rentPrice || ''} onChange={e => setFormData({ ...formData, rentPrice: e.target.value })} className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" placeholder="99Rs" />
                         </div>
                       </div>
                     )}
@@ -1349,64 +1347,64 @@ export default function AdminDashboard() {
                       <div className="pt-4 border-t border-[#253745]">
                         <div className="flex items-center justify-between mb-3">
                           <label className="block text-[#9BA8AB] text-[11px] font-bold uppercase">Game Variants (Editions)</label>
-                          <button 
-                            type="button" 
+                          <button
+                            type="button"
                             onClick={() => {
                               const currentVariants = formData.variants || [];
-                              setFormData({...formData, variants: [...currentVariants, { name: 'New Edition', price: '' }]});
+                              setFormData({ ...formData, variants: [...currentVariants, { name: 'New Edition', price: '' }] });
                             }}
                             className="bg-[#253745] hover:bg-[#4A5C6A] text-white px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-colors"
                           >
                             + Add Variant
                           </button>
                         </div>
-                        
+
                         {formData.variants && formData.variants.length > 0 && (
                           <div className="space-y-3 mb-4">
                             {formData.variants.map((variant, index) => (
                               <div key={index} className="flex gap-2 items-start bg-[#06141B] border border-[#253745] p-3 rounded-xl">
                                 <div className="flex-1 space-y-2">
-                                  <input 
-                                    type="text" 
-                                    value={variant.name} 
+                                  <input
+                                    type="text"
+                                    value={variant.name}
                                     onChange={e => {
                                       const newVariants = [...(formData.variants || [])];
                                       newVariants[index].name = e.target.value;
-                                      setFormData({...formData, variants: newVariants});
-                                    }} 
-                                    placeholder="Edition Name" 
-                                    className="w-full bg-[#11212D] border border-[#253745] rounded-lg p-2 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" 
+                                      setFormData({ ...formData, variants: newVariants });
+                                    }}
+                                    placeholder="Edition Name"
+                                    className="w-full bg-[#11212D] border border-[#253745] rounded-lg p-2 text-white text-xs focus:outline-none focus:border-[#4A5C6A]"
                                   />
                                   <div className="flex gap-2">
-                                    <input 
-                                      type="text" 
-                                      value={variant.price} 
+                                    <input
+                                      type="text"
+                                      value={variant.price}
                                       onChange={e => {
                                         const newVariants = [...(formData.variants || [])];
                                         newVariants[index].price = e.target.value;
-                                        setFormData({...formData, variants: newVariants});
-                                      }} 
-                                      placeholder="Price" 
-                                      className="w-1/2 bg-[#11212D] border border-[#253745] rounded-lg p-2 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" 
+                                        setFormData({ ...formData, variants: newVariants });
+                                      }}
+                                      placeholder="Price"
+                                      className="w-1/2 bg-[#11212D] border border-[#253745] rounded-lg p-2 text-white text-xs focus:outline-none focus:border-[#4A5C6A]"
                                     />
-                                    <input 
-                                      type="text" 
-                                      value={variant.originalPrice || ''} 
+                                    <input
+                                      type="text"
+                                      value={variant.originalPrice || ''}
                                       onChange={e => {
                                         const newVariants = [...(formData.variants || [])];
                                         newVariants[index].originalPrice = e.target.value;
-                                        setFormData({...formData, variants: newVariants});
-                                      }} 
-                                      placeholder="Original Price" 
-                                      className="w-1/2 bg-[#11212D] border border-[#253745] rounded-lg p-2 text-red-400 text-xs focus:outline-none focus:border-[#4A5C6A]" 
+                                        setFormData({ ...formData, variants: newVariants });
+                                      }}
+                                      placeholder="Original Price"
+                                      className="w-1/2 bg-[#11212D] border border-[#253745] rounded-lg p-2 text-red-400 text-xs focus:outline-none focus:border-[#4A5C6A]"
                                     />
                                   </div>
                                 </div>
-                                <button 
-                                  type="button" 
+                                <button
+                                  type="button"
                                   onClick={() => {
                                     const newVariants = (formData.variants || []).filter((_, i) => i !== index);
-                                    setFormData({...formData, variants: newVariants});
+                                    setFormData({ ...formData, variants: newVariants });
                                   }}
                                   className="text-red-400 hover:text-white hover:bg-red-500/20 p-2 rounded-lg transition-colors"
                                 >
@@ -1423,15 +1421,14 @@ export default function AdminDashboard() {
                       <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Platforms & Categories</label>
                       <div className="flex gap-2 flex-wrap">
                         {['PC', 'PS5', 'PS4', 'Bundle-Eligible'].map(plat => (
-                          <button 
-                            key={plat} 
-                            type="button" 
-                            onClick={() => handleCategoryToggle(plat)} 
-                            className={`px-4 py-2 rounded-xl text-xs font-bold uppercase border transition-colors cursor-pointer ${
-                              formData.categories?.includes(plat) 
-                                ? 'bg-white text-[#06141B] border-white shadow-md' 
+                          <button
+                            key={plat}
+                            type="button"
+                            onClick={() => handleCategoryToggle(plat)}
+                            className={`px-4 py-2 rounded-xl text-xs font-bold uppercase border transition-colors cursor-pointer ${formData.categories?.includes(plat)
+                                ? 'bg-white text-[#06141B] border-white shadow-md'
                                 : 'bg-[#06141B] text-[#9BA8AB] border-[#253745] hover:border-[#4A5C6A]'
-                            }`}
+                              }`}
                           >
                             {plat}
                           </button>
@@ -1459,7 +1456,7 @@ export default function AdminDashboard() {
 
       {showBulkAdd && (
         <div className="fixed inset-0 bg-[#06141B]/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
             className="bg-[#11212D] w-full max-w-xl rounded-3xl shadow-2xl border border-[#253745] overflow-hidden flex flex-col max-h-[90vh]"
           >
@@ -1468,15 +1465,15 @@ export default function AdminDashboard() {
                 <Database className="w-5 h-5 text-emerald-400" />
                 Bulk Add from Steam
               </h2>
-              <button 
-                onClick={() => !bulkProgress && setShowBulkAdd(false)} 
+              <button
+                onClick={() => !bulkProgress && setShowBulkAdd(false)}
                 disabled={!!bulkProgress}
                 className="text-[#9BA8AB] hover:text-white transition-colors cursor-pointer disabled:opacity-50"
               >
                 <X className="w-6 h-6" />
               </button>
             </div>
-            
+
             <div className="p-6 overflow-y-auto">
               <div className="space-y-4">
                 <p className="text-sm text-[#9BA8AB]">
@@ -1489,7 +1486,7 @@ export default function AdminDashboard() {
                   placeholder="e.g.&#10;Grand Theft Auto V&#10;Red Dead Redemption 2&#10;God of War"
                   className="w-full h-64 bg-[#06141B] border border-[#253745] rounded-xl p-4 text-sm text-white placeholder-[#4A5C6A] focus:outline-none focus:border-emerald-500 transition-colors"
                 />
-                
+
                 {bulkProgress && (
                   <div className="bg-[#06141B] border border-emerald-500/30 rounded-xl p-4 flex items-center gap-3">
                     <RefreshCw className="w-5 h-5 text-emerald-400 animate-spin" />
@@ -1498,15 +1495,15 @@ export default function AdminDashboard() {
                 )}
               </div>
             </div>
-            
+
             <div className="p-6 border-t border-[#253745] flex justify-end gap-3 bg-[#06141B]/50 sticky bottom-0">
-              <button 
+              <button
                 type="button" onClick={() => setShowBulkAdd(false)} disabled={!!bulkProgress}
                 className="px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-xs border border-[#253745] text-[#9BA8AB] hover:text-white hover:bg-[#253745] transition-all cursor-pointer disabled:opacity-50"
               >
                 Cancel
               </button>
-              <button 
+              <button
                 onClick={handleBulkAddSubmit} disabled={!!bulkProgress || !bulkGamesList.trim()}
                 className="px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-xs bg-emerald-600 hover:bg-emerald-500 text-white transition-all shadow-lg cursor-pointer disabled:opacity-50 flex items-center gap-2"
               >

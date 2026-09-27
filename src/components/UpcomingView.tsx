@@ -42,9 +42,9 @@ export default function UpcomingView() {
             Want to pre-order any upcoming title? Contact us directly on WhatsApp to secure your spot instantly!
           </p>
         </div>
-        <button 
+        <button
           onClick={() => {
-            const text = encodeURIComponent("Hey Store Vault, I want to pre-order an upcoming game!");
+            const text = encodeURIComponent("Hey Trust Vault, I want to pre-order an upcoming game!");
             window.location.href = `https://wa.me/${STORE_WHATSAPP_NUMBER}?text=${text}`;
           }}
           className="w-full md:w-auto flex items-center justify-center gap-2 bg-green-600 hover:bg-green-500 text-white px-6 py-3.5 rounded-xl font-bold uppercase tracking-wider text-xs transition-colors shadow-lg shrink-0 cursor-pointer border-none"
@@ -68,14 +68,14 @@ export default function UpcomingView() {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
           {upcomingGames.map((game) => {
             const coverUrl = game.customCoverUrl || game.custom_cover_url || getGameCoverUrl(game.title);
-            
+
             const gamePrice = String(game.price || 'TBA');
-            
+
             return (
               <div key={game.id || game.title} className="bg-[#11212D] rounded-xl overflow-hidden border border-[#253745] hover:border-[#4A5C6A] transition-all group flex flex-col shadow-lg">
                 <div className="aspect-[3/4] relative overflow-hidden bg-[#06141B]">
-                  <img 
-                    src={coverUrl} 
+                  <img
+                    src={coverUrl}
                     alt={game.title}
                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     onError={(e) => {
@@ -89,7 +89,7 @@ export default function UpcomingView() {
                     SOON
                   </div>
                 </div>
-                
+
                 <div className="p-4 flex flex-col flex-1 justify-between bg-[#11212D]">
                   <div>
                     <h3 className="font-bold text-[#CCD0CF] text-sm leading-tight mb-1 tracking-wide uppercase truncate">{game.title}</h3>
@@ -97,12 +97,12 @@ export default function UpcomingView() {
                       <p className="text-[10px] text-[#9BA8AB] font-semibold uppercase tracking-wider">Expected: {game.release_date || game.releaseDate}</p>
                     )}
                   </div>
-                  
+
                   <div className="mt-auto pt-3 border-t border-[#253745]/60 flex flex-col gap-2.5">
                     <span className="font-black text-[#CCD0CF] text-sm sm:text-base">{gamePrice}</span>
-                    <button 
+                    <button
                       onClick={() => {
-                        const msg = `Hey Store Vault, I would like to pre-order "${game.title}" for ${gamePrice}!`;
+                        const msg = `Hey Trust Vault, I would like to pre-order "${game.title}" for ${gamePrice}!`;
                         window.location.href = `https://wa.me/${STORE_WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
                       }}
                       className="w-full flex items-center justify-center gap-1.5 bg-green-600 hover:bg-green-500 text-white px-3 py-2 rounded-lg text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-colors shadow cursor-pointer border-none"

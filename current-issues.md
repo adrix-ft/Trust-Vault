@@ -1,4 +1,4 @@
-# Store Vault - Current Issues & Workarounds
+# Trust Vault - Current Issues & Workarounds
 
 ## 1. The Steam API Rate Limiting Issue (The "404 Error")
 

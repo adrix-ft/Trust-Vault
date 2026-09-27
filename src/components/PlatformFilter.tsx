@@ -35,7 +35,7 @@ export default function PlatformFilter() {
                 setSelectedCategory('Store');
               }
             }}
-            className={`group flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl font-bold text-[10px] sm:text-xs tracking-wider uppercase transition-all duration-300 border shadow-sm cursor-pointer shrink-0 whitespace-nowrap ${
+            className={`group flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg font-bold text-[9px] sm:text-[10px] tracking-wider uppercase transition-all duration-300 border shadow-sm cursor-pointer shrink-0 whitespace-nowrap ${
               isActive
                 ? 'bg-[#4A5C6A] text-white border-[#4A5C6A]'
                 : `bg-[#11212D] text-[#9BA8AB] border-[#253745] ${isProofsHover}`

@@ -1,6 +1,6 @@
 # Project Setup Guide: Supabase & Backend Configuration
 
-This guide explains step-by-step how to set up your backend and databases from scratch to make your Store Vault project fully functional.
+This guide explains step-by-step how to set up your backend and databases from scratch to make your Trust Vault project fully functional.
 
 ---
 
@@ -8,14 +8,14 @@ This guide explains step-by-step how to set up your backend and databases from s
 
 You need two `.env` files. One in your root folder (for the React Frontend) and one in your `backend` folder (for the Node.js Server).
 
-**Root `.env` (`/d:/Downloads/Project Files/Store Vault/.env`):**
+**Root `.env` (`/d:/Downloads/Project Files/Trust Vault/.env`):**
 ```env
 VITE_API_BASE_URL=http://localhost:5000
 VITE_ADMIN_USER=admin
 VITE_ADMIN_PASS=admin123
 ```
 
-**Backend `.env` (`/d:/Downloads/Project Files/Store Vault/backend/.env`):**
+**Backend `.env` (`/d:/Downloads/Project Files/Trust Vault/backend/.env`):**
 ```env
 PORT=5000
 SUPABASE_URL=your_primary_supabase_project_url
