@@ -1,12 +1,13 @@
 import { useStore } from '../context/StoreContext';
-import { Monitor, Gamepad2, Layers, Crown, ShieldCheck, Package, MessageCircle } from 'lucide-react';
+import { Layers, Crown, ShieldCheck, Package, MessageCircle } from 'lucide-react';
+import { SteamIcon, PSIcon } from './Navbar';
 
 export default function PlatformFilter() {
   const { platformFilter, setPlatformFilter, selectedCategory, setSelectedCategory } = useStore();
 
   const filters = [
-    { id: 'PC', label: 'PC Games', icon: Monitor, type: 'platform' },
-    { id: 'PS5', label: 'PS Games', icon: Gamepad2, type: 'platform' },
+    { id: 'PC', type: 'platform', icon: SteamIcon, isCustom: true },
+    { id: 'PS5', type: 'platform', icon: PSIcon, isCustom: true },
     { id: 'Custom Bundle', label: 'Build Bundle', icon: Package, type: 'category', iconClass: 'text-emerald-400' },
     { id: 'Proofs', label: 'Proofs', icon: ShieldCheck, type: 'category', iconClass: 'text-green-400' }
   ];
@@ -41,10 +42,14 @@ export default function PlatformFilter() {
                 : `bg-[#11212D] text-[#9BA8AB] border-[#253745] ${isProofsHover}`
             }`}
           >
-            <Icon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors ${filter.iconClass || ''} ${isActive && filter.id === 'Proofs' ? 'text-green-300' : ''}`} />
+            <Icon className={filter.isCustom ? `text-[9px] sm:text-[10px] ${filter.iconClass || ''}` : `w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors ${filter.iconClass || ''} ${isActive && filter.id === 'Proofs' ? 'text-green-300' : ''}`} />
             
-            <span className="hidden sm:inline">{filter.label}</span>
-            <span className="sm:hidden">{filter.id === 'Custom Bundle' ? 'Bundles' : filter.id}</span>
+            {!filter.isCustom && (
+              <>
+                <span className="hidden sm:inline">{filter.label}</span>
+                <span className="sm:hidden">{filter.id === 'Custom Bundle' ? 'Bundles' : filter.id}</span>
+              </>
+            )}
           </button>
         );
       })}
