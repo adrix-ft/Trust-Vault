@@ -26,6 +26,42 @@ export default function AdminDashboard() {
   const [upcomingFormData, setUpcomingFormData] = useState(defaultUpcoming);
   const [rents, setRents] = useState<any[]>([]);
 
+  const [showRentForm, setShowRentForm] = useState(false);
+  const defaultRent = { customerName: '', mobileNumber: '', totalAmount: '', items: [{ title: '', rentPeriod: '1 Month' }] };
+  const [rentFormData, setRentFormData] = useState(defaultRent);
+
+  const handleSaveRent = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!rentFormData.customerName || !rentFormData.mobileNumber) {
+      showToast('Name and mobile are required', 'error');
+      return;
+    }
+    
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/rents`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customerName: rentFormData.customerName,
+          mobileNumber: rentFormData.mobileNumber,
+          totalAmount: parseInt(rentFormData.totalAmount) || 0,
+          items: rentFormData.items.filter(i => i.title)
+        })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setRents([...rents, data.data]);
+        setShowRentForm(false);
+        setRentFormData(defaultRent);
+        showToast('Rent record created', 'success');
+      } else {
+        showToast('Failed to create rent', 'error');
+      }
+    } catch (err) {
+      showToast('Network error', 'error');
+    }
+  };
+
   const [editingCollection, setEditingCollection] = useState<any | null>(null);
   const [collectionGameSearch, setCollectionGameSearch] = useState('');
 
@@ -1027,9 +1063,21 @@ export default function AdminDashboard() {
 
         {activeTab === 'rents' && (
           <div className="bg-[#11212D] border border-[#253745] rounded-2xl p-6 shadow-2xl">
-            <h2 className="text-xl font-black text-white uppercase tracking-wider mb-6 flex items-center gap-2">
-              <Database className="w-5 h-5 text-orange-400" /> Rent Tracking
-            </h2>
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+              <h2 className="text-xl font-black text-white uppercase tracking-wider flex items-center gap-2">
+                <Database className="w-5 h-5 text-orange-400" /> Rent Tracking
+              </h2>
+              <button 
+                onClick={() => {
+                  setRentFormData(defaultRent);
+                  setShowRentForm(true);
+                }}
+                className="bg-emerald-500 hover:bg-emerald-400 text-black px-4 py-2 rounded-lg font-bold flex items-center gap-2 transition-colors cursor-pointer"
+              >
+                <Plus className="w-4 h-4" />
+                New Rent
+              </button>
+            </div>
             {rents.length === 0 ? (
               <p className="text-[#9BA8AB] text-xs">No active rents found.</p>
             ) : (
@@ -1127,7 +1175,82 @@ export default function AdminDashboard() {
           </div>
         )}
 
+        {/* Rent Form Modal */}
+        <AnimatePresence>
+          {showRentForm && (
+            <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="bg-[#06141B] border border-[#253745] rounded-2xl p-6 max-w-xl w-full max-h-[90vh] overflow-y-auto"
+              >
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-2xl font-black text-white uppercase">New Rent Record</h2>
+                  <button onClick={() => setShowRentForm(false)} className="text-[#9BA8AB] hover:text-white cursor-pointer"><X className="w-6 h-6" /></button>
+                </div>
 
+                <form onSubmit={handleSaveRent} className="space-y-4 text-left">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-[#9BA8AB] uppercase tracking-wider mb-2">Customer Name</label>
+                      <input type="text" required value={rentFormData.customerName} onChange={e => setRentFormData({...rentFormData, customerName: e.target.value})} className="w-full bg-[#11212D] border border-[#253745] rounded-lg p-3 text-white focus:border-emerald-500 outline-none" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-[#9BA8AB] uppercase tracking-wider mb-2">Mobile Number</label>
+                      <input type="text" required value={rentFormData.mobileNumber} onChange={e => setRentFormData({...rentFormData, mobileNumber: e.target.value.replace(/[^0-9]/g, '')})} maxLength={10} className="w-full bg-[#11212D] border border-[#253745] rounded-lg p-3 text-white focus:border-emerald-500 outline-none" />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-[#9BA8AB] uppercase tracking-wider mb-2">Total Amount (Rs)</label>
+                    <input type="number" required value={rentFormData.totalAmount} onChange={e => setRentFormData({...rentFormData, totalAmount: e.target.value})} className="w-full bg-[#11212D] border border-[#253745] rounded-lg p-3 text-white focus:border-emerald-500 outline-none" />
+                  </div>
+
+                  <div className="border-t border-[#253745] pt-4 mt-4">
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-sm font-bold text-white uppercase">Rented Games</h3>
+                      <button type="button" onClick={() => setRentFormData({...rentFormData, items: [...rentFormData.items, { title: '', rentPeriod: '1 Month' }]})} className="text-emerald-400 text-xs font-bold flex items-center gap-1 cursor-pointer hover:text-emerald-300">
+                        <Plus className="w-3 h-3" /> Add Game
+                      </button>
+                    </div>
+
+                    {rentFormData.items.map((item, idx) => (
+                      <div key={idx} className="flex gap-2 mb-3 items-start">
+                        <div className="flex-1">
+                          <input type="text" placeholder="Game Title" required value={item.title} onChange={e => {
+                            const newItems = [...rentFormData.items];
+                            newItems[idx].title = e.target.value;
+                            setRentFormData({...rentFormData, items: newItems});
+                          }} className="w-full bg-[#11212D] border border-[#253745] rounded-lg p-3 text-white text-sm focus:border-emerald-500 outline-none" />
+                        </div>
+                        <div className="w-1/3">
+                          <input type="text" placeholder="Period (e.g. 1 Month)" required value={item.rentPeriod} onChange={e => {
+                            const newItems = [...rentFormData.items];
+                            newItems[idx].rentPeriod = e.target.value;
+                            setRentFormData({...rentFormData, items: newItems});
+                          }} className="w-full bg-[#11212D] border border-[#253745] rounded-lg p-3 text-white text-sm focus:border-emerald-500 outline-none" />
+                        </div>
+                        {rentFormData.items.length > 1 && (
+                          <button type="button" onClick={() => {
+                            const newItems = rentFormData.items.filter((_, i) => i !== idx);
+                            setRentFormData({...rentFormData, items: newItems});
+                          }} className="bg-red-500/20 text-red-400 p-3 rounded-lg hover:bg-red-500/40 cursor-pointer">
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  <button type="submit" className="w-full bg-emerald-500 hover:bg-emerald-400 text-black py-4 rounded-xl font-black uppercase tracking-widest transition-colors mt-6 cursor-pointer">
+                    Create Rent Record
+                  </button>
+                </form>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
 
         <AnimatePresence>
           {editingCollection && (

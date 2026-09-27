@@ -73,19 +73,6 @@ export default function CartDrawer() {
         })
       });
 
-      const rentItems = cart.filter(item => item.purchaseType === 'rent');
-      if (rentItems.length > 0) {
-        await fetch(`${API_BASE_URL}/api/rents`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            customerName: trimmedName,
-            mobileNumber: trimmedPhone,
-            totalAmount: rentItems.reduce((acc, item) => acc + (parseInt((item.rentPrice || item.price).replace(/[^0-9]/g, '')) || 0), 0),
-            items: rentItems
-          })
-        });
-      }
     } catch (err) {
       console.error('Failed to save order on backend:', err);
     }
