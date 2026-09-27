@@ -56,7 +56,7 @@ export default function Discounts() {
           return (
             <div 
               key={game.title} 
-              onClick={() => setActiveCard(isSelected ? null : game.title)}
+              onClick={() => setSelectedCategory('Game: ' + game.title)}
               className="relative min-w-[220px] md:min-w-0 shrink-0 snap-center col-span-1 h-[260px] md:h-[280px] group cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:-translate-y-2 hover:z-20 z-10"
             >
               {/* CINEMATIC AMBIENT GLOW */}

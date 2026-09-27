@@ -20,7 +20,7 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
   const [activePlatform, setActivePlatform] = useState<'PC' | 'PS'>(() => {
     if (platformFilter === 'PS5' && isAvailablePS) return 'PS';
     if (platformFilter === 'PC' && isAvailablePC) return 'PC';
-    return isAvailablePC ? 'PC' : 'PS';
+    return isAvailablePS ? 'PS' : 'PC';
   });
 
   const isPSMode = activePlatform === 'PS';
@@ -33,7 +33,7 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
   useEffect(() => {
     window.scrollTo(0, 0);
     // Auto-detect platform again if game changes
-    let newPlat: 'PC' | 'PS' = isAvailablePC ? 'PC' : 'PS';
+    let newPlat: 'PC' | 'PS' = isAvailablePS ? 'PS' : 'PC';
     if (platformFilter === 'PS5' && isAvailablePS) newPlat = 'PS';
     if (platformFilter === 'PC' && isAvailablePC) newPlat = 'PC';
     
@@ -226,20 +226,20 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
             {isAvailablePC && isAvailablePS && (
               <div className="mb-6 flex p-1 bg-[#06141B] rounded-xl border border-[#253745]">
                 <button
-                  onClick={() => { setActivePlatform('PC'); setSelectedVariantIndex(-1); }}
-                  className={`flex-1 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all cursor-pointer ${
-                    !isPSMode ? 'bg-[#253745] text-white shadow-md' : 'text-[#9BA8AB] hover:text-[#CCD0CF]'
-                  }`}
-                >
-                  PC Version
-                </button>
-                <button
                   onClick={() => { setActivePlatform('PS'); setSelectedVariantIndex(game.variants && game.variants.length > 0 ? 0 : -1); }}
                   className={`flex-1 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all cursor-pointer ${
                     isPSMode ? 'bg-[#253745] text-white shadow-md' : 'text-[#9BA8AB] hover:text-[#CCD0CF]'
                   }`}
                 >
                   PlayStation Version
+                </button>
+                <button
+                  onClick={() => { setActivePlatform('PC'); setSelectedVariantIndex(-1); }}
+                  className={`flex-1 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all cursor-pointer ${
+                    !isPSMode ? 'bg-[#253745] text-white shadow-md' : 'text-[#9BA8AB] hover:text-[#CCD0CF]'
+                  }`}
+                >
+                  PC Version
                 </button>
               </div>
             )}
