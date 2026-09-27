@@ -1,6 +1,7 @@
 import { useStore } from '../context/StoreContext';
 import { getGameCoverUrl } from '../utils/image';
 import { ShoppingCart, Star, Clock } from 'lucide-react';
+import PlatformTags from './PlatformTags';
 
 export default function FilteredGames({ category, genre, title, actionType = 'buy' }: { category?: string, genre?: string, title: string, actionType?: 'buy' | 'preorder' }) {
   const { addToCart, catalog, platformFilter } = useStore();
@@ -49,13 +50,14 @@ export default function FilteredGames({ category, genre, title, actionType = 'bu
                 style={{ backgroundImage: `url('${game.customCoverUrl || getGameCoverUrl(game.title)}')` }}
               />
               <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#06141B] via-[#06141B]/40 to-transparent opacity-80" />
+              <PlatformTags platforms={game.categories} />
               {category === 'Top Sellers' && !game.onSale && (
-                <div className="absolute top-2 right-2 bg-[#4A5C6A] text-[9px] font-bold px-1.5 py-0.5 rounded text-[#CCD0CF] shadow-sm uppercase tracking-wider border border-[#4A5C6A]/50 backdrop-blur">
+                <div className="absolute top-2 left-2 bg-[#4A5C6A] text-[9px] font-bold px-1.5 py-0.5 rounded text-[#CCD0CF] shadow-sm uppercase tracking-wider border border-[#4A5C6A]/50 backdrop-blur">
                   Best Seller
                 </div>
               )}
               {game.onSale && (
-                <div className="absolute top-2 right-2 bg-green-500 text-[10px] font-black px-2 py-0.5 rounded text-[#06141B] shadow-[0_0_10px_rgba(34,197,94,0.3)] uppercase tracking-wider">
+                <div className="absolute top-2 left-2 bg-green-500 text-[10px] font-black px-2 py-0.5 rounded text-[#06141B] shadow-[0_0_10px_rgba(34,197,94,0.3)] uppercase tracking-wider">
                   SALE
                 </div>
               )}

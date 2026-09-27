@@ -3,6 +3,7 @@ import { useStore } from '../context/StoreContext';
 import { getGameCoverUrl } from '../utils/image';
 import { motion, AnimatePresence } from 'motion/react';
 import { ShoppingCart, ChevronLeft, ChevronRight } from 'lucide-react';
+import PlatformTags from './PlatformTags';
 
 export default function Hero() {
   const { addToCart, catalog, catalogLoaded, platformFilter, setSelectedCategory } = useStore();
@@ -117,6 +118,8 @@ export default function Hero() {
             />
           </AnimatePresence>
           <div className="absolute inset-0 bg-gradient-to-t from-[#11212D] via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-[#11212D]" />
+          
+          <PlatformTags platforms={activeGame.categories} />
           
           <button 
             onClick={() => setActiveIndex((prev) => (prev - 1 + heroGames.length) % heroGames.length)}

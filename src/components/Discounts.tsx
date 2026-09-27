@@ -3,6 +3,7 @@ import { useStore } from '../context/StoreContext';
 import { ShoppingCart, Clock } from 'lucide-react';
 import { getGameCoverUrl } from '../utils/image';
 import { useState } from 'react';
+import PlatformTags from './PlatformTags';
 
 export default function Discounts() {
   const { addToCart, catalog, catalogLoaded, platformFilter, setSelectedCategory } = useStore();
@@ -65,10 +66,7 @@ export default function Discounts() {
               />
 
               <div className={`absolute inset-0 rounded-xl overflow-hidden border border-[#253745] group-hover:border-[#4A5C6A] transition-colors bg-gradient-to-b ${idx % 2 === 0 ? 'from-[#11212D] to-[#06141B]' : 'from-[#253745] to-[#06141B]'}`}>
-                <div className="absolute top-0 left-0 right-0 bg-green-500/90 backdrop-blur text-[9px] text-center py-1 font-black tracking-widest text-[#06141B] z-20 overflow-hidden">
-                  <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 to-transparent animate-shimmer pointer-events-none" />
-                  <span className="relative z-10">SALE</span>
-                </div>
+                <PlatformTags platforms={game.categories} />
 
                 <div className="absolute inset-0 bg-cover bg-center transition-all duration-500 ease-out saturate-[1.1] contrast-[1.05] group-hover:scale-110 z-0" style={{ backgroundImage: `url('${coverUrl}')` }}></div>
                 <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#06141B]/95 via-[#06141B]/60 to-transparent pointer-events-none transition-opacity duration-300 z-0" />

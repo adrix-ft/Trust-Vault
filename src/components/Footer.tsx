@@ -35,7 +35,7 @@ export default function Footer() {
             <div className="inline-flex items-center gap-2 bg-[#11212D] border border-[#253745] px-3 py-1.5 rounded-lg text-xs w-fit">
               <ShieldAlert className="w-3.5 h-3.5 text-amber-400 shrink-0" />
               <span className="text-[#CCD0CF]">
-                <strong className="text-white">PC:</strong> Permanent | <strong className="text-white">PS5:</strong> 1 Month
+                <strong className="text-white">PC:</strong> Permanent | <strong className="text-white">PlayStation:</strong> 1 Month / Permanent
               </span>
             </div>
           </div>

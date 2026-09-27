@@ -3,6 +3,7 @@ import SectionHeader from './SectionHeader';
 import { useStore } from '../context/StoreContext';
 import { ShoppingCart, Plus, ChevronLeft, ChevronRight } from 'lucide-react';
 import { getGameCoverUrl } from '../utils/image';
+import PlatformTags from './PlatformTags';
 
 export default function GameBundles() {
   const { addToCart, catalog, platformFilter } = useStore();
@@ -81,6 +82,7 @@ export default function GameBundles() {
               />
 
               <div className="bg-gradient-to-br from-[#11212D] to-[#06141B] rounded-2xl border border-[#253745] group-hover:border-[#4A5C6A] p-5 md:p-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 shadow-xl group-hover:shadow-2xl h-full transition-colors relative z-10 overflow-hidden">
+                <PlatformTags platforms={bundle.categories} />
                 
                 {/* Left Side Visual Fan */}
                 <div className="flex items-center justify-center shrink-0 w-full sm:w-[200px] xl:w-[220px] h-[180px] sm:h-[210px] relative mt-2 sm:mt-0">

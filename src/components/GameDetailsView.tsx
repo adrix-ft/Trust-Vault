@@ -1,8 +1,10 @@
 import { motion } from 'motion/react';
 import { useStore } from '../context/StoreContext';
 import { getGameCoverUrl } from '../utils/image';
-import { ArrowLeft, ShoppingCart, Clock, Check, Star, ShieldCheck, Gamepad2, Minus, Plus, X } from 'lucide-react';
+import { ArrowLeft, ShoppingCart, Clock, Check, Star, ShieldCheck, Gamepad2, Minus, Plus, X, Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { AnimatePresence } from 'motion/react';
+import PlatformTags from './PlatformTags';
 
 interface GameDetailsViewProps {
   gameTitle: string;
@@ -26,6 +28,7 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
   const [selectedVariantIndex, setSelectedVariantIndex] = useState<number>(defaultIdx);
   const [rentMonths, setRentMonths] = useState<number>(1);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [infoVariant, setInfoVariant] = useState<string | null>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -124,9 +127,11 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex flex-wrap gap-2 mb-4"
+            className="flex flex-wrap gap-2 mb-4 items-center"
           >
-            {game.categories?.map(cat => (
+            <PlatformTags platforms={game.categories} className="flex gap-1.5 z-20 relative" />
+            
+            {game.categories?.filter(cat => !['PC', 'STEAM', 'PS', 'PS4', 'PS5', 'XBOX'].includes(cat.toUpperCase())).map(cat => (
               <span key={cat} className="px-3 py-1 text-[10px] sm:text-xs font-black uppercase tracking-wider bg-[#253745]/80 backdrop-blur border border-[#4A5C6A]/50 text-[#CCD0CF] rounded-full shadow-sm">
                 {cat}
               </span>
@@ -255,12 +260,19 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <div className={`w-3 h-3 rounded-full border-2 flex items-center justify-center ${selectedVariantIndex === idx ? 'border-emerald-400' : 'border-[#4A5C6A]'}`}>
+                      <div className={`w-3 h-3 rounded-full border-2 flex items-center justify-center shrink-0 ${selectedVariantIndex === idx ? 'border-emerald-400' : 'border-[#4A5C6A]'}`}>
                         {selectedVariantIndex === idx && <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />}
                       </div>
                       <span className={`text-xs font-bold uppercase tracking-wider ${selectedVariantIndex === idx ? 'text-white' : 'text-[#CCD0CF]'}`}>{variant.name}</span>
+                      <div 
+                        onClick={(e) => { e.stopPropagation(); setInfoVariant(variant.name); }} 
+                        className="text-[#4A5C6A] hover:text-white transition-colors p-1"
+                        title="What does this mean?"
+                      >
+                        <Info className="w-3.5 h-3.5" />
+                      </div>
                     </div>
-                    <span className="text-sm font-black text-white">{variant.price}</span>
+                    <span className="text-sm font-black text-white shrink-0">{variant.price}</span>
                   </button>
                 ))}
               </div>
@@ -392,6 +404,90 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
         </div>
         
       </div>
+      
+      {/* Variant Info Modal */}
+      <AnimatePresence>
+        {infoVariant && (
+          <VariantInfoModal variant={infoVariant} onClose={() => setInfoVariant(null)} />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
+
+const VariantInfoModal = ({ variant, onClose }: { variant: string, onClose: () => void }) => {
+  const getVariantDetails = () => {
+    const v = variant.toLowerCase();
+    if (v.includes('primary online')) {
+      return {
+        title: '🟢 Primary Online — Permanent',
+        points: [
+          'Permanent access to the game on your PS5.',
+          'Play the game from your main PSN account.',
+          'Online multiplayer is supported.',
+          'Trophies will be added to your own account.'
+        ]
+      };
+    }
+    if (v.includes('primary offline')) {
+      return {
+        title: '🔵 Primary Offline',
+        points: [
+          'Play the game on your main PSN account.',
+          'Available in 30-day and Permanent options.',
+          'Designed for offline gameplay - Trophies will be added to your own account.',
+          'Have to completely turn off the internet until you finish the game.'
+        ]
+      };
+    }
+    if (v.includes('secondary')) {
+      return {
+        title: '🟣 Secondary Access',
+        points: [
+          'Play the game using the purchased PSN account.',
+          'Available for 1 Month or Permanent access.',
+          'Ideal for customers who don\'t need the game activated on their main PSN account.'
+        ]
+      };
+    }
+    
+    return {
+      title: variant,
+      points: ['Details for this edition will be provided after purchase.']
+    };
+  };
+
+  const details = getVariantDetails();
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-[#06141B]/80 backdrop-blur-sm cursor-pointer" onClick={onClose} />
+      <motion.div initial={{ opacity: 0, y: 20, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 20, scale: 0.95 }} className="bg-[#11212D] border border-[#253745] rounded-3xl p-6 sm:p-8 shadow-2xl w-full max-w-md relative z-10 max-h-[90vh] overflow-y-auto">
+        <button onClick={onClose} className="absolute top-4 right-4 text-[#9BA8AB] hover:text-white bg-[#06141B] rounded-full p-1 border border-[#253745] transition-colors"><X className="w-5 h-5" /></button>
+        <h3 className="text-lg font-black text-white uppercase tracking-wider mb-4 border-b border-[#253745] pb-4 pr-6 leading-tight">{details.title}</h3>
+        <ul className="space-y-3 mb-6">
+          {details.points.map((pt, i) => (
+            <li key={i} className="flex items-start gap-2.5 text-[13px] text-[#CCD0CF] leading-relaxed">
+              <span className="text-emerald-400 font-bold mt-0.5 shrink-0">•</span>
+              <span>{pt}</span>
+            </li>
+          ))}
+        </ul>
+        <div className="bg-[#06141B] p-5 rounded-2xl border border-[#253745]/80 shadow-inner">
+          <p className="text-[11px] font-black text-red-400/90 uppercase tracking-widest flex items-center gap-1.5 mb-3 border-b border-[#253745]/50 pb-2">
+            📌 Important
+          </p>
+          <ul className="space-y-1.5 text-[11px] sm:text-xs text-[#9BA8AB] list-disc pl-4 marker:text-[#4A5C6A]">
+            <li>Please read the access type carefully before purchasing.</li>
+            <li>Follow the provided activation/setup instructions.</li>
+            <li>Account details and access terms will be provided after purchase.</li>
+            <li><strong className="text-[#CCD0CF]">Do not change the account email, password, or security settings</strong> unless specifically instructed.</li>
+          </ul>
+          <div className="mt-4 pt-3 border-t border-[#253745]/50 text-[10px] sm:text-[11px] text-red-400/70 font-medium leading-relaxed italic">
+            • There are no refunds in case of mood change / don't want the product anymore / you have selected the wrong version or you didn't like the game.
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+};

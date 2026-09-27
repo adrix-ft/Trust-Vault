@@ -1196,7 +1196,7 @@ export default function AdminDashboard() {
                     <div>
                       <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Platforms & Categories</label>
                       <div className="flex gap-2 flex-wrap">
-                        {['PC', 'PS5', 'Bundle-Eligible'].map(plat => (
+                        {['PC', 'PS5', 'PS4', 'Bundle-Eligible'].map(plat => (
                           <button 
                             key={plat} 
                             type="button" 

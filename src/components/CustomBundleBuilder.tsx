@@ -3,17 +3,21 @@ import { useStore, Game } from '../context/StoreContext';
 import { getGameCoverUrl } from '../utils/image';
 import { Package, Check, ShoppingCart, Info, Search } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import PlatformTags from './PlatformTags';
 
 export default function CustomBundleBuilder() {
   const { catalog, addToCart, showToast } = useStore();
   const [selectedGames, setSelectedGames] = useState<Game[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [activePlatform, setActivePlatform] = useState<'All' | 'PC' | 'PS'>('All');
 
-  // Only games tagged as Bundle-Eligible and matching search query
-  const eligibleGames = catalog.filter(game => 
-    game.categories?.includes('Bundle-Eligible') &&
-    game.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Only games tagged as Bundle-Eligible and matching search query + platform
+  const eligibleGames = catalog.filter(game => {
+    if (!game.categories?.includes('Bundle-Eligible')) return false;
+    if (activePlatform === 'PC' && !game.categories.some(c => c.toUpperCase() === 'PC')) return false;
+    if (activePlatform === 'PS' && !game.categories.some(c => c.toUpperCase().includes('PS'))) return false;
+    return game.title.toLowerCase().includes(searchQuery.toLowerCase());
+  });
 
   const toggleSelection = (game: Game) => {
     if (selectedGames.some(g => g.title === game.title)) {
@@ -90,16 +94,34 @@ export default function CustomBundleBuilder() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 py-12">
-        {/* Search Bar */}
-        <div className="mb-8 relative max-w-md mx-auto sm:mx-0">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#4A5C6A]" />
-          <input
-            type="text"
-            placeholder="Search eligible games..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-[#11212D]/80 border border-[#253745] rounded-full py-3 pl-12 pr-6 text-sm font-medium text-white placeholder:text-[#4A5C6A] focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 transition-all shadow-inner"
-          />
+        {/* Controls: Search & Platform Toggle */}
+        <div className="mb-8 flex flex-col md:flex-row gap-4 items-center justify-between max-w-3xl mx-auto">
+          <div className="relative w-full">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#4A5C6A]" />
+            <input
+              type="text"
+              placeholder="Search eligible games..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-[#11212D]/80 border border-[#253745] rounded-full py-3 pl-12 pr-6 text-sm font-medium text-white placeholder:text-[#4A5C6A] focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 transition-all shadow-inner"
+            />
+          </div>
+          
+          <div className="flex bg-[#11212D]/80 border border-[#253745] rounded-full p-1 shrink-0 w-full md:w-auto">
+            {['All', 'PC', 'PS'].map(platform => (
+              <button
+                key={platform}
+                onClick={() => setActivePlatform(platform as any)}
+                className={`flex-1 md:flex-none px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                  activePlatform === platform
+                    ? 'bg-gradient-to-r from-emerald-600 to-emerald-400 text-black shadow-md'
+                    : 'text-[#9BA8AB] hover:text-white hover:bg-[#253745]/50'
+                }`}
+              >
+                {platform === 'PS' ? 'PlayStation' : platform}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
@@ -125,6 +147,7 @@ export default function CustomBundleBuilder() {
                     className={`w-full h-full object-cover transition-transform duration-700 ${isSelected ? 'scale-105' : 'group-hover:scale-110'}`}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                  <PlatformTags platforms={game.categories} />
                   
                   {isSelected && (
                     <div className="absolute inset-0 bg-emerald-500/20 backdrop-blur-[2px] flex items-center justify-center">

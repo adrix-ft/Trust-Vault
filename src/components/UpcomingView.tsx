@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Clock, MessageCircle, Send } from 'lucide-react';
 import { getGameCoverUrl } from '../utils/image';
+import PlatformTags from './PlatformTags';
 
 // FIXED: Dynamically load the API URL from Vercel Environment Variables
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://amin-game-store-backend.onrender.com';
@@ -83,7 +84,8 @@ export default function UpcomingView() {
                     }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#06141B] via-transparent to-transparent opacity-80" />
-                  <div className="absolute top-2 right-2 bg-amber-500 text-[9px] font-black px-2 py-0.5 rounded text-[#06141B] uppercase tracking-wider shadow">
+                  <PlatformTags platforms={game.categories} />
+                  <div className="absolute top-2 left-2 bg-amber-500 text-[9px] font-black px-2 py-0.5 rounded text-[#06141B] uppercase tracking-wider shadow">
                     SOON
                   </div>
                 </div>

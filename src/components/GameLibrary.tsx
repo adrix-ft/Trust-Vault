@@ -4,6 +4,7 @@ import { useStore } from '../context/StoreContext';
 import { motion, AnimatePresence } from 'motion/react';
 import { useState, useEffect } from 'react';
 import { getGameCoverUrl } from '../utils/image';
+import PlatformTags from './PlatformTags';
 
 export default function GameLibrary() {
   const { selectedCategory, setSelectedCategory, addToCart, cart, catalog, platformFilter, catalogLoaded } = useStore();
@@ -89,9 +90,10 @@ export default function GameLibrary() {
                       />
                       <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#06141B] via-[#06141B]/40 to-transparent opacity-80 pointer-events-none" />
                       
+                      <PlatformTags platforms={game.categories} />
                       {game.onSale && (
                         /* UPGRADE: SHIMMER ON SALE BADGE */
-                        <div className="absolute top-2 right-2 bg-green-500 text-[10px] font-black px-2 py-0.5 rounded text-[#06141B] shadow uppercase tracking-wider z-10 overflow-hidden">
+                        <div className="absolute top-2 left-2 bg-green-500 text-[10px] font-black px-2 py-0.5 rounded text-[#06141B] shadow uppercase tracking-wider z-10 overflow-hidden">
                           <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 to-transparent animate-shimmer pointer-events-none" />
                           <span className="relative z-10">SALE</span>
                         </div>

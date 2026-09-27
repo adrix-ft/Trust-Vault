@@ -26,7 +26,7 @@ export default function FooterModal({ type, onClose }: FooterModalProps) {
                 </h4>
                 <ul className="list-disc pl-5 space-y-1 text-xs">
                   <li><strong className="text-white">PC Games:</strong> Provided with permanent access terms as specified per individual listing.</li>
-                  <li><strong className="text-white">PS5 Games:</strong> Provided with 1-month access terms/accounts as per digital delivery guidelines.</li>
+                  <li><strong className="text-white">PlayStation Games:</strong> Provided in multiple variants including Permanent, Primary Online, Primary Offline, and 1-Month Secondary Access. Please read the specific variant details on the game page before purchasing.</li>
                 </ul>
               </div>
 

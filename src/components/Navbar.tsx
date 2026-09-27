@@ -4,6 +4,21 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { getGameCoverUrl } from '../utils/image';
 
+const SteamIcon = ({ className }: { className?: string }) => (
+  <div className={`flex items-center gap-1.5 ${className}`}>
+    <svg viewBox="0 0 24 24" className="w-[1.2em] h-[1.2em] fill-current" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.5 1.009 2.455-.397.957-1.497 1.41-2.454 1.012H7.54zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z"/>
+    </svg>
+    <span className="font-black tracking-widest text-[1.2em]">STEAM</span>
+  </div>
+);
+
+const PSIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 9.2 24 5.6" className={`fill-current ${className}`} style={{ height: '1.2em', width: 'auto' }} xmlns="http://www.w3.org/2000/svg">
+    <path d="M10.4499 14.56905a1.38287 1.38287 0 001.38287-1.38287v-2.37841a.83315.83315 0 01.83416-.83315h2.68403a.03732.03732 0 00.03631-.03732V9.4612a.03631.03631 0 00-.0363-.0363H12.1172a1.38287 1.38287 0 00-1.38388 1.38286v2.38043a.83416.83416 0 01-.83315.83415H7.25347a.03631.03631 0 00-.03631.03632v.47608a.03631.03631 0 00.03631.03631zm6.04488-3.21156V9.4612a.03631.03631 0 01.0363-.0363h7.30772a.03732.03732 0 01.03732.0363v.47609a.03833.03833 0 01-.03732.03732h-6.20929a.03631.03631 0 00-.0363.03631v1.2356a.3954.3954 0 00.3964.39741h4.62267a1.46457 1.46457 0 010 2.9251h-6.0812a.03631.03631 0 01-.0363-.0363v-.47407a.03631.03631 0 01.0363-.03632h5.53047a.91586.91586 0 10-.00706-1.8307h-4.72656a.83315.83315 0 01-.83315-.83416m-10.84608.28645a.83466.83466 0 000-1.66932H.03654a.03732.03732 0 01-.03632-.03732V9.4612a.03631.03631 0 01.03632-.0363h6.1528a1.38388 1.38388 0 010 2.76673H1.9328a.83315.83315 0 00-.83315.83416v1.51299a.03631.03631 0 01-.03631.0363H.03654a.03631.03631 0 01-.03632-.04034v-1.51298a1.38287 1.38287 0 011.38388-1.37783Z"/>
+  </svg>
+);
+
 export default function Navbar() {
   const { cart, setIsCartOpen, selectedCategory, setSelectedCategory, addToCart, catalog, platformFilter, setPlatformFilter } = useStore();
   const [searchQuery, setSearchQuery] = useState('');
@@ -14,8 +29,8 @@ export default function Navbar() {
   const cartItemCount = cart.length;
 
   const filters = [
-    { id: 'PC', label: 'PC Games', type: 'platform', icon: Monitor },
-    { id: 'PS5', label: 'PS Games', type: 'platform', icon: Gamepad2 },
+    { id: 'PC', type: 'platform', icon: SteamIcon, isCustom: true },
+    { id: 'PS5', type: 'platform', icon: PSIcon, isCustom: true },
     { id: 'Custom Bundle', label: 'Build Bundle', type: 'category', icon: Package, iconClass: 'text-emerald-400' },
     { id: 'Proofs', label: 'Proofs', type: 'category', icon: ShieldCheck, iconClass: 'text-green-400' },
     { id: 'Contact Us', label: 'Contact Us', type: 'category', icon: MessageCircle, iconClass: 'text-blue-400' }
@@ -109,8 +124,8 @@ export default function Navbar() {
                     : `bg-[#11212D] text-[#9BA8AB] border-[#253745] ${isProofsHover}`
                   }`}
               >
-                <Icon className={`w-3.5 h-3.5 transition-colors ${filter.iconClass || ''} ${isActive && filter.id === 'Proofs' ? 'text-green-300' : ''}`} />
-                <span>{filter.label}</span>
+                <Icon className={filter.isCustom ? `text-[10px] sm:text-[11px] ${filter.iconClass || ''}` : `w-3.5 h-3.5 transition-colors ${filter.iconClass || ''} ${isActive && filter.id === 'Proofs' ? 'text-green-300' : ''}`} />
+                {filter.label && <span>{filter.label}</span>}
               </button>
             );
           })}

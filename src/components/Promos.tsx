@@ -3,6 +3,7 @@ import { useStore } from '../context/StoreContext';
 import { Play, ShoppingCart } from 'lucide-react';
 import { getGameCoverUrl } from '../utils/image';
 import { motion, AnimatePresence } from 'motion/react';
+import PlatformTags from './PlatformTags';
 
 export default function Promos() {
   const { addToCart, catalog, platformFilter, setPlayingTrailerUrl } = useStore();
@@ -55,6 +56,7 @@ export default function Promos() {
         <div className="absolute inset-0 bg-cover bg-center transition-all duration-500 ease-out saturate-[1.1]" style={{ backgroundImage: `url('${activePromo.customCoverUrl || getGameCoverUrl(activePromo.title)}')` }}></div>
         <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#06141B]/95 via-[#06141B]/40 to-transparent pointer-events-none" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#06141B]/95 via-[#06141B]/60 to-transparent pointer-events-none" />
+        <PlatformTags platforms={activePromo.categories} />
         
         <AnimatePresence mode="wait">
           <motion.div

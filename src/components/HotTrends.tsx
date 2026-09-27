@@ -3,6 +3,7 @@ import { useStore } from '../context/StoreContext';
 import { ShoppingCart } from 'lucide-react';
 import { getGameCoverUrl } from '../utils/image';
 import { useState, useMemo } from 'react';
+import PlatformTags from './PlatformTags';
 
 export default function HotTrends() {
   const { addToCart, catalog, platformFilter } = useStore();
@@ -42,6 +43,7 @@ export default function HotTrends() {
                   TREND
                 </div>
               </div>
+              <PlatformTags platforms={t.categories} />
 
               <div className="absolute inset-0 bg-cover bg-center transition-all duration-500 ease-out saturate-[1.2] contrast-[1.1] brightness-100 group-hover:scale-110 group-hover:saturate-[1.3] group-hover:brightness-110 z-0" style={{ backgroundImage: `url('${t.customCoverUrl || getGameCoverUrl(t.title)}')` }}></div>
               
