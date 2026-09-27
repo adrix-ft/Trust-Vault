@@ -1,0 +1,17 @@
+name: Keep-Alive Server & Database
+
+on:
+  schedule:
+    # Runs at minute 0 past every hour
+    - cron: "0 * * * *"
+  workflow_dispatch: # Allows you to manually run the workflow from the Actions tab
+
+jobs:
+  ping-server:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Backend API
+        run: |
+          echo "Pinging the Render backend API..."
+          curl -s -o /dev/null -w "HTTP Status: %{http_code}\n" https://amin-game-store-backend.onrender.com/api/products
+          echo "This keeps Render from suspending for too long and queries Supabase to keep the database active!"
