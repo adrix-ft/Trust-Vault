@@ -8,8 +8,7 @@ export default function PlatformFilter() {
     { id: 'PC', label: 'PC Games', icon: Monitor, type: 'platform' },
     { id: 'PS5', label: 'PS Games', icon: Gamepad2, type: 'platform' },
     { id: 'Custom Bundle', label: 'Build Bundle', icon: Package, type: 'category', iconClass: 'text-emerald-400' },
-    { id: 'Proofs', label: 'Proofs', icon: ShieldCheck, type: 'category', iconClass: 'text-green-400' },
-    { id: 'Contact Us', label: 'Contact Us', icon: MessageCircle, type: 'category', iconClass: 'text-blue-400' }
+    { id: 'Proofs', label: 'Proofs', icon: ShieldCheck, type: 'category', iconClass: 'text-green-400' }
   ];
 
   return (
