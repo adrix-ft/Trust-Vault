@@ -232,6 +232,25 @@ export default function AdminDashboard() {
     });
   };
 
+  const handleDeleteRent = (id: string) => {
+    setConfirmReq({
+      message: 'Are you sure you want to completely delete this rent record?',
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`${API_BASE_URL}/api/rents/${id}`, { method: 'DELETE' });
+          if (res.ok) {
+            setRents(rents.filter(r => r.id !== id));
+            showToast('Rent record deleted', 'success');
+          } else {
+            showToast('Failed to delete rent', 'error');
+          }
+        } catch (err) {
+          showToast('Network error deleting rent', 'error');
+        }
+      }
+    });
+  };
+
   const handleSaveUpcoming = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!upcomingFormData.title) return;
@@ -1058,20 +1077,26 @@ export default function AdminDashboard() {
                           </td>
                           <td className="p-4 text-right">
                             <div className="flex items-center justify-end gap-2">
-                              {!isDone && rent.items?.some((item: any) => {
-                                const days = calculateRemaining(rent.created_at, item.rentPeriod);
-                                return days !== null && days <= 0;
-                              }) && (
+                              {!isDone && (() => {
+                                const isOver = rent.items?.some((item: any) => {
+                                  const days = calculateRemaining(rent.created_at, item.rentPeriod);
+                                  return days !== null && days <= 0;
+                                });
+                                const waText = isOver 
+                                  ? `Hi ${rent.customerName}, your game rent period is over. Please renew or return.`
+                                  : `Hi ${rent.customerName},`;
+                                return (
                                   <a
-                                    href={`https://wa.me/${rent.mobileNumber}?text=${encodeURIComponent('Hi ' + rent.customerName + ', your game rent period is over. Please renew or return.')}`}
+                                    href={`https://wa.me/${rent.mobileNumber}?text=${encodeURIComponent(waText)}`}
                                     target="_blank"
                                     rel="noreferrer"
                                     className="bg-green-500/20 text-green-400 p-2 rounded-lg hover:bg-green-500/40 transition-colors cursor-pointer"
-                                    title="Send WhatsApp Reminder"
+                                    title="Send WhatsApp Message"
                                   >
                                     <MessageCircle className="w-4 h-4" />
                                   </a>
-                                )}
+                                );
+                              })()}
 
                               {!isDone && (
                                 <button
@@ -1082,6 +1107,14 @@ export default function AdminDashboard() {
                                   <CheckCircle className="w-4 h-4" />
                                 </button>
                               )}
+                              
+                              <button
+                                onClick={() => handleDeleteRent(rent.id)}
+                                className="bg-red-500/20 text-red-400 p-2 rounded-lg hover:bg-red-500/40 transition-colors cursor-pointer"
+                                title="Delete Rent Record"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
                             </div>
                           </td>
                         </tr>
