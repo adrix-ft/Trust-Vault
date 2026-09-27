@@ -34,6 +34,34 @@ const orderLimiter = rateLimit({
   legacyHeaders: false,
 });
 
+// ==================== ADMIN ENDPOINTS ====================
+app.post('/api/admin/login', async (req, res) => {
+  const { username, password } = req.body;
+  
+  try {
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Username and password required' });
+    }
+
+    // Query the 'admins' table in Supabase
+    const { data, error } = await supabase
+      .from('admins')
+      .select('*')
+      .eq('username', username)
+      .eq('password', password);
+
+    if (error) throw error;
+
+    if (data && data.length > 0) {
+      res.json({ success: true });
+    } else {
+      res.status(401).json({ error: 'Invalid credentials' });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ==================== PRODUCTS ENDPOINTS ====================
 
 // ==================== SUBSCRIPTIONS ENDPOINTS ====================

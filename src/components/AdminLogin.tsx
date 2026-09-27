@@ -9,29 +9,30 @@ export default function AdminLogin() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleLogin = (e: React.FormEvent) => {
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://amin-game-store-backend.onrender.com';
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // SECURED: Pulls credentials from the .env file instead of hardcoding them
-    const admin1 = { 
-      user: import.meta.env.VITE_ADMIN_USERNAME, 
-      pass: import.meta.env.VITE_ADMIN_PASSWORD 
-    };
-    const admin2 = { 
-      user: import.meta.env.VITE_ADMIN2_USERNAME, 
-      pass: import.meta.env.VITE_ADMIN2_PASSWORD 
-    };
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/admin/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
-    if (
-      (username === admin1.user && password === admin1.pass) ||
-      (username === admin2.user && password === admin2.pass)
-    ) {
-      setIsAdmin(true);
-      setShowAdminLogin(false);
-      localStorage.setItem('gaming_admin', 'true');
-    } else {
-      setError('Invalid username or password. Access denied.');
-      setPassword('');
+      if (response.ok) {
+        setIsAdmin(true);
+        setShowAdminLogin(false);
+        localStorage.setItem('gaming_admin', 'true');
+      } else {
+        setError('Invalid username or password. Access denied.');
+        setPassword('');
+      }
+    } catch (err) {
+      setError('Could not connect to server.');
     }
   };
 
