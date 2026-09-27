@@ -22,10 +22,7 @@ export default function Footer() {
             {/* MATCHED BRAND NAME */}
             <div className="flex items-center gap-1.5 whitespace-nowrap mb-1">
               <span className="text-xl sm:text-2xl font-black tracking-tight text-white">
-                Trust
-              </span>
-              <span className="text-[9px] sm:text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-[#253745] border border-[#4A5C6A]/30 text-[#CCD0CF] whitespace-nowrap">
-                Vault
+                Trust Vault
               </span>
             </div>
 

@@ -5,7 +5,6 @@ import Hero from './components/Hero';
 import Promos from './components/Promos';
 import GameBundles from './components/GameBundles';
 import PlayerReviews from './components/PlayerReviews';
-import Discounts from './components/Discounts';
 import GameLibrary from './components/GameLibrary';
 import Subscriptions from './components/Subscriptions';
 import ContactUs from './components/ContactUs';
@@ -23,8 +22,34 @@ import UpcomingView from './components/UpcomingView';
 import GameDetailsView from './components/GameDetailsView';
 import CustomBundleBuilder from './components/CustomBundleBuilder';
 import { motion, AnimatePresence } from 'motion/react';
-import { X } from 'lucide-react';
-import { useState } from 'react';
+import { X, MessageCircle } from 'lucide-react';
+import { useState, useEffect } from 'react';
+
+function FloatingWhatsApp() {
+  return (
+    <div className="fixed bottom-6 right-6 z-[9999] flex flex-col items-end gap-3 pointer-events-none">
+      <AnimatePresence>
+          <motion.div 
+            initial={{ opacity: 0, y: 10, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            className="bg-[#11212D] text-[#CCD0CF] text-[11px] font-bold py-2.5 px-4 rounded-2xl shadow-xl border border-[#253745] pointer-events-auto"
+          >
+            Didn't find your game? <br/>
+            <span className="text-white">Ask us here!</span>
+          </motion.div>
+      </AnimatePresence>
+
+      <a
+        href="https://wa.me/918824647379?text=Hey,%20I%20didn't%20find%20what%20I%20was%20looking%20for.%20Can%20you%20help?"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="w-14 h-14 bg-[#25D366] hover:bg-[#128C7E] text-white rounded-full flex items-center justify-center shadow-[0_4px_20px_rgba(37,211,102,0.4)] transition-transform hover:scale-110 pointer-events-auto"
+      >
+        <MessageCircle className="w-7 h-7" />
+      </a>
+    </div>
+  );
+}
 
 function AppContent() {
   const { selectedCategory, setSelectedCategory, isAdmin, catalogLoaded } = useStore();
@@ -77,7 +102,6 @@ function AppContent() {
               <Hero />
               <main className="w-full mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 space-y-10 md:space-y-16 py-6 md:py-12 relative z-10">
                 <PlayerReviews />
-                <Discounts />
                 <GameLibrary />
               </main>
             </>
@@ -150,6 +174,9 @@ function AppContent() {
 
       {/* GLOBAL TOAST & CONFIRM OVERLAYS */}
       <GlobalOverlays />
+
+      {/* FLOATING WHATSAPP BUTTON */}
+      <FloatingWhatsApp />
     </div>
   );
 }

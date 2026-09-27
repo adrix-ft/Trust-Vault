@@ -360,6 +360,29 @@ app.get('/api/proofs', async (req, res) => {
   }
 });
 
+// ==================== DELETE PROOF ENDPOINT ====================
+app.delete('/api/proofs', async (req, res) => {
+  try {
+    const { url } = req.body;
+    if (!url) return res.status(400).json({ error: 'URL is required' });
+    
+    const fileName = url.split('/').pop();
+    
+    const { error: storageError } = await proofSupabase.storage
+      .from('proofs')
+      .remove([fileName]);
+      
+    if (storageError) throw storageError;
+
+    // Optional: Try deleting from DB as well if it exists
+    await proofSupabase.from('proofs').delete().eq('image_url', url);
+
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ==================== COLLECTIONS ENDPOINTS ====================
 
 app.get('/api/collections', async (req, res) => {
@@ -478,65 +501,109 @@ app.post('/api/orders', orderLimiter, async (req, res) => {
   }
 });
 
-// ==================== RENT TRACKING ENDPOINTS (LOCAL JSON) ====================
-const rentsFilePath = path.join(process.cwd(), 'rents.json');
+// ==================== RENT TRACKING ENDPOINTS (SUPABASE) ====================
 
-const readRents = () => {
-  if (!fs.existsSync(rentsFilePath)) {
-    fs.writeFileSync(rentsFilePath, JSON.stringify([]));
-  }
-  const data = fs.readFileSync(rentsFilePath);
-  return JSON.parse(data);
-};
-
-const writeRents = (data) => {
-  fs.writeFileSync(rentsFilePath, JSON.stringify(data, null, 2));
-};
-
-app.get('/api/rents', (req, res) => {
+app.get('/api/rents', async (req, res) => {
   try {
-    const rents = readRents();
-    res.json(rents);
+    const { data, error } = await supabase
+      .from('rents')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    
+    // Map snake_case from DB to camelCase for Frontend
+    const formattedData = data.map(rent => ({
+      id: rent.id,
+      customerName: rent.customer_name,
+      mobileNumber: rent.mobile_number,
+      totalAmount: rent.total_amount,
+      items: typeof rent.items === 'string' ? JSON.parse(rent.items) : rent.items,
+      status: rent.status,
+      created_at: rent.created_at
+    }));
+
+    res.json(formattedData);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-app.post('/api/rents', (req, res) => {
+app.post('/api/rents', async (req, res) => {
   try {
-    const rents = readRents();
-    const newRent = { ...req.body, id: crypto.randomUUID(), created_at: new Date().toISOString(), status: 'active' };
-    rents.push(newRent);
-    writeRents(rents);
-    res.json({ success: true, data: newRent });
+    const { customerName, mobileNumber, totalAmount, items } = req.body;
+    
+    const dbRent = {
+      customer_name: customerName,
+      mobile_number: mobileNumber,
+      total_amount: totalAmount,
+      items: items // Supabase handles JSONB arrays directly
+    };
+
+    const { data, error } = await supabase.from('rents').insert([dbRent]).select();
+    
+    if (error) throw error;
+
+    const inserted = data[0];
+    res.json({ 
+      success: true, 
+      data: {
+        id: inserted.id,
+        customerName: inserted.customer_name,
+        mobileNumber: inserted.mobile_number,
+        totalAmount: inserted.total_amount,
+        items: inserted.items,
+        status: inserted.status,
+        created_at: inserted.created_at
+      }
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-app.put('/api/rents/:id', (req, res) => {
+app.put('/api/rents/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const rents = readRents();
-    const index = rents.findIndex(r => r.id === id);
-    if (index !== -1) {
-      rents[index] = { ...rents[index], ...req.body };
-      writeRents(rents);
-      res.json({ success: true, data: rents[index] });
-    } else {
-      res.status(404).json({ error: 'Rent not found' });
-    }
+    const { status, customerName, mobileNumber, totalAmount, items } = req.body;
+    
+    // Build update object based on what's provided
+    const updateData = {};
+    if (status !== undefined) updateData.status = status;
+    if (customerName !== undefined) updateData.customer_name = customerName;
+    if (mobileNumber !== undefined) updateData.mobile_number = mobileNumber;
+    if (totalAmount !== undefined) updateData.total_amount = totalAmount;
+    if (items !== undefined) updateData.items = items;
+
+    const { data, error } = await supabase.from('rents').update(updateData).eq('id', id).select();
+    
+    if (error) throw error;
+    if (!data || data.length === 0) return res.status(404).json({ error: 'Rent not found' });
+
+    const updated = data[0];
+    res.json({ 
+      success: true, 
+      data: {
+        id: updated.id,
+        customerName: updated.customer_name,
+        mobileNumber: updated.mobile_number,
+        totalAmount: updated.total_amount,
+        items: updated.items,
+        status: updated.status,
+        created_at: updated.created_at
+      }
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-app.delete('/api/rents/:id', (req, res) => {
+app.delete('/api/rents/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    let rents = readRents();
-    rents = rents.filter(r => r.id !== id);
-    writeRents(rents);
+    const { error } = await supabase.from('rents').delete().eq('id', id);
+    
+    if (error) throw error;
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ error: err.message });

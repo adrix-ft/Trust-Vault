@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useStore, Game } from '../context/StoreContext';
 import { motion, AnimatePresence } from 'motion/react';
-import { LogOut, Plus, Trash2, Edit2, Copy, X, RefreshCw, Image as ImageIcon, Upload, ChevronLeft, ChevronRight, ShieldCheck, Clock, Layers, Gamepad2, Database, Package, Search, MessageCircle, CheckCircle, Repeat } from 'lucide-react';
+import { LogOut, Plus, Trash2, Edit2, Copy, X, RefreshCw, Image as ImageIcon, Upload, ChevronLeft, ChevronRight, ShieldCheck, Clock, Layers, Gamepad2, Database, Package, Search, MessageCircle, CheckCircle, Repeat, GripVertical, ExternalLink } from 'lucide-react';
 import { getGameCoverUrl } from '../utils/image';
 
 // FIXED: Dynamically load the API URL from Vercel Environment Variables
@@ -25,10 +25,53 @@ export default function AdminDashboard() {
   const defaultUpcoming = { title: '', price: '', release_date: '', customCoverUrl: '' };
   const [upcomingFormData, setUpcomingFormData] = useState(defaultUpcoming);
   const [rents, setRents] = useState<any[]>([]);
+  const [proofs, setProofs] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (activeTab === 'proofs') {
+      fetchProofsAdmin();
+    }
+  }, [activeTab]);
+
+  const fetchProofsAdmin = async () => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/proofs`);
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data)) setProofs(data);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleDeleteProof = (url: string) => {
+    setConfirmReq({
+      message: 'Are you sure you want to permanently delete this proof screenshot?',
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`${API_BASE_URL}/api/proofs`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ url })
+          });
+          if (res.ok) {
+            setProofs(proofs.filter(p => p !== url));
+            showToast('Proof deleted successfully', 'success');
+          } else {
+            showToast('Failed to delete proof', 'error');
+          }
+        } catch (err) {
+          showToast('Network error deleting proof', 'error');
+        }
+      }
+    });
+  };
 
   const [showRentForm, setShowRentForm] = useState(false);
   const defaultRent = { customerName: '', mobileNumber: '', totalAmount: '', items: [{ title: '', rentPeriod: '1 Month' }] };
   const [rentFormData, setRentFormData] = useState(defaultRent);
+  const [activeRentGameSearch, setActiveRentGameSearch] = useState<number | null>(null);
 
   const handleSaveRent = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -1008,23 +1051,23 @@ export default function AdminDashboard() {
         )}
 
         {activeTab === 'proofs' && (
-          <div className="bg-[#11212D] border border-[#253745] rounded-2xl p-8 shadow-2xl max-w-2xl mx-auto space-y-6">
+          <div className="bg-[#11212D] border border-[#253745] rounded-2xl p-6 sm:p-8 shadow-2xl mx-auto space-y-8">
             <div className="text-center space-y-2">
               <div className="w-12 h-12 rounded-2xl bg-green-500/10 border border-green-500/30 flex items-center justify-center text-green-400 mx-auto">
                 <ShieldCheck className="w-6 h-6" />
               </div>
-              <h2 className="text-xl font-black text-white uppercase tracking-wider">Upload Customer Proof</h2>
-              <p className="text-[#9BA8AB] text-xs max-w-sm mx-auto">Publish transaction screenshots directly to the verification feed.</p>
+              <h2 className="text-xl font-black text-white uppercase tracking-wider">Manage Customer Proofs</h2>
+              <p className="text-[#9BA8AB] text-xs max-w-sm mx-auto">Upload and manage transaction screenshots for the verification feed.</p>
             </div>
 
             <div className="bg-[#06141B] border border-[#253745] p-6 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="space-y-1 text-center sm:text-left">
-                <span className="text-xs font-bold text-white uppercase tracking-wider block">Select Screenshot</span>
+                <span className="text-xs font-bold text-white uppercase tracking-wider block">Upload New Screenshot</span>
                 <p className="text-[11px] text-[#9BA8AB]">Supports PNG, JPG, WEBP formats.</p>
               </div>
               <label className="cursor-pointer bg-gradient-to-r from-[#253745] to-[#4A5C6A] hover:from-[#4A5C6A] hover:to-[#596F80] text-white px-6 py-3 rounded-xl flex items-center justify-center font-bold text-xs uppercase transition-all shadow-md shrink-0 border border-[#4A5C6A]/50">
                 <Upload className="w-4 h-4 mr-2" />
-                <span>Upload Screenshot</span>
+                <span>Select & Upload</span>
                 <input
                   type="file"
                   accept="image/*"
@@ -1044,6 +1087,7 @@ export default function AdminDashboard() {
                           const data = await res.json();
                           if (data.success) {
                             showToast('Customer proof uploaded successfully!', 'success');
+                            fetchProofsAdmin();
                           } else {
                             showToast(`Upload failed: ${data.error || 'Unknown error'}`, 'error');
                           }
@@ -1057,6 +1101,29 @@ export default function AdminDashboard() {
                   }}
                 />
               </label>
+            </div>
+
+            <div>
+              <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4 border-b border-[#253745] pb-2">Uploaded Proofs</h3>
+              {proofs.length === 0 ? (
+                <p className="text-[#9BA8AB] text-xs">No proofs uploaded yet.</p>
+              ) : (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                  {proofs.map((url, i) => (
+                    <div key={i} className="relative group rounded-xl overflow-hidden border border-[#253745] aspect-[3/4] bg-[#06141B]">
+                      <img src={url} alt="Proof" className="w-full h-full object-cover" />
+                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 backdrop-blur-sm">
+                         <a href={url} target="_blank" rel="noreferrer" className="p-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/40 cursor-pointer">
+                           <ExternalLink className="w-5 h-5" />
+                         </a>
+                         <button onClick={() => handleDeleteProof(url)} className="p-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/40 cursor-pointer">
+                           <Trash2 className="w-5 h-5" />
+                         </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -1217,12 +1284,42 @@ export default function AdminDashboard() {
 
                     {rentFormData.items.map((item, idx) => (
                       <div key={idx} className="flex gap-2 mb-3 items-start">
-                        <div className="flex-1">
-                          <input type="text" placeholder="Game Title" required value={item.title} onChange={e => {
-                            const newItems = [...rentFormData.items];
-                            newItems[idx].title = e.target.value;
-                            setRentFormData({...rentFormData, items: newItems});
-                          }} className="w-full bg-[#11212D] border border-[#253745] rounded-lg p-3 text-white text-sm focus:border-emerald-500 outline-none" />
+                        <div className="flex-1 relative">
+                          <input 
+                            type="text" 
+                            placeholder="Game Title" 
+                            required 
+                            value={item.title} 
+                            onFocus={() => setActiveRentGameSearch(idx)}
+                            onBlur={() => setTimeout(() => setActiveRentGameSearch(null), 200)}
+                            onChange={e => {
+                              const newItems = [...rentFormData.items];
+                              newItems[idx].title = e.target.value;
+                              setRentFormData({...rentFormData, items: newItems});
+                            }} 
+                            className="w-full bg-[#11212D] border border-[#253745] rounded-lg p-3 text-white text-sm focus:border-emerald-500 outline-none" 
+                          />
+                          {activeRentGameSearch === idx && item.title.length > 0 && (
+                            <div className="absolute top-full left-0 right-0 mt-1 bg-[#06141B] border border-[#253745] rounded-lg shadow-xl max-h-40 overflow-y-auto z-[200]">
+                              {catalog.filter(g => g.title.toLowerCase().includes(item.title.toLowerCase())).map(game => (
+                                <div 
+                                  key={game.title} 
+                                  className="p-3 text-sm text-white hover:bg-[#253745] cursor-pointer border-b border-[#253745]/50 last:border-0"
+                                  onClick={() => {
+                                    const newItems = [...rentFormData.items];
+                                    newItems[idx].title = game.title;
+                                    setRentFormData({...rentFormData, items: newItems});
+                                    setActiveRentGameSearch(null);
+                                  }}
+                                >
+                                  {game.title}
+                                </div>
+                              ))}
+                              {catalog.filter(g => g.title.toLowerCase().includes(item.title.toLowerCase())).length === 0 && (
+                                <div className="p-3 text-sm text-[#9BA8AB] italic">No games found</div>
+                              )}
+                            </div>
+                          )}
                         </div>
                         <div className="w-1/3">
                           <input type="text" placeholder="Period (e.g. 1 Month)" required value={item.rentPeriod} onChange={e => {
@@ -1436,6 +1533,19 @@ export default function AdminDashboard() {
                       </div>
                     </div>
 
+                    <div className="mt-4">
+                      <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Game Description (Optional for Non-Steam)</label>
+                      <textarea value={formData.description || ''} onChange={e => setFormData({ ...formData, description: e.target.value })} className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A] min-h-[100px]" placeholder="Enter description manually for games not on Steam (supports HTML formatting)"></textarea>
+                    </div>
+
+                    <div className="mt-4 mb-4">
+                      <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Gallery Image URLs (Comma Separated)</label>
+                      <input type="text" value={formData.screenshots?.join(', ') || ''} onChange={e => {
+                        const urls = e.target.value.split(',').map(url => url.trim()).filter(Boolean);
+                        setFormData({ ...formData, screenshots: urls.length > 0 ? urls : undefined });
+                      }} className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" placeholder="https://image1.jpg, https://image2.jpg" />
+                    </div>
+
                     {/* UPGRADE: New section for Store Placements inside the Edit Game modal */}
                     <div>
                       <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Store Placements</label>
@@ -1518,7 +1628,33 @@ export default function AdminDashboard() {
                         {formData.variants && formData.variants.length > 0 && (
                           <div className="space-y-3 mb-4">
                             {formData.variants.map((variant, index) => (
-                              <div key={index} className="flex gap-2 items-start bg-[#06141B] border border-[#253745] p-3 rounded-xl">
+                              <div 
+                                key={index} 
+                                draggable
+                                onDragStart={(e) => {
+                                  e.dataTransfer.setData('variantIndex', index.toString());
+                                  e.currentTarget.style.opacity = '0.5';
+                                }}
+                                onDragEnd={(e) => {
+                                  e.currentTarget.style.opacity = '1';
+                                }}
+                                onDragOver={(e) => {
+                                  e.preventDefault();
+                                }}
+                                onDrop={(e) => {
+                                  e.preventDefault();
+                                  const dragIndex = parseInt(e.dataTransfer.getData('variantIndex'));
+                                  if (isNaN(dragIndex) || dragIndex === index) return;
+                                  const newVariants = [...(formData.variants || [])];
+                                  const dragged = newVariants.splice(dragIndex, 1)[0];
+                                  newVariants.splice(index, 0, dragged);
+                                  setFormData({ ...formData, variants: newVariants });
+                                }}
+                                className="flex gap-2 items-start bg-[#06141B] border border-[#253745] p-3 rounded-xl cursor-move hover:border-[#4A5C6A] transition-colors"
+                              >
+                                <div className="pt-2 text-[#4A5C6A] shrink-0">
+                                  <GripVertical className="w-5 h-5" />
+                                </div>
                                 <div className="flex-1 space-y-2">
                                   <input
                                     type="text"
@@ -1562,7 +1698,7 @@ export default function AdminDashboard() {
                                     const newVariants = (formData.variants || []).filter((_, i) => i !== index);
                                     setFormData({ ...formData, variants: newVariants });
                                   }}
-                                  className="text-red-400 hover:text-white hover:bg-red-500/20 p-2 rounded-lg transition-colors"
+                                  className="text-red-400 hover:text-white hover:bg-red-500/20 p-2 rounded-lg transition-colors shrink-0"
                                 >
                                   <Trash2 className="w-4 h-4" />
                                 </button>

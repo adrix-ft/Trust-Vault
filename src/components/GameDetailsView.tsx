@@ -266,10 +266,10 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
                       <span className={`text-xs font-bold uppercase tracking-wider ${selectedVariantIndex === idx ? 'text-white' : 'text-[#CCD0CF]'}`}>{variant.name}</span>
                       <div 
                         onClick={(e) => { e.stopPropagation(); setInfoVariant(variant.name); }} 
-                        className="text-[#4A5C6A] hover:text-white transition-colors p-1"
+                        className="text-[#9BA8AB] hover:text-white bg-[#253745] hover:bg-[#4A5C6A] rounded-full transition-all p-1.5 ml-2 cursor-pointer shadow-sm flex items-center justify-center"
                         title="What does this mean?"
                       >
-                        <Info className="w-3.5 h-3.5" />
+                        <Info className="w-4 h-4" />
                       </div>
                     </div>
                     <span className="text-sm font-black text-white shrink-0">{variant.price}</span>

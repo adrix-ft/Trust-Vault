@@ -31,7 +31,7 @@ export default function GameLibrary() {
 
   return (
     <section>
-      <SectionHeader title={selectedCategory.toUpperCase() + (selectedCategory === 'Store' ? " CATALOG" : "")} />
+      <SectionHeader title={selectedCategory === 'Store' ? "ALL GAMES" : selectedCategory.toUpperCase()} />
 
       <div className="relative min-h-[400px]">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">

@@ -95,10 +95,7 @@ export default function Navbar() {
             className="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center gap-1.5 whitespace-nowrap"
           >
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-[#CCD0CF] to-[#9BA8AB] group-hover:opacity-90 transition-opacity">
-              Trust
-            </span>
-            <span className="text-[9px] sm:text-[10px] uppercase font-extrabold tracking-widest px-2 py-0.5 rounded-full bg-[#253745]/50 border border-[#4A5C6A]/30 text-[#CCD0CF] whitespace-nowrap shadow-sm">
-              VAULT
+              Trust Vault
             </span>
           </motion.div>
         </motion.div>
