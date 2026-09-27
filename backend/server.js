@@ -36,6 +36,107 @@ const orderLimiter = rateLimit({
 
 // ==================== PRODUCTS ENDPOINTS ====================
 
+// ==================== SUBSCRIPTIONS ENDPOINTS ====================
+
+app.get('/api/subscriptions', async (req, res) => {
+  try {
+    const { data, error } = await supabase.from('subscriptions').select('*').order('id', { ascending: true });
+    if (error) throw error;
+    
+    const formattedData = data.map(sub => ({
+      id: sub.id.toString(),
+      name: sub.name,
+      logoUrl: sub.logo_url,
+      bannerUrl: sub.banner_url,
+      themeColor: sub.theme_color,
+      badge: sub.badge,
+      description: sub.description,
+      pricing: sub.pricing ? JSON.parse(sub.pricing) : [],
+      details: sub.details ? JSON.parse(sub.details) : []
+    }));
+    
+    res.json(formattedData);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/subscriptions', async (req, res) => {
+  try {
+    const sub = req.body;
+    const dbSub = {
+      name: sub.name,
+      logo_url: sub.logoUrl,
+      banner_url: sub.bannerUrl,
+      theme_color: sub.themeColor,
+      badge: sub.badge,
+      description: sub.description,
+      pricing: JSON.stringify(sub.pricing),
+      details: JSON.stringify(sub.details)
+    };
+    const { data, error } = await supabase.from('subscriptions').insert([dbSub]).select();
+    if (error) throw error;
+    
+    const inserted = data[0];
+    res.json({
+      id: inserted.id.toString(),
+      name: inserted.name,
+      logoUrl: inserted.logo_url,
+      bannerUrl: inserted.banner_url,
+      themeColor: inserted.theme_color,
+      badge: inserted.badge,
+      description: inserted.description,
+      pricing: JSON.parse(inserted.pricing),
+      details: JSON.parse(inserted.details)
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put('/api/subscriptions/:id', async (req, res) => {
+  try {
+    const sub = req.body;
+    const dbSub = {
+      name: sub.name,
+      logo_url: sub.logoUrl,
+      banner_url: sub.bannerUrl,
+      theme_color: sub.themeColor,
+      badge: sub.badge,
+      description: sub.description,
+      pricing: JSON.stringify(sub.pricing),
+      details: JSON.stringify(sub.details)
+    };
+    const { data, error } = await supabase.from('subscriptions').update(dbSub).eq('id', req.params.id).select();
+    if (error) throw error;
+    
+    const updated = data[0];
+    res.json({
+      id: updated.id.toString(),
+      name: updated.name,
+      logoUrl: updated.logo_url,
+      bannerUrl: updated.banner_url,
+      themeColor: updated.theme_color,
+      badge: updated.badge,
+      description: updated.description,
+      pricing: JSON.parse(updated.pricing),
+      details: JSON.parse(updated.details)
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/api/subscriptions/:id', async (req, res) => {
+  try {
+    const { error } = await supabase.from('subscriptions').delete().eq('id', req.params.id);
+    if (error) throw error;
+    res.json({ message: 'Deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get('/api/products', async (req, res) => {
   try {
     const { data, error } = await supabase.from('products').select('*');

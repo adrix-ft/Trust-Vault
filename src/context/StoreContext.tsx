@@ -181,36 +181,101 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.setItem('amin_game_bundle_discounts', JSON.stringify(discounts));
   };
 
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>(() => {
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+
+  // Fetch Subscriptions from Backend
+  useEffect(() => {
+    const fetchSubscriptions = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/subscriptions`);
+        if (response.ok) {
+          const data = await response.json();
+          setSubscriptions(data);
+        } else {
+          // Fallback to local storage if API fails initially
+          const saved = localStorage.getItem('amin_subscriptions');
+          if (saved) setSubscriptions(JSON.parse(saved));
+        }
+      } catch (err) {
+        console.error('Failed to fetch subscriptions:', err);
+        const saved = localStorage.getItem('amin_subscriptions');
+        if (saved) setSubscriptions(JSON.parse(saved));
+      }
+    };
+    fetchSubscriptions();
+  }, []);
+
+  const addSubscription = async (sub: Subscription) => {
     try {
-      const saved = localStorage.getItem('amin_subscriptions');
-      if (saved) return JSON.parse(saved);
-    } catch {}
-    return [];
-  });
-
-  const addSubscription = (sub: Subscription) => {
-    setSubscriptions(prev => {
-      const next = [...prev, sub];
-      localStorage.setItem('amin_subscriptions', JSON.stringify(next));
-      return next;
-    });
+      const response = await fetch(`${API_BASE_URL}/api/subscriptions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(sub)
+      });
+      if (!response.ok) throw new Error('Failed to add subscription');
+      const inserted = await response.json();
+      
+      setSubscriptions(prev => {
+        const next = [...prev, inserted];
+        localStorage.setItem('amin_subscriptions', JSON.stringify(next));
+        return next;
+      });
+    } catch (err) {
+      console.error(err);
+      // Fallback for offline mode
+      setSubscriptions(prev => {
+        const next = [...prev, sub];
+        localStorage.setItem('amin_subscriptions', JSON.stringify(next));
+        return next;
+      });
+    }
   };
 
-  const updateSubscription = (id: string, updatedSub: Subscription) => {
-    setSubscriptions(prev => {
-      const next = prev.map(s => s.id === id ? updatedSub : s);
-      localStorage.setItem('amin_subscriptions', JSON.stringify(next));
-      return next;
-    });
+  const updateSubscription = async (id: string, updatedSub: Subscription) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/subscriptions/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedSub)
+      });
+      if (!response.ok) throw new Error('Failed to update subscription');
+      const updated = await response.json();
+      
+      setSubscriptions(prev => {
+        const next = prev.map(s => s.id === id ? updated : s);
+        localStorage.setItem('amin_subscriptions', JSON.stringify(next));
+        return next;
+      });
+    } catch (err) {
+      console.error(err);
+      setSubscriptions(prev => {
+        const next = prev.map(s => s.id === id ? updatedSub : s);
+        localStorage.setItem('amin_subscriptions', JSON.stringify(next));
+        return next;
+      });
+    }
   };
 
-  const removeSubscription = (id: string) => {
-    setSubscriptions(prev => {
-      const next = prev.filter(s => s.id !== id);
-      localStorage.setItem('amin_subscriptions', JSON.stringify(next));
-      return next;
-    });
+  const removeSubscription = async (id: string) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/subscriptions/${id}`, {
+        method: 'DELETE'
+      });
+      if (!response.ok) throw new Error('Failed to delete subscription');
+      
+      setSubscriptions(prev => {
+        const next = prev.filter(s => s.id !== id);
+        localStorage.setItem('amin_subscriptions', JSON.stringify(next));
+        return next;
+      });
+    } catch (err) {
+      console.error(err);
+      setSubscriptions(prev => {
+        const next = prev.filter(s => s.id !== id);
+        localStorage.setItem('amin_subscriptions', JSON.stringify(next));
+        return next;
+      });
+    }
   };
   const updateCollection = async (id: string, updatedCollection: Collection) => {
     setCollections(prev => {
