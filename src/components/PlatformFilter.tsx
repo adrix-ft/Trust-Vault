@@ -6,8 +6,8 @@ export default function PlatformFilter() {
   const { platformFilter, setPlatformFilter, selectedCategory, setSelectedCategory } = useStore();
 
   const filters = [
-    { id: 'PC', type: 'platform', icon: SteamIcon, isCustom: true },
     { id: 'PS5', type: 'platform', icon: PSIcon, isCustom: true },
+    { id: 'PC', type: 'platform', icon: SteamIcon, isCustom: true },
     { id: 'Custom Bundle', label: 'Build Bundle', icon: Package, type: 'category', iconClass: 'text-emerald-400' },
     { id: 'Proofs', label: 'Proofs', icon: ShieldCheck, type: 'category', iconClass: 'text-green-400' }
   ];
