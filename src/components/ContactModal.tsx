@@ -9,11 +9,6 @@ interface ContactModalProps {
 export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   if (!isOpen) return null;
 
-  const handleTelegramClick = () => {
-    window.open('https://telegram.me/storevault', '_blank');
-    onClose();
-  };
-
   const handleWhatsAppClick = () => {
     window.open('https://chat.whatsapp.com/Gfn8TCwmoDtIHaoff5HIot?s=sh&p=i&mlu=4&amv=1', '_blank');
     onClose();
@@ -37,23 +32,6 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
         </div>
 
         <div className="space-y-3">
-          {/* Telegram Option */}
-          <button
-            onClick={handleTelegramClick}
-            className="w-full flex items-center justify-between p-4 rounded-lg bg-[#06141B] border border-[#253745] hover:border-[#4A5C6A] hover:bg-[#192b38] transition-all group"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#229ED9]/20 flex items-center justify-center text-[#229ED9] group-hover:scale-110 transition-transform">
-                <Send className="w-5 h-5 ml-0.5" />
-              </div>
-              <div className="text-left">
-                <div className="text-sm font-bold text-[#CCD0CF] uppercase tracking-wide">Telegram</div>
-                <div className="text-[11px] text-[#9BA8AB]">Chat with our support channel</div>
-              </div>
-            </div>
-            <span className="text-xs font-semibold text-[#229ED9] uppercase tracking-wider bg-[#229ED9]/10 px-3 py-1 rounded-full border border-[#229ED9]/20">Connect</span>
-          </button>
-
           {/* WhatsApp Option */}
           <button
             onClick={handleWhatsAppClick}

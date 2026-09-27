@@ -13,7 +13,10 @@ export default function FilteredGames({ category, genre, title, actionType = 'bu
     }
     
     if (platformFilter !== 'All') {
-      if (!game.categories?.some(cat => cat.toUpperCase() === platformFilter.toUpperCase())) return false;
+      if (!game.categories?.some(cat => {
+        if (platformFilter === 'PS' && cat.toUpperCase().includes('PS')) return true;
+        return cat.toUpperCase() === platformFilter.toUpperCase();
+      })) return false;
     }
     return true;
   });

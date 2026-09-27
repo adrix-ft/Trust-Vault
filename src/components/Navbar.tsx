@@ -1,4 +1,4 @@
-import { Search, ShoppingCart, Check, X, MessageCircle, Zap, TrendingUp, Monitor, Gamepad2, ShieldCheck, Clock, Package } from 'lucide-react';
+import { Search, ShoppingCart, Check, X, MessageCircle, Zap, TrendingUp, Monitor, Gamepad2, ShieldCheck, Clock, Package, Repeat } from 'lucide-react';
 import { useStore, Game } from '../context/StoreContext';
 import { motion, AnimatePresence } from 'motion/react';
 import { useState, useRef, useEffect, useMemo } from 'react';
@@ -14,9 +14,15 @@ const SteamIcon = ({ className }: { className?: string }) => (
 );
 
 const PSIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 9.2 24 5.6" className={`fill-current ${className}`} style={{ height: '1.2em', width: 'auto' }} xmlns="http://www.w3.org/2000/svg">
-    <path d="M10.4499 14.56905a1.38287 1.38287 0 001.38287-1.38287v-2.37841a.83315.83315 0 01.83416-.83315h2.68403a.03732.03732 0 00.03631-.03732V9.4612a.03631.03631 0 00-.0363-.0363H12.1172a1.38287 1.38287 0 00-1.38388 1.38286v2.38043a.83416.83416 0 01-.83315.83415H7.25347a.03631.03631 0 00-.03631.03632v.47608a.03631.03631 0 00.03631.03631zm6.04488-3.21156V9.4612a.03631.03631 0 01.0363-.0363h7.30772a.03732.03732 0 01.03732.0363v.47609a.03833.03833 0 01-.03732.03732h-6.20929a.03631.03631 0 00-.0363.03631v1.2356a.3954.3954 0 00.3964.39741h4.62267a1.46457 1.46457 0 010 2.9251h-6.0812a.03631.03631 0 01-.0363-.0363v-.47407a.03631.03631 0 01.0363-.03632h5.53047a.91586.91586 0 10-.00706-1.8307h-4.72656a.83315.83315 0 01-.83315-.83416m-10.84608.28645a.83466.83466 0 000-1.66932H.03654a.03732.03732 0 01-.03632-.03732V9.4612a.03631.03631 0 01.03632-.0363h6.1528a1.38388 1.38388 0 010 2.76673H1.9328a.83315.83315 0 00-.83315.83416v1.51299a.03631.03631 0 01-.03631.0363H.03654a.03631.03631 0 01-.03632-.04034v-1.51298a1.38287 1.38287 0 011.38388-1.37783Z"/>
-  </svg>
+  <div className={`flex items-center gap-1.5 ${className}`}>
+    <svg viewBox="0 9.2 24 5.6" className="fill-current" style={{ height: '1.2em', width: 'auto' }} xmlns="http://www.w3.org/2000/svg">
+      <path d="M10.4499 14.56905a1.38287 1.38287 0 001.38287-1.38287v-2.37841a.83315.83315 0 01.83416-.83315h2.68403a.03732.03732 0 00.03631-.03732V9.4612a.03631.03631 0 00-.0363-.0363H12.1172a1.38287 1.38287 0 00-1.38388 1.38286v2.38043a.83416.83416 0 01-.83315.83415H7.25347a.03631.03631 0 00-.03631.03632v.47608a.03631.03631 0 00.03631.03631zm6.04488-3.21156V9.4612a.03631.03631 0 01.0363-.0363h7.30772a.03732.03732 0 01.03732.0363v.47609a.03833.03833 0 01-.03732.03732h-6.20929a.03631.03631 0 00-.0363.03631v1.2356a.3954.3954 0 00.3964.39741h4.62267a1.46457 1.46457 0 010 2.9251h-6.0812a.03631.03631 0 01-.0363-.0363v-.47407a.03631.03631 0 01.0363-.03632h5.53047a.91586.91586 0 10-.00706-1.8307h-4.72656a.83315.83315 0 01-.83315-.83416m-10.84608.28645a.83466.83466 0 000-1.66932H.03654a.03732.03732 0 01-.03632-.03732V9.4612a.03631.03631 0 01.03632-.0363h6.1528a1.38388 1.38388 0 010 2.76673H1.9328a.83315.83315 0 00-.83315.83416v1.51299a.03631.03631 0 01-.03631.0363H.03654a.03631.03631 0 01-.03632-.04034v-1.51298a1.38287 1.38287 0 011.38388-1.37783Z"/>
+    </svg>
+    <span className="font-bold text-[10px] md:text-xs">/</span>
+    <svg viewBox="0 9.2 24 5.6" className="fill-current" style={{ height: '1.2em', width: 'auto' }} xmlns="http://www.w3.org/2000/svg">
+      <path d="M12.302 13.18v-2.387c0-.486.227-.834.712-.834h2.99c.017 0 .035-.018.035-.036v-.475c0-.004 0-.008-.003-.012h-3.66c-.792.1-1.18.653-1.18 1.357v2.386c0 .482-.233.831-.71.831H7.332c-.018 0-.036.012-.036.036v.475c0 .02.01.035.023.04h3.584c.933-.025 1.393-.62 1.393-1.385zM.024 14.564h1.05a.042.042 0 00.025-.04v-1.52c0-.487.275-.823.676-.823h4.323c.974 0 1.445-.6 1.445-1.384 0-.705-.386-1.257-1.18-1.357H.006c0 .003-.006.005-.006.01v.475c0 .024.013.036.037.036h5.697c.484 0 .712.35.712.833 0 .484-.227.836-.712.836H1.226c-.7 0-1.226.592-1.226 1.373v1.519c0 .02.01.036.028.04zm15.998-.55h5.738c.017 0 .03.012.03.024v.483c0 .024.017.036.035.036h1.035c.018 0 .036-.01.036-.036v-.475c0-.018.02-.036.04-.036h1.028c.024 0 .036-.018.036-.036v-.484c0-.018-.01-.036-.035-.036h-1.03c-.02 0-.037-.017-.037-.035V9.96c0-.283-.104-.463-.28-.523h-.3a1.153 1.153 0 00-.303.132l-6.18 3.815c-.24.15-.323.318-.263.445.048.104.185.182.454.182zm.895-.637l4.79-2.961c.03-.024.09-.018.09.048v2.961c0 .018-.016.036-.034.036h-4.817c-.04 0-.06-.012-.065-.024-.006-.024.005-.042.036-.06z"/>
+    </svg>
+  </div>
 );
 
 export default function Navbar() {
@@ -29,11 +35,11 @@ export default function Navbar() {
   const cartItemCount = cart.length;
 
   const filters = [
+    { id: 'PS', type: 'platform', icon: PSIcon, isCustom: true },
     { id: 'PC', type: 'platform', icon: SteamIcon, isCustom: true },
-    { id: 'PS5', type: 'platform', icon: PSIcon, isCustom: true },
+    { id: 'Subscriptions', label: 'Subscriptions', type: 'category', icon: Repeat, iconClass: 'text-purple-400' },
     { id: 'Custom Bundle', label: 'Build Bundle', type: 'category', icon: Package, iconClass: 'text-emerald-400' },
-    { id: 'Proofs', label: 'Proofs', type: 'category', icon: ShieldCheck, iconClass: 'text-green-400' },
-    { id: 'Contact Us', label: 'Contact Us', type: 'category', icon: MessageCircle, iconClass: 'text-blue-400' }
+    { id: 'Proofs', label: 'Proofs', type: 'category', icon: ShieldCheck, iconClass: 'text-green-400' }
   ];
 
   useEffect(() => {

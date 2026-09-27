@@ -14,7 +14,10 @@ export default function Hero() {
     if (!game.showInHero) return false;
 
     if (platformFilter !== 'All') {
-      const isMatch = game.categories?.some(cat => String(cat).toUpperCase() === platformFilter.toUpperCase());
+      const isMatch = game.categories?.some(cat => {
+        if (platformFilter === 'PS' && String(cat).toUpperCase().includes('PS')) return true;
+        return String(cat).toUpperCase() === platformFilter.toUpperCase();
+      });
       if (!isMatch) return false;
     }
     return true;
@@ -25,7 +28,10 @@ export default function Hero() {
   if (heroGames.length === 0) {
     heroGames = catalog.filter(game => {
       if (platformFilter !== 'All') {
-        return game.categories?.some(cat => String(cat).toUpperCase() === platformFilter.toUpperCase());
+        return game.categories?.some(cat => {
+          if (platformFilter === 'PS' && String(cat).toUpperCase().includes('PS')) return true;
+          return String(cat).toUpperCase() === platformFilter.toUpperCase();
+        });
       }
       return true;
     }).sort((a, b) => (b.onSale ? 1 : 0) - (a.onSale ? 1 : 0)).slice(0, 5);

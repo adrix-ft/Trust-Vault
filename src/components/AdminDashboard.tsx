@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useStore, Game } from '../context/StoreContext';
 import { motion, AnimatePresence } from 'motion/react';
-import { LogOut, Plus, Trash2, Edit2, Copy, X, RefreshCw, Image as ImageIcon, Upload, ChevronLeft, ChevronRight, ShieldCheck, Clock, Layers, Gamepad2, Database, Package, Search, MessageCircle, CheckCircle } from 'lucide-react';
+import { LogOut, Plus, Trash2, Edit2, Copy, X, RefreshCw, Image as ImageIcon, Upload, ChevronLeft, ChevronRight, ShieldCheck, Clock, Layers, Gamepad2, Database, Package, Search, MessageCircle, CheckCircle, Repeat } from 'lucide-react';
 import { getGameCoverUrl } from '../utils/image';
 
 // FIXED: Dynamically load the API URL from Vercel Environment Variables
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://amin-game-store-backend.onrender.com';
 
 export default function AdminDashboard() {
-  const { catalog, updateGame, addGame, removeGame, resetCatalog, setIsAdmin, collections, updateCollection, addCollection, removeCollection, showToast, setConfirmReq } = useStore();
+  const { catalog, updateGame, addGame, removeGame, resetCatalog, setIsAdmin, collections, updateCollection, addCollection, removeCollection, bundleDiscounts, updateBundleDiscounts, showToast, setConfirmReq } = useStore();
   
-  const [activeTab, setActiveTab] = useState<'catalog' | 'bundles' | 'proofs' | 'rents'>('bundles');
+  const [activeTab, setActiveTab] = useState<'catalog' | 'bundles' | 'proofs' | 'rents' | 'subscriptions'>('bundles');
   const [showForm, setShowForm] = useState(false);
   const [editingTitle, setEditingTitle] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -37,6 +37,42 @@ export default function AdminDashboard() {
   const [showBulkAdd, setShowBulkAdd] = useState(false);
   const [bulkGamesList, setBulkGamesList] = useState('');
   const [bulkProgress, setBulkProgress] = useState<string | null>(null);
+
+  const defaultSubscription = { name: '', logoUrl: '', bannerUrl: '', themeColor: '#10b981', badge: '', description: '', pricing: [{ duration: '', price: '', originalPrice: '' }], details: '' };
+  const [subFormData, setSubFormData] = useState(defaultSubscription);
+  const [editingSubId, setEditingSubId] = useState<string | null>(null);
+
+  const { subscriptions, addSubscription, updateSubscription, removeSubscription } = useStore();
+
+  const handleSaveSubscription = () => {
+    if (!subFormData.name || subFormData.pricing.length === 0) {
+      showToast('Name and at least one pricing option are required', 'error');
+      return;
+    }
+    
+    const newSub = {
+      id: editingSubId || Date.now().toString(),
+      name: subFormData.name,
+      logoUrl: subFormData.logoUrl,
+      bannerUrl: subFormData.bannerUrl,
+      themeColor: subFormData.themeColor,
+      badge: subFormData.badge,
+      description: subFormData.description,
+      pricing: subFormData.pricing.filter(p => p.duration && p.price),
+      details: subFormData.details.split('\n').map(d => d.trim()).filter(Boolean)
+    };
+
+    if (editingSubId) {
+      updateSubscription(editingSubId, newSub);
+      showToast('Subscription updated', 'success');
+    } else {
+      addSubscription(newSub);
+      showToast('Subscription added', 'success');
+    }
+    
+    setSubFormData(defaultSubscription);
+    setEditingSubId(null);
+  };
 
   const handleBulkAddSubmit = async () => {
     const lines = bulkGamesList.split('\n').map(l => l.trim()).filter(Boolean);
@@ -471,6 +507,7 @@ export default function AdminDashboard() {
           {[
             { id: 'catalog', label: 'Store Catalog', icon: Gamepad2, count: catalog.length },
             { id: 'bundles', label: 'Bundle Game List', icon: Package, count: existingBundles.length },
+            { id: 'subscriptions', label: 'Subscriptions', icon: Repeat },
             { id: 'proofs', label: 'Customer Proofs', icon: ShieldCheck },
             { id: 'rents', label: 'Rent Tracking', icon: Database, count: rents.length }
           ].map(tab => {
@@ -495,6 +532,133 @@ export default function AdminDashboard() {
             );
           })}
         </div>
+
+        {activeTab === 'subscriptions' && (
+          <div className="bg-[#11212D] border border-[#253745] rounded-2xl overflow-hidden shadow-2xl p-6">
+            <h2 className="text-xl font-bold text-white mb-4">Manage Subscriptions</h2>
+            <p className="text-[#9BA8AB] text-sm">Add, edit, or remove subscription offerings from your store.</p>
+            
+            <div className="mt-6 border border-[#253745] p-6 rounded-xl bg-[#06141B]">
+              <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">{editingSubId ? 'Edit Subscription' : 'Add New Subscription'}</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-[#9BA8AB] text-[10px] font-bold uppercase tracking-wider mb-1">Name</label>
+                  <input type="text" value={subFormData.name} onChange={e => setSubFormData({...subFormData, name: e.target.value})} className="w-full bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="e.g. Netflix Premium" />
+                </div>
+                <div>
+                  <label className="block text-[#9BA8AB] text-[10px] font-bold uppercase tracking-wider mb-1">Logo URL</label>
+                  <input type="text" value={subFormData.logoUrl} onChange={e => setSubFormData({...subFormData, logoUrl: e.target.value})} className="w-full bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="https://..." />
+                </div>
+                <div>
+                  <label className="block text-[#9BA8AB] text-[10px] font-bold uppercase tracking-wider mb-1">Banner Image URL</label>
+                  <input type="text" value={subFormData.bannerUrl} onChange={e => setSubFormData({...subFormData, bannerUrl: e.target.value})} className="w-full bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="https://..." />
+                </div>
+                <div className="flex gap-4">
+                  <div className="flex-1">
+                    <label className="block text-[#9BA8AB] text-[10px] font-bold uppercase tracking-wider mb-1">Theme Color</label>
+                    <div className="flex items-center gap-2">
+                      <input type="color" value={subFormData.themeColor || '#10b981'} onChange={e => setSubFormData({...subFormData, themeColor: e.target.value})} className="w-10 h-10 rounded cursor-pointer border border-[#253745] bg-[#11212D]" />
+                      <input type="text" value={subFormData.themeColor} onChange={e => setSubFormData({...subFormData, themeColor: e.target.value})} className="flex-1 bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="#HEX" />
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <label className="block text-[#9BA8AB] text-[10px] font-bold uppercase tracking-wider mb-1">Badge Text</label>
+                    <input type="text" value={subFormData.badge} onChange={e => setSubFormData({...subFormData, badge: e.target.value})} className="w-full bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="e.g. Popular" />
+                  </div>
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-[#9BA8AB] text-[10px] font-bold uppercase tracking-wider mb-1">Short Description</label>
+                  <input type="text" value={subFormData.description} onChange={e => setSubFormData({...subFormData, description: e.target.value})} className="w-full bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="A short catchy description of the plan..." />
+                </div>
+                
+                <div className="md:col-span-2 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-[#9BA8AB] text-[10px] font-bold uppercase tracking-wider">Pricing Options</label>
+                    <button onClick={() => setSubFormData({...subFormData, pricing: [...subFormData.pricing, {duration: '', price: ''}]})} className="text-emerald-400 hover:text-emerald-300 text-xs font-bold flex items-center gap-1 cursor-pointer"><Plus className="w-3 h-3"/> Add Option</button>
+                  </div>
+                  {(subFormData.pricing || []).map((p, idx) => (
+                    <div key={idx} className="flex items-center gap-2">
+                      <input type="text" value={p.duration} onChange={e => { const newP = [...subFormData.pricing]; newP[idx].duration = e.target.value; setSubFormData({...subFormData, pricing: newP}); }} className="flex-1 bg-[#11212D] text-white px-4 py-2 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="Duration (1 Month)" />
+                      <input type="text" value={p.price} onChange={e => { const newP = [...subFormData.pricing]; newP[idx].price = e.target.value; setSubFormData({...subFormData, pricing: newP}); }} className="flex-1 bg-[#11212D] text-white px-4 py-2 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="Price (500Rs)" />
+                      <input type="text" value={p.originalPrice || ''} onChange={e => { const newP = [...subFormData.pricing]; newP[idx].originalPrice = e.target.value; setSubFormData({...subFormData, pricing: newP}); }} className="flex-1 bg-[#11212D] text-[#9BA8AB] px-4 py-2 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="Old Price (Optional)" />
+                      <button onClick={() => setSubFormData({...subFormData, pricing: subFormData.pricing.filter((_, i) => i !== idx)})} className="p-2 bg-red-500/10 text-red-400 rounded-xl hover:bg-red-500/20 cursor-pointer"><Trash2 className="w-4 h-4"/></button>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-[#9BA8AB] text-[10px] font-bold uppercase tracking-wider mb-1">Subscription Details (One feature per line)</label>
+                  <textarea value={subFormData.details} onChange={e => setSubFormData({...subFormData, details: e.target.value})} className="w-full bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none h-24" placeholder="4K Ultra HD&#10;4 Screens&#10;No Ads"></textarea>
+                </div>
+              </div>
+              
+              <div className="flex gap-2 mt-4">
+                <button onClick={handleSaveSubscription} className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold uppercase tracking-wider text-xs px-6 py-2.5 rounded-xl shadow-lg transition-colors cursor-pointer">
+                  {editingSubId ? 'Update Subscription' : 'Save Subscription'}
+                </button>
+                {editingSubId && (
+                  <button onClick={() => { setEditingSubId(null); setSubFormData(defaultSubscription); }} className="bg-[#253745] hover:bg-[#4A5C6A] text-white font-bold uppercase tracking-wider text-xs px-6 py-2.5 rounded-xl shadow-lg transition-colors cursor-pointer">
+                    Cancel
+                  </button>
+                )}
+              </div>
+            </div>
+            
+            <div className="mt-8 space-y-4">
+              <h3 className="text-sm font-bold text-white uppercase tracking-wider">Current Subscriptions ({subscriptions.length})</h3>
+              {subscriptions.length === 0 ? (
+                <div className="text-[#9BA8AB] text-sm text-center py-10 bg-[#06141B] rounded-xl border border-[#253745]">
+                  No subscriptions added yet.
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {subscriptions.map(sub => (
+                    <div key={sub.id} className="bg-[#06141B] border border-[#253745] p-4 rounded-xl flex flex-col justify-between shadow-lg">
+                      <div className="flex justify-between items-start">
+                        <div className="flex items-center gap-3">
+                          {sub.logoUrl ? (
+                            <img src={sub.logoUrl} alt={sub.name} className="w-10 h-10 rounded-lg object-cover bg-white p-0.5" />
+                          ) : (
+                            <div className="w-10 h-10 rounded-lg bg-[#253745] flex items-center justify-center text-[#9BA8AB]">
+                              <Repeat className="w-5 h-5" />
+                            </div>
+                          )}
+                          <h4 className="text-base font-bold text-white">{sub.name}</h4>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <button onClick={() => {
+                            setEditingSubId(sub.id);
+                            setSubFormData({ 
+                              name: sub.name || sub.title || '', 
+                              logoUrl: sub.logoUrl || '', 
+                              bannerUrl: sub.bannerUrl || '',
+                              themeColor: sub.themeColor || '#10b981',
+                              badge: sub.badge || '',
+                              description: sub.description || '',
+                              pricing: Array.isArray(sub.pricing) ? sub.pricing : [], 
+                              details: (sub.details || sub.features || []).join('\n') 
+                            });
+                          }} className="p-1.5 text-blue-400 hover:bg-blue-500/10 rounded-lg cursor-pointer">
+                            <Edit2 className="w-4 h-4" />
+                          </button>
+                          <button onClick={() => {
+                            setConfirmReq({ message: `Delete ${sub.name}?`, onConfirm: () => removeSubscription(sub.id) });
+                          }} className="p-1.5 text-red-400 hover:bg-red-500/10 rounded-lg cursor-pointer">
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="mt-4 text-[11px] text-[#9BA8AB] space-y-1">
+                        <p><strong className="text-[#CCD0CF]">Pricing:</strong> {sub.pricing ? sub.pricing.map(p => `${p.duration} (${p.price})`).join(', ') : ''}</p>
+                        <p><strong className="text-[#CCD0CF]">Features:</strong> {(sub.details || sub.features || []).length} listed</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {activeTab === 'catalog' && (
           <div className="bg-[#11212D] border border-[#253745] rounded-2xl overflow-hidden shadow-2xl space-y-0">
@@ -669,6 +833,68 @@ export default function AdminDashboard() {
                 </h2>
                 <p className="text-[#9BA8AB] text-xs mt-1">Games tagged for visitors to create their own custom bundles.</p>
               </div>
+            </div>
+
+            <div className="bg-[#11212D] border border-[#253745] p-6 rounded-2xl shadow-xl">
+              <h3 className="text-sm font-black tracking-wider text-white uppercase mb-4">Discount Configurations</h3>
+              <div className="space-y-3">
+                {bundleDiscounts.sort((a, b) => a.minGames - b.minGames).map((discount, idx) => (
+                  <div key={idx} className="flex items-center gap-3 bg-[#06141B] p-3 rounded-xl border border-[#253745]">
+                    <div className="flex flex-col flex-1">
+                      <label className="text-[10px] uppercase text-[#9BA8AB] font-bold">Minimum Games</label>
+                      <input 
+                        type="number" 
+                        value={discount.minGames} 
+                        onChange={(e) => {
+                          const val = parseInt(e.target.value);
+                          if (val >= 3) {
+                            const newDiscounts = [...bundleDiscounts];
+                            newDiscounts[idx].minGames = val;
+                            updateBundleDiscounts(newDiscounts);
+                          }
+                        }}
+                        className="bg-transparent border-none text-white text-xs font-bold focus:outline-none"
+                        min="3"
+                      />
+                    </div>
+                    <div className="flex flex-col flex-1 border-l border-[#253745] pl-3">
+                      <label className="text-[10px] uppercase text-[#9BA8AB] font-bold">Discount %</label>
+                      <input 
+                        type="number" 
+                        value={discount.discountPercentage} 
+                        onChange={(e) => {
+                          const val = parseInt(e.target.value);
+                          if (val >= 0 && val <= 100) {
+                            const newDiscounts = [...bundleDiscounts];
+                            newDiscounts[idx].discountPercentage = val;
+                            updateBundleDiscounts(newDiscounts);
+                          }
+                        }}
+                        className="bg-transparent border-none text-white text-xs font-bold focus:outline-none"
+                        min="0" max="100"
+                      />
+                    </div>
+                    <button 
+                      onClick={() => {
+                        const newDiscounts = bundleDiscounts.filter((_, i) => i !== idx);
+                        updateBundleDiscounts(newDiscounts);
+                      }}
+                      className="p-2 text-red-400 hover:bg-red-500/20 rounded-lg transition-colors cursor-pointer"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <button 
+                onClick={() => {
+                  const newDiscounts = [...bundleDiscounts, { minGames: 3, discountPercentage: 10 }];
+                  updateBundleDiscounts(newDiscounts);
+                }}
+                className="mt-4 flex items-center gap-2 bg-[#253745] hover:bg-[#4A5C6A] text-white px-4 py-2 rounded-xl text-[11px] font-bold uppercase transition-colors"
+              >
+                <Plus className="w-3.5 h-3.5" /> Add Discount Tier
+              </button>
             </div>
 
             <div className="overflow-x-auto bg-[#11212D] border border-[#253745] rounded-2xl shadow-2xl">

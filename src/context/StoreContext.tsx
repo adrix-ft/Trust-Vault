@@ -40,6 +40,24 @@ export type Collection = {
   customBannerUrl?: string;
 };
 
+export type BundleDiscount = {
+  minGames: number;
+  discountPercentage: number;
+};
+
+export type SubscriptionPricing = { duration: string; price: string; originalPrice?: string };
+export type Subscription = {
+  id: string;
+  name: string;
+  logoUrl: string;
+  bannerUrl?: string;
+  themeColor?: string;
+  badge?: string;
+  description?: string;
+  pricing: SubscriptionPricing[];
+  details: string[];
+};
+
 export type CartItem = Game & { purchaseType?: 'permanent' | 'rent' };
 export type ToastType = 'success' | 'error' | 'info';
 export type ToastMessage = { id: number; message: string; type: ToastType };
@@ -50,6 +68,12 @@ type StoreContextType = {
   updateCollection: (id: string, updatedCollection: Collection) => void;
   addCollection: (collection: Collection) => void;
   removeCollection: (id: string) => void;
+  bundleDiscounts: BundleDiscount[];
+  updateBundleDiscounts: (discounts: BundleDiscount[]) => void;
+  subscriptions: Subscription[];
+  addSubscription: (sub: Subscription) => void;
+  updateSubscription: (id: string, updatedSub: Subscription) => void;
+  removeSubscription: (id: string) => void;
   cart: CartItem[];
   addToCart: (game: Game, purchaseType?: 'permanent' | 'rent') => void;
   removeFromCart: (title: string) => void;
@@ -141,8 +165,53 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     return defaultCollections;
   });
 
+  const [bundleDiscounts, setBundleDiscounts] = useState<BundleDiscount[]>(() => {
+    try {
+      const saved = localStorage.getItem('amin_game_bundle_discounts');
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return [
+      { minGames: 3, discountPercentage: 10 },
+      { minGames: 5, discountPercentage: 20 }
+    ];
+  });
 
+  const updateBundleDiscounts = (discounts: BundleDiscount[]) => {
+    setBundleDiscounts(discounts);
+    localStorage.setItem('amin_game_bundle_discounts', JSON.stringify(discounts));
+  };
 
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>(() => {
+    try {
+      const saved = localStorage.getItem('amin_subscriptions');
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return [];
+  });
+
+  const addSubscription = (sub: Subscription) => {
+    setSubscriptions(prev => {
+      const next = [...prev, sub];
+      localStorage.setItem('amin_subscriptions', JSON.stringify(next));
+      return next;
+    });
+  };
+
+  const updateSubscription = (id: string, updatedSub: Subscription) => {
+    setSubscriptions(prev => {
+      const next = prev.map(s => s.id === id ? updatedSub : s);
+      localStorage.setItem('amin_subscriptions', JSON.stringify(next));
+      return next;
+    });
+  };
+
+  const removeSubscription = (id: string) => {
+    setSubscriptions(prev => {
+      const next = prev.filter(s => s.id !== id);
+      localStorage.setItem('amin_subscriptions', JSON.stringify(next));
+      return next;
+    });
+  };
   const updateCollection = async (id: string, updatedCollection: Collection) => {
     setCollections(prev => {
       const next = prev.map(c => c.id === id ? updatedCollection : c);
@@ -248,6 +317,8 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   return React.createElement(StoreContext.Provider, {
     value: {
       collections, updateCollection, addCollection, removeCollection,
+      bundleDiscounts, updateBundleDiscounts,
+      subscriptions, addSubscription, updateSubscription, removeSubscription,
       cart, addToCart, removeFromCart, clearCart,
       isCartOpen, setIsCartOpen,
       selectedCategory, setSelectedCategory,

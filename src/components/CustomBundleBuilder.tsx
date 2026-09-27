@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import PlatformTags from './PlatformTags';
 
 export default function CustomBundleBuilder() {
-  const { catalog, addToCart, showToast } = useStore();
+  const { catalog, addToCart, showToast, bundleDiscounts } = useStore();
   const [selectedGames, setSelectedGames] = useState<Game[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [activePlatform, setActivePlatform] = useState<'All' | 'PC' | 'PS'>('All');
@@ -43,11 +43,16 @@ export default function CustomBundleBuilder() {
   const calculateTotal = () => {
     const baseTotal = selectedGames.reduce((acc, game) => acc + getBasePrice(game), 0);
     let discount = 0;
-    if (selectedGames.length >= 5) {
-      discount = 0.20; // 20% off
-    } else if (selectedGames.length >= 3) {
-      discount = 0.10; // 10% off
+    
+    // Sort discounts descending by minGames to find the highest applicable tier
+    const sortedDiscounts = [...bundleDiscounts].sort((a, b) => b.minGames - a.minGames);
+    for (const d of sortedDiscounts) {
+      if (selectedGames.length >= d.minGames) {
+        discount = d.discountPercentage / 100;
+        break;
+      }
     }
+    
     const finalTotal = Math.floor(baseTotal * (1 - discount));
     
     return { baseTotal, finalTotal, discount };
@@ -55,8 +60,15 @@ export default function CustomBundleBuilder() {
 
   const { baseTotal, finalTotal, discount } = calculateTotal();
 
+  const minRequiredGames = bundleDiscounts.length > 0 
+    ? Math.min(...bundleDiscounts.map(d => d.minGames))
+    : 3;
+
   const handleAddBundle = () => {
-    if (selectedGames.length === 0) return;
+    if (selectedGames.length < minRequiredGames) {
+      showToast(`Please select at least ${minRequiredGames} games to build a bundle.`, 'error');
+      return;
+    }
 
     const customBundle: Game = {
       title: `Custom Bundle (${selectedGames.length} Games)`,
@@ -87,25 +99,25 @@ export default function CustomBundleBuilder() {
             Build Your Own Bundle
           </h1>
           <p className="text-[#9BA8AB] text-sm sm:text-base font-semibold max-w-xl mx-auto drop-shadow-md">
-            Mix and match your favorite eligible titles. The more you pick, the more you save! 
-            <strong className="text-emerald-400"> 10% off for 3+ games</strong>, and <strong className="text-emerald-400">20% off for 5+ games</strong>.
+            Mix and match your favorite eligible titles. The more you pick, the more you save!
+            {bundleDiscounts.length > 0 && (
+              <span className="block mt-1">
+                {bundleDiscounts.sort((a, b) => a.minGames - b.minGames).map((d, i) => (
+                  <span key={d.minGames}>
+                    {i > 0 && ', and '}
+                    <strong className="text-emerald-400">{d.discountPercentage}% off for {d.minGames}+ games</strong>
+                  </span>
+                ))}
+                .
+              </span>
+            )}
           </p>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 py-12">
         {/* Controls: Search & Platform Toggle */}
-        <div className="mb-8 flex flex-col md:flex-row gap-4 items-center justify-between max-w-3xl mx-auto">
-          <div className="relative w-full">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#4A5C6A]" />
-            <input
-              type="text"
-              placeholder="Search eligible games..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-[#11212D]/80 border border-[#253745] rounded-full py-3 pl-12 pr-6 text-sm font-medium text-white placeholder:text-[#4A5C6A] focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 transition-all shadow-inner"
-            />
-          </div>
+        <div className="mb-8 flex flex-col-reverse md:flex-row gap-4 items-center justify-between max-w-3xl mx-auto">
           
           <div className="flex bg-[#11212D]/80 border border-[#253745] rounded-full p-1 shrink-0 w-full md:w-auto">
             {['All', 'PC', 'PS'].map(platform => (
@@ -122,6 +134,18 @@ export default function CustomBundleBuilder() {
               </button>
             ))}
           </div>
+
+          <div className="relative w-full">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#4A5C6A]" />
+            <input
+              type="text"
+              placeholder="Search eligible games..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-[#11212D]/80 border border-[#253745] rounded-full py-3 pl-12 pr-6 text-sm font-medium text-white placeholder:text-[#4A5C6A] focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 transition-all shadow-inner"
+            />
+          </div>
+
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
@@ -224,10 +248,14 @@ export default function CustomBundleBuilder() {
 
                 <button
                   onClick={handleAddBundle}
-                  className="bg-gradient-to-r from-emerald-600 to-emerald-400 hover:from-emerald-500 hover:to-emerald-300 text-black px-6 py-3 sm:py-4 rounded-xl font-black uppercase tracking-widest text-xs sm:text-sm transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(16,185,129,0.3)] flex items-center gap-2 shrink-0 cursor-pointer"
+                  disabled={selectedGames.length < minRequiredGames}
+                  className={`${selectedGames.length < minRequiredGames 
+                    ? 'bg-gray-600 text-gray-400 cursor-not-allowed opacity-50' 
+                    : 'bg-gradient-to-r from-emerald-600 to-emerald-400 hover:from-emerald-500 hover:to-emerald-300 text-black shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:scale-105 cursor-pointer'} 
+                    px-6 py-3 sm:py-4 rounded-xl font-black uppercase tracking-widest text-xs sm:text-sm transition-all transform flex items-center gap-2 shrink-0`}
                 >
                   <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
-                  Add To Cart
+                  {selectedGames.length < minRequiredGames ? `Select ${minRequiredGames - selectedGames.length} More` : 'Add To Cart'}
                 </button>
               </div>
             </div>

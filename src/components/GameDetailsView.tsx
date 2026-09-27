@@ -364,7 +364,7 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
           </motion.div>
 
           {/* System Requirements */}
-          {(game.sysReqMinimum || game.sysReqRecommended) && (
+          {!isPSMode && (game.sysReqMinimum || game.sysReqRecommended) && (
             <motion.div 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}

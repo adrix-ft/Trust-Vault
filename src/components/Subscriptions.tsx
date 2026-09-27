@@ -1,138 +1,177 @@
-import { Check, ShoppingCart } from 'lucide-react';
+import { Check, ShoppingCart, Repeat } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
+import { useState } from 'react';
 
 export default function Subscriptions() {
-  const { addToCart } = useStore();
-  const gamingSubs = [
-    {
-      id: 'sub-ps-plus-1m',
-      platform: 'PS5',
-      title: 'PS Plus Extra (1 Month)',
-      price: '499Rs',
-      originalPrice: '999Rs',
-      duration: '1 Month Access',
-      description: 'Access hundreds of PS5 titles, classic catalog games, and online multiplayer perks.',
-      features: [
-        'Huge PS5 Game Catalog access',
-        'Online Multiplayer enabled',
-        'Monthly free games included',
-        'Secure account delivery & verification'
-      ],
-      logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLo6i-iw5V0UdIabSaI_1l7fEYzaHRrI_j4LrlHCwWlA&s=10',
-      badge: 'Popular'
-    },
-    {
-      id: 'sub-ps-plus-1y',
-      platform: 'PS5',
-      title: 'PS Plus Extra (1 Year)',
-      price: '3999Rs',
-      originalPrice: '8709Rs',
-      duration: '1 Year Access',
-      description: 'Full 1-year pass for PS5 with uninterrupted gaming and complete access to the library.',
-      features: [
-        'Full 12 months access on PS5',
-        'Online Multiplayer enabled',
-        'Maximum savings value',
-        'Instant WhatsApp delivery & support'
-      ],
-      logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLo6i-iw5V0UdIabSaI_1l7fEYzaHRrI_j4LrlHCwWlA&s=10',
-      badge: 'Best Value'
-    },
-    {
-      id: 'sub-xbox-pass',
-      platform: 'Xbox & PC',
-      title: 'Xbox Game Pass',
-      price: '350Rs',
-      originalPrice: '899Rs',
-      duration: '1 Month Pass',
-      description: 'Play hundreds of high-quality games on PC and console with day-one releases.',
-      features: [
-        'Day-one new releases included',
-        'Cross-platform play support',
-        'Reliable customer support guarantee',
-        'Instant activation instructions'
-      ],
-      logoUrl: 'https://sm.ign.com/ign_in/screenshot/default/48de604b-99ee-4400-a600-6958a71f0959_caj1.jpg',
-      badge: 'Featured'
-    }
-  ];
+  const { addToCart, subscriptions } = useStore();
+  const [selectedPricing, setSelectedPricing] = useState<Record<string, number>>({});
+
+  const handleSelectPricing = (subId: string, idx: number) => {
+    setSelectedPricing(prev => ({ ...prev, [subId]: idx }));
+  };
 
   return (
     <div className="w-full mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 py-16">
       <div className="flex flex-col items-center text-center space-y-3 mb-12">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#253745]/50 border border-[#4A5C6A]/30 text-[#CCD0CF] text-xs font-bold uppercase tracking-wider">
-          <span>Official Gaming Subscriptions</span>
+          <span>Official Subscriptions</span>
         </div>
         <h2 className="text-3xl md:text-4xl font-black text-white uppercase tracking-wider">
-          Console & PC Subscriptions
+          Premium Subscriptions
         </h2>
         <p className="text-[#9BA8AB] text-sm max-w-lg">
-          Get verified gaming passes and membership accounts instantly with guaranteed safety and support.
+          Get verified passes and membership accounts instantly with guaranteed safety and support.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
-        {gamingSubs.map((sub) => {
-          return (
-            <div 
-              key={sub.id}
-              className="relative bg-[#11212D] rounded-2xl border border-[#253745] hover:border-[#4A5C6A] p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 shadow-xl group"
-            >
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#4A5C6A] to-[#CCD0CF] text-[#06141B] text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow-md">
-                {sub.badge}
-              </div>
+      {subscriptions.length === 0 ? (
+        <div className="text-center py-20 bg-[#11212D]/50 border border-[#253745] rounded-2xl max-w-3xl mx-auto">
+          <Repeat className="w-12 h-12 text-[#4A5C6A] mx-auto mb-4" />
+          <h3 className="text-lg font-bold text-white uppercase tracking-wider mb-2">No Subscriptions Available</h3>
+          <p className="text-[#9BA8AB] text-sm">We are currently updating our subscription plans. Check back later!</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+          {subscriptions.map((sub) => {
+            const currentPricingIdx = selectedPricing[sub.id] || 0;
+            const currentPricingArray = Array.isArray(sub.pricing) ? sub.pricing : [];
+            const currentPricing = currentPricingArray.length > 0 ? currentPricingArray[currentPricingIdx] : { duration: '', price: '', originalPrice: '' };
+            if (!currentPricing) return null;
 
-              <div>
-                <div className="flex items-center justify-between mb-4 mt-2">
-                  <div className="w-12 h-12 rounded-xl bg-[#06141B] border border-[#253745] flex items-center justify-center overflow-hidden shadow-inner">
-                    <img 
-                      src={sub.logoUrl} 
-                      alt={sub.title} 
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <span className="text-xs font-bold text-[#9BA8AB] uppercase tracking-wider">{sub.duration}</span>
-                </div>
+            const featureList = Array.isArray(sub.details) ? sub.details : Array.isArray(sub.features) ? sub.features : [];
 
-                <div className="text-[10px] font-extrabold text-[#4A5C6A] uppercase tracking-widest mb-1">{sub.platform}</div>
-                <h3 className="text-lg font-black text-white uppercase tracking-wider mb-2">{sub.title}</h3>
-                <p className="text-xs text-[#9BA8AB] leading-relaxed mb-6">{sub.description}</p>
-
-                <div className="flex items-baseline gap-2 mb-6">
-                  <span className="text-3xl sm:text-4xl font-black text-white">{sub.price}</span>
-                  <span className="text-xs text-red-400 line-through font-semibold">{sub.originalPrice}</span>
-                </div>
-
-                <div className="space-y-3 mb-8 border-t border-[#253745]/60 pt-6">
-                  {sub.features.map((feature, idx) => (
-                    <div key={idx} className="flex items-center gap-2.5 text-xs text-[#CCD0CF]">
-                      <div className="w-4 h-4 rounded-full bg-[#253745] flex items-center justify-center shrink-0 text-white">
-                        <Check className="w-3 h-3" />
-                      </div>
-                      <span>{feature}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <button
-                onClick={() => addToCart({
-                  title: sub.title,
-                  price: sub.price,
-                  originalPrice: sub.originalPrice,
-                  onSale: true,
-                  customCoverUrl: sub.logoUrl,
-                  description: sub.description
-                })}
-                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#253745] to-[#4A5C6A] hover:from-[#4A5C6A] hover:to-[#596F80] border border-[#4A5C6A]/60 text-white font-bold transition-all text-center uppercase tracking-wider text-xs shadow-lg cursor-pointer flex items-center justify-center gap-2 group/btn"
+            return (
+              <div 
+                key={sub.id}
+                className="relative bg-[#0a151b] rounded-3xl overflow-hidden border border-[#253745] hover:border-[#4A5C6A] flex flex-col justify-between transition-all duration-300 shadow-[0_8px_30px_rgb(0,0,0,0.5)] hover:shadow-[0_8px_40px_rgb(0,0,0,0.8)] group transform hover:-translate-y-1"
+                style={{ 
+                  '--sub-color': sub.themeColor || '#10b981',
+                } as React.CSSProperties}
               >
-                <ShoppingCart className="w-4 h-4 text-[#CCD0CF] group-hover/btn:scale-110 transition-transform" />
-                <span>Add to Cart</span>
-              </button>
-            </div>
-          );
-        })}
-      </div>
+                {/* Banner & Badge */}
+                <div className="relative h-40 w-full bg-[#11212D]">
+                  {sub.bannerUrl ? (
+                    <>
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0a151b] via-transparent to-transparent z-10" />
+                      <div className="absolute inset-0 bg-[var(--sub-color)] opacity-20 mix-blend-overlay z-10" />
+                      <img src={sub.bannerUrl} alt="Banner" className="w-full h-full object-cover opacity-80" />
+                    </>
+                  ) : (
+                    <div className="absolute inset-0 bg-gradient-to-br from-[var(--sub-color)] to-[#0a151b] opacity-20 z-0" />
+                  )}
+                  
+                  {sub.badge && (
+                    <div className="absolute top-4 right-4 z-20 px-3 py-1 rounded-full bg-black/60 backdrop-blur-sm border border-[var(--sub-color)]/30 text-white text-[10px] font-black uppercase tracking-widest shadow-lg">
+                      {sub.badge}
+                    </div>
+                  )}
+                </div>
+
+                <div className="px-6 relative z-20 -mt-10 flex-1 flex flex-col">
+                  {/* Logo & Title */}
+                  <div className="flex items-end gap-4 mb-5">
+                    <div 
+                      className="w-20 h-20 rounded-2xl bg-[#06141B] border-2 border-[#11212D] flex items-center justify-center overflow-hidden shadow-xl shrink-0 relative z-30"
+                      style={{ borderColor: 'color-mix(in srgb, var(--sub-color) 30%, #11212D)' }}
+                    >
+                      {sub.logoUrl ? (
+                        <img src={sub.logoUrl} alt={sub.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <Repeat className="w-8 h-8 text-[#4A5C6A]" />
+                      )}
+                    </div>
+                    <div className="pb-2">
+                      <h3 className="text-xl font-black text-white uppercase tracking-wider leading-tight drop-shadow-md">{sub.name || sub.title || 'Subscription'}</h3>
+                      <div className="text-[10px] font-extrabold uppercase tracking-widest mt-0.5" style={{ color: 'var(--sub-color)' }}>Official Subscription</div>
+                    </div>
+                  </div>
+
+                  {/* Description */}
+                  {sub.description && (
+                    <p className="text-[#9BA8AB] text-xs leading-relaxed mb-6">
+                      {sub.description}
+                    </p>
+                  )}
+
+                  {/* Pricing Selection */}
+                  <div className="mb-6 bg-[#11212D]/40 p-4 rounded-2xl border border-[#253745]/50">
+                    <label className="block text-[#9BA8AB] text-[10px] font-bold uppercase tracking-wider mb-3">Select Plan</label>
+                    <div className="space-y-2">
+                      {currentPricingArray.map((p, idx) => {
+                        const isSelected = currentPricingIdx === idx;
+                        return (
+                          <button
+                            key={idx}
+                            onClick={() => handleSelectPricing(sub.id, idx)}
+                            className={`w-full flex items-center justify-between px-4 py-3 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
+                              isSelected 
+                                ? 'bg-[#06141B] text-white shadow-lg' 
+                                : 'bg-[#0a151b] border-[#253745]/50 text-[#9BA8AB] hover:border-[#4A5C6A] hover:bg-[#11212D]'
+                            }`}
+                            style={isSelected ? { borderColor: 'var(--sub-color)' } : {}}
+                          >
+                            <span>{p.duration || 'Standard Plan'}</span>
+                            <div className="flex items-baseline gap-2">
+                              {p.originalPrice && (
+                                <span className="text-[10px] text-red-400/80 line-through font-semibold">{p.originalPrice}</span>
+                              )}
+                              <span style={isSelected ? { color: 'var(--sub-color)' } : {}} className={isSelected ? '' : 'text-white'}>
+                                {p.price || 'Free'}
+                              </span>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Features */}
+                  <div className="space-y-3 mb-8 flex-1">
+                    {featureList.map((feature, idx) => (
+                      <div key={idx} className="flex items-start gap-3 text-xs text-[#CCD0CF]">
+                        <div 
+                          className="w-4 h-4 rounded-full flex items-center justify-center shrink-0 mt-0.5 shadow-sm"
+                          style={{ backgroundColor: 'color-mix(in srgb, var(--sub-color) 20%, #11212D)', color: 'var(--sub-color)' }}
+                        >
+                          <Check className="w-2.5 h-2.5 stroke-[3]" />
+                        </div>
+                        <span className="leading-tight">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Add to Cart Button */}
+                <div className="p-6 pt-0 mt-auto">
+                  <button
+                    onClick={() => addToCart({
+                      title: `${sub.name || sub.title || 'Subscription'} - ${currentPricing?.duration || ''}`,
+                      price: currentPricing?.price || sub.price || '0',
+                      originalPrice: currentPricing?.originalPrice,
+                      categories: ['Subscriptions'],
+                      customCoverUrl: sub.logoUrl || undefined,
+                      description: sub.description || featureList.join(', ')
+                    })}
+                    disabled={currentPricingArray.length === 0}
+                    className="relative w-full py-4 rounded-2xl font-black transition-all text-center uppercase tracking-wider text-xs shadow-xl flex items-center justify-center gap-2 cursor-pointer overflow-hidden group/btn"
+                    style={{ 
+                      backgroundColor: currentPricingArray.length === 0 ? '#11212D' : 'var(--sub-color)',
+                      color: currentPricingArray.length === 0 ? '#4A5C6A' : '#000',
+                      opacity: currentPricingArray.length === 0 ? 0.5 : 1
+                    }}
+                  >
+                    {currentPricingArray.length > 0 && (
+                      <div className="absolute inset-0 bg-white/20 translate-y-[100%] group-hover/btn:translate-y-[0%] transition-transform duration-300 ease-out" />
+                    )}
+                    <ShoppingCart className="w-4 h-4 relative z-10" />
+                    <span className="relative z-10">Add to Cart - {currentPricing?.price || sub.price || 'N/A'}</span>
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

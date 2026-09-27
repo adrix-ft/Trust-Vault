@@ -32,30 +32,7 @@ export default function ContactUs() {
           </div>
         </div>
 
-        {/* Telegram Card */}
-        <div className="bg-[#11212D] border border-[#253745] p-8 rounded-2xl flex flex-col justify-between shadow-xl">
-          <div className="space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-sky-500/15 border border-sky-500/30 flex items-center justify-center text-sky-400">
-              <Navigation className="w-6 h-6 rotate-45" />
-            </div>
-            <h3 className="text-xl font-black text-[#CCD0CF] uppercase tracking-wider">Join on Telegram</h3>
-            <p className="text-sm text-[#9BA8AB] leading-relaxed">
-              Connect with us on Telegram for updates, direct messaging, and community support regarding your favorite game titles.
-            </p>
-          </div>
-          
-          <div className="mt-8">
-            <a 
-              href="https://telegram.me/storevault"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-500 text-white px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-xs transition-colors shadow-lg"
-            >
-              <Send className="w-4 h-4" />
-              <span>Open Telegram</span>
-            </a>
-          </div>
-        </div>
+
       </div>
 
       {/* Store Support Info Card */}
@@ -67,7 +44,7 @@ export default function ContactUs() {
             </div>
             <h3 className="text-lg font-black text-[#CCD0CF] uppercase tracking-wider">Quick Support Details</h3>
           </div>
-          <p className="text-sm text-[#9BA8AB]">Support Line: +91 88246 47379 • Fast response via WhatsApp & Telegram</p>
+          <p className="text-sm text-[#9BA8AB]">Support Line: +91 88246 47379 • Fast response via WhatsApp</p>
         </div>
         
         <div className="text-xs text-[#4A5C6A] font-bold uppercase tracking-wider bg-[#06141B] px-4 py-3 rounded-xl border border-[#253745]">

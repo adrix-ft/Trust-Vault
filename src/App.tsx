@@ -106,6 +106,12 @@ function AppContent() {
               <GameDetailsView gameTitle={selectedCategory.replace('Game: ', '')} />
             </main>
           )}
+
+          {selectedCategory === 'Subscriptions' && (
+            <main className="w-full relative z-10">
+              <Subscriptions />
+            </main>
+          )}
         </motion.div>
       </AnimatePresence>
 

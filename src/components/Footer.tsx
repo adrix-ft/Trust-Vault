@@ -32,12 +32,7 @@ export default function Footer() {
             <p className="text-xs text-[#9BA8AB] leading-relaxed max-w-sm">
               Your ultimate destination for next-gen gaming deals. Instant access and guaranteed trust for PC and PlayStation gamers.
             </p>
-            <div className="inline-flex items-center gap-2 bg-[#11212D] border border-[#253745] px-3 py-1.5 rounded-lg text-xs w-fit">
-              <ShieldAlert className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-              <span className="text-[#CCD0CF]">
-                <strong className="text-white">PC:</strong> Permanent | <strong className="text-white">PlayStation:</strong> 1 Month / Permanent
-              </span>
-            </div>
+
           </div>
 
           {/* Inline Quick Links (Cols 6-12) */}
