@@ -1,5 +1,5 @@
 import { useStore } from '../context/StoreContext';
-import { Layers, Crown, ShieldCheck, Package, MessageCircle } from 'lucide-react';
+import { Layers, Crown, ShieldCheck, Package, MessageCircle, Repeat } from 'lucide-react';
 import { SteamIcon, PSIcon } from './Navbar';
 
 export default function PlatformFilter() {
@@ -8,6 +8,7 @@ export default function PlatformFilter() {
   const filters = [
     { id: 'PS5', type: 'platform', icon: PSIcon, isCustom: true },
     { id: 'PC', type: 'platform', icon: SteamIcon, isCustom: true },
+    { id: 'Subscriptions', label: 'Subscriptions', type: 'category', icon: Repeat, iconClass: 'text-purple-400' },
     { id: 'Custom Bundle', label: 'Build Bundle', icon: Package, type: 'category', iconClass: 'text-emerald-400' },
     { id: 'Proofs', label: 'Proofs', icon: ShieldCheck, type: 'category', iconClass: 'text-green-400' }
   ];
