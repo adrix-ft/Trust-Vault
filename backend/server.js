@@ -543,6 +543,44 @@ app.delete('/api/rents/:id', (req, res) => {
   }
 });
 
+// ==================== BUNDLE DISCOUNTS ENDPOINTS (LOCAL JSON) ====================
+const bundleDiscountsPath = path.join(process.cwd(), 'bundleDiscounts.json');
+
+const readBundleDiscounts = () => {
+  if (!fs.existsSync(bundleDiscountsPath)) {
+    const defaultDiscounts = [
+      { minGames: 3, discountPercentage: 10 },
+      { minGames: 5, discountPercentage: 20 }
+    ];
+    fs.writeFileSync(bundleDiscountsPath, JSON.stringify(defaultDiscounts));
+  }
+  const data = fs.readFileSync(bundleDiscountsPath);
+  return JSON.parse(data);
+};
+
+const writeBundleDiscounts = (data) => {
+  fs.writeFileSync(bundleDiscountsPath, JSON.stringify(data, null, 2));
+};
+
+app.get('/api/bundle-discounts', (req, res) => {
+  try {
+    const discounts = readBundleDiscounts();
+    res.json(discounts);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put('/api/bundle-discounts', (req, res) => {
+  try {
+    const newDiscounts = req.body;
+    writeBundleDiscounts(newDiscounts);
+    res.json({ success: true, data: newDiscounts });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ==================== STEAM API INTEGRATION (PROXY) ====================
 
 // GET /api/games/search?q=Elden+Ring

@@ -176,9 +176,34 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     ];
   });
 
-  const updateBundleDiscounts = (discounts: BundleDiscount[]) => {
+  useEffect(() => {
+    const fetchBundleDiscounts = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/bundle-discounts`);
+        if (response.ok) {
+          const data = await response.json();
+          setBundleDiscounts(data);
+          localStorage.setItem('amin_game_bundle_discounts', JSON.stringify(data));
+        }
+      } catch (err) {
+        console.error('Failed to fetch bundle discounts:', err);
+      }
+    };
+    fetchBundleDiscounts();
+  }, []);
+
+  const updateBundleDiscounts = async (discounts: BundleDiscount[]) => {
     setBundleDiscounts(discounts);
     localStorage.setItem('amin_game_bundle_discounts', JSON.stringify(discounts));
+    try {
+      await fetch(`${API_BASE_URL}/api/bundle-discounts`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(discounts)
+      });
+    } catch (err) {
+      console.error('Failed to update bundle discounts:', err);
+    }
   };
 
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
