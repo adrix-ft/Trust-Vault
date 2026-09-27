@@ -2,8 +2,8 @@ name: Keep-Alive Server & Database
 
 on:
   schedule:
-    # Runs at minute 0 past every hour
-    - cron: "0 * * * *"
+    # Runs every 13 minutes to completely prevent Render from sleeping
+    - cron: "*/13 * * * *"
   workflow_dispatch: # Allows you to manually run the workflow from the Actions tab
 
 jobs:
