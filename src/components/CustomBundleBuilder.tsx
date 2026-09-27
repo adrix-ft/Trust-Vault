@@ -120,7 +120,7 @@ export default function CustomBundleBuilder() {
         <div className="mb-8 flex flex-col-reverse md:flex-row gap-4 items-center justify-between max-w-3xl mx-auto">
           
           <div className="flex bg-[#11212D]/80 border border-[#253745] rounded-full p-1 shrink-0 w-full md:w-auto">
-            {['All', 'PC', 'PS'].map(platform => (
+            {['All', 'PS', 'PC'].map(platform => (
               <button
                 key={platform}
                 onClick={() => setActivePlatform(platform as any)}
