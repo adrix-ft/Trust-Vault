@@ -1539,11 +1539,55 @@ export default function AdminDashboard() {
                     </div>
 
                     <div className="mt-4 mb-4">
-                      <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Gallery Image URLs (Comma Separated)</label>
-                      <input type="text" value={formData.screenshots?.join(', ') || ''} onChange={e => {
-                        const urls = e.target.value.split(',').map(url => url.trim()).filter(Boolean);
-                        setFormData({ ...formData, screenshots: urls.length > 0 ? urls : undefined });
-                      }} className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" placeholder="https://image1.jpg, https://image2.jpg" />
+                      <div className="flex items-center justify-between mb-1.5">
+                        <label className="block text-[#9BA8AB] text-[11px] font-bold uppercase">Gallery Image URLs</label>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const currentScreenshots = formData.screenshots || [];
+                            setFormData({ ...formData, screenshots: [...currentScreenshots, ''] });
+                          }}
+                          className="bg-[#253745] hover:bg-[#4A5C6A] text-white px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-colors"
+                        >
+                          + Add Image
+                        </button>
+                      </div>
+                      
+                      {(!formData.screenshots || formData.screenshots.length === 0) && (
+                        <div className="text-xs text-[#4A5C6A] bg-[#06141B] border border-dashed border-[#253745] rounded-xl p-4 text-center">
+                          No gallery images. Click + Add Image to add URLs manually for non-Steam games.
+                        </div>
+                      )}
+                      
+                      {formData.screenshots && formData.screenshots.length > 0 && (
+                        <div className="space-y-2">
+                          {formData.screenshots.map((url, idx) => (
+                            <div key={idx} className="flex gap-2">
+                              <input
+                                type="text"
+                                value={url}
+                                onChange={e => {
+                                  const newScreenshots = [...(formData.screenshots || [])];
+                                  newScreenshots[idx] = e.target.value;
+                                  setFormData({ ...formData, screenshots: newScreenshots });
+                                }}
+                                className="flex-1 bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]"
+                                placeholder="https://image-url.jpg"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const newScreenshots = (formData.screenshots || []).filter((_, i) => i !== idx);
+                                  setFormData({ ...formData, screenshots: newScreenshots.length > 0 ? newScreenshots : undefined });
+                                }}
+                                className="text-red-400 hover:text-white hover:bg-red-500/20 px-3 py-2 rounded-xl border border-[#253745] hover:border-red-500/50 transition-colors shrink-0"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
 
                     {/* UPGRADE: New section for Store Placements inside the Edit Game modal */}
