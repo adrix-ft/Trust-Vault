@@ -771,7 +771,7 @@ export default function AdminDashboard() {
                   className="bg-[#06141B] border border-[#253745] rounded-xl px-4 py-2.5 text-xs text-white placeholder:text-[#4A5C6A] focus:outline-none focus:border-[#4A5C6A] w-full sm:w-72 shadow-inner"
                 />
                 <div className="flex items-center gap-1.5 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
-                  {['All', 'PC', 'PS5', 'Bundle-Eligible'].map(platform => (
+                  {['All', 'PC', 'PS5', 'PS4', 'Bundle-Eligible'].map(platform => (
                     <button
                       key={platform}
                       onClick={() => { setSelectedPlatform(platform); setCurrentPage(1); }}

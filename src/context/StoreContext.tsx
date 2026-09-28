@@ -118,15 +118,13 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
       const savedCatalog = localStorage.getItem('amin_game_catalog');
       if (savedCatalog) {
         const parsed = JSON.parse(savedCatalog);
-        if (Array.isArray(parsed)) return parsed;
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
       }
     } catch {}
-    return [];
+    return defaultGamesList;
   });
 
-  const [catalogLoaded, setCatalogLoaded] = useState(() => {
-    try { return !!localStorage.getItem('amin_game_catalog'); } catch { return false; }
-  });
+  const [catalogLoaded, setCatalogLoaded] = useState(true);
 
   const [isAdmin, setIsAdmin] = useState(() => {
     try { return localStorage.getItem('gaming_admin') === 'true'; } catch { return false; }
