@@ -223,10 +223,10 @@ export default function AdminDashboard() {
               isRentable: false,
               variants: [
                 { name: 'Secondary Access - 30 Days', price: '' },
-                { name: 'Secondary access', price: '' },
-                { name: 'Primary offline - 30 Days', price: '' },
-                { name: 'Primary offline', price: '' },
-                { name: 'Primary online', price: '' }
+                { name: 'Secondary Access - Permanent', price: '' },
+                { name: 'Primary Offline - 30 Days', price: '' },
+                { name: 'Primary Offline - Permanent', price: '' },
+                { name: 'Primary online - Permanent', price: '' }
               ]
             };
 
@@ -414,10 +414,10 @@ export default function AdminDashboard() {
     title: '', price: '', categories: ['Store'], description: '', onSale: false, originalPrice: '', customCoverUrl: '', horizontalCoverUrl: '', showInHero: false, isFeaturedPromo: false, isPlayerReview: false, trailer: '',
     variants: [
       { name: 'Secondary Access - 30 Days', price: '' },
-      { name: 'Secondary access', price: '' },
-      { name: 'Primary offline - 30 Days', price: '' },
-      { name: 'Primary offline', price: '' },
-      { name: 'Primary online', price: '' }
+      { name: 'Secondary Access - Permanent', price: '' },
+      { name: 'Primary Offline - 30 Days', price: '' },
+      { name: 'Primary Offline - Permanent', price: '' },
+      { name: 'Primary online - Permanent', price: '' }
     ]
   };
   const [formData, setFormData] = useState<Game>(defaultGame);
