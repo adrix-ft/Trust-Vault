@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import SectionHeader from './SectionHeader';
 import { useStore, matchesPlatform } from '../context/StoreContext';
 import { ShoppingCart, Plus, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -17,6 +17,12 @@ export default function GameBundles() {
     return true;
   });
 
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, [platformFilter]);
+
   const handleScroll = (direction: 'left' | 'right') => {
     if (sliderRef.current) {
       const scrollAmount = direction === 'left' ? -500 : 500;
@@ -24,7 +30,7 @@ export default function GameBundles() {
     }
   };
 
-  if (bundleProducts.length === 0) return null;
+  if (!loading && bundleProducts.length === 0) return null;
 
   return (
     <section className="relative">
@@ -58,7 +64,22 @@ export default function GameBundles() {
         ref={sliderRef}
         className="flex gap-6 overflow-x-auto hide-scrollbar snap-x snap-mandatory py-6 -my-6 px-1 -mx-1 scroll-smooth"
       >
-        {bundleProducts.map((bundle) => {
+        {loading ? (
+          Array.from({ length: 2 }).map((_, i) => (
+            <div key={i} className="min-w-full md:min-w-[calc(50%-12px)] flex flex-col md:flex-row bg-[#11212D] border border-[#253745] rounded-3xl overflow-hidden shadow-2xl animate-pulse snap-center">
+              <div className="w-full md:w-[45%] h-64 md:h-auto bg-[#253745]" />
+              <div className="flex-1 p-6 md:p-8 flex flex-col justify-center">
+                <div className="h-6 bg-[#253745] rounded w-3/4 mb-4" />
+                <div className="space-y-2 mb-6">
+                  <div className="h-4 bg-[#253745] rounded w-full" />
+                  <div className="h-4 bg-[#253745] rounded w-5/6" />
+                </div>
+                <div className="h-10 bg-[#253745] rounded w-1/2" />
+              </div>
+            </div>
+          ))
+        ) : (
+          bundleProducts.map((bundle) => {
           const includedTitles = bundle.description?.split(',').map(t => t.trim()) || [];
           const includedGames = includedTitles
             .map(title => catalog.find(g => g.title.toLowerCase() === title.toLowerCase()))
@@ -165,7 +186,8 @@ export default function GameBundles() {
               </div>
             </div>
           );
-        })}
+        })
+        )}
       </div>
     </section>
   );

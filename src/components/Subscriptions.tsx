@@ -1,6 +1,6 @@
 import { Check, ShoppingCart, Repeat } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function Subscriptions() {
   const { addToCart, subscriptions } = useStore();
@@ -9,6 +9,15 @@ export default function Subscriptions() {
   const handleSelectPricing = (subId: string, idx: number) => {
     setSelectedPricing(prev => ({ ...prev, [subId]: idx }));
   };
+
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    if (subscriptions.length > 0) {
+      setLoading(false);
+    }
+    const timer = setTimeout(() => setLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, [subscriptions]);
 
   return (
     <div className="w-full mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 py-16">
@@ -24,7 +33,28 @@ export default function Subscriptions() {
         </p>
       </div>
 
-      {subscriptions.length === 0 ? (
+      {loading ? (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className="bg-[#11212D] rounded-3xl overflow-hidden border border-[#253745] animate-pulse h-96 flex flex-col">
+              <div className="h-40 bg-[#253745]" />
+              <div className="p-6 flex-1 flex flex-col gap-4">
+                <div className="flex gap-4 items-end -mt-10">
+                  <div className="w-20 h-20 bg-[#06141B] rounded-2xl border-2 border-[#11212D] z-10" />
+                  <div className="flex-1 space-y-2 pb-2">
+                    <div className="h-5 bg-[#253745] rounded w-3/4" />
+                    <div className="h-3 bg-[#253745] rounded w-1/2" />
+                  </div>
+                </div>
+                <div className="space-y-2 mt-4">
+                  <div className="h-3 bg-[#253745] rounded w-full" />
+                  <div className="h-3 bg-[#253745] rounded w-5/6" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : subscriptions.length === 0 ? (
         <div className="text-center py-20 bg-[#11212D]/50 border border-[#253745] rounded-2xl max-w-3xl mx-auto">
           <Repeat className="w-12 h-12 text-[#4A5C6A] mx-auto mb-4" />
           <h3 className="text-lg font-bold text-white uppercase tracking-wider mb-2">No Subscriptions Available</h3>

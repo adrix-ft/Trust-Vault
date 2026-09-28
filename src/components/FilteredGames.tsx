@@ -1,10 +1,18 @@
 import { useStore, matchesPlatform } from '../context/StoreContext';
+import { useState, useEffect, memo } from 'react';
 import { getGameCoverUrl } from '../utils/image';
 import { ShoppingCart, Star, Clock } from 'lucide-react';
 import PlatformTags from './PlatformTags';
 
 export default function FilteredGames({ category, genre, title, actionType = 'buy' }: { category?: string, genre?: string, title: string, actionType?: 'buy' | 'preorder' }) {
   const { addToCart, catalog, platformFilter } = useStore();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, [platformFilter, category, genre]);
+
   const games = catalog.filter(game => {
     if (genre) {
       if (game.genre !== genre) return false;
@@ -40,13 +48,45 @@ export default function FilteredGames({ category, genre, title, actionType = 'bu
       </div>
       
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
-        {games.map(game => (
-          <div key={game.title} className="bg-[#11212D] rounded-md overflow-hidden border border-[#253745] hover:border-[#4A5C6A] transition-all group flex flex-col h-full hover:-translate-y-2 hover:shadow-[0_15px_30px_rgba(0,0,0,0.4),0_0_15px_rgba(74,92,106,0.2)]">
-            <div className="aspect-[3/4] overflow-hidden relative bg-[#06141B]">
-              <div 
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110 saturate-[1.1]"
-                style={{ backgroundImage: `url('${game.customCoverUrl || getGameCoverUrl(game.title)}')` }}
-              />
+        {loading ? (
+          Array.from({ length: 10 }).map((_, i) => (
+            <div key={i} className="bg-[#11212D] border border-[#253745] rounded-xl overflow-hidden flex flex-col relative animate-pulse">
+              <div className="aspect-[3/4] w-full bg-[#06141B]" />
+              <div className="p-4 flex flex-col flex-1 justify-between gap-4">
+                <div>
+                  <div className="h-4 bg-[#253745] rounded w-3/4 mb-2" />
+                  <div className="h-3 bg-[#253745] rounded w-1/2" />
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="h-5 bg-[#253745] rounded w-1/3" />
+                  <div className="w-8 h-8 rounded-full bg-[#253745]" />
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          games.map(game => (
+            <FilteredGameCard key={game.title} game={game} category={category} actionType={actionType} />
+          ))
+        )}
+      </div>
+    </div>
+  );
+}
+
+const FilteredGameCard = memo(({ game, category, actionType }: any) => {
+  const { addToCart } = useStore();
+  const coverUrl = game.customCoverUrl || getGameCoverUrl(game.title);
+
+  return (
+    <div className="bg-[#11212D] rounded-md overflow-hidden border border-[#253745] hover:border-[#4A5C6A] transition-all group flex flex-col h-full hover:-translate-y-2 hover:shadow-[0_15px_30px_rgba(0,0,0,0.4),0_0_15px_rgba(74,92,106,0.2)]">
+      <div className="aspect-[3/4] overflow-hidden relative bg-[#06141B]">
+        <img 
+          src={coverUrl}
+          alt={game.title}
+          loading="lazy"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 saturate-[1.1]"
+        />
               <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#06141B] via-[#06141B]/40 to-transparent opacity-80" />
               <PlatformTags platforms={game.categories} />
               {category === 'Top Sellers' && !game.onSale && (
@@ -88,8 +128,5 @@ export default function FilteredGames({ category, genre, title, actionType = 'bu
               </div>
             </div>
           </div>
-        ))}
-      </div>
-    </div>
   );
-}
+});

@@ -59,8 +59,16 @@ export default function ProofSection({ onSelectImage }: ProofSectionProps) {
 
       {/* Loading / Proofs Grid */}
       {loading ? (
-        <div className="text-center py-16 text-[#9BA8AB] text-xs uppercase font-bold tracking-wider">
-          Loading proofs...
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="bg-[#11212D] rounded-xl overflow-hidden border border-[#253745] shadow-lg animate-pulse flex flex-col">
+              <div className="aspect-[4/3] bg-[#253745]" />
+              <div className="p-3 bg-[#06141B]/60 flex items-center justify-between border-t border-[#253745]">
+                <div className="h-3 w-20 bg-[#253745] rounded" />
+                <div className="h-3 w-10 bg-[#253745] rounded" />
+              </div>
+            </div>
+          ))}
         </div>
       ) : proofs.length === 0 ? (
         <div className="text-center py-16 bg-[#11212D]/40 rounded-2xl border border-[#253745] shadow-xl">

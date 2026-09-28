@@ -121,7 +121,8 @@ export default function AdminDashboard() {
   const [subFormData, setSubFormData] = useState(defaultSubscription);
   const [editingSubId, setEditingSubId] = useState<string | null>(null);
 
-  const { subscriptions, addSubscription, updateSubscription, removeSubscription } = useStore();
+  const { subscriptions, addSubscription, updateSubscription, removeSubscription, reorderSubscriptions } = useStore();
+  const [draggedSubIndex, setDraggedSubIndex] = useState<number | null>(null);
 
   const handleSaveSubscription = () => {
     if (!subFormData.name || subFormData.pricing.length === 0) {
@@ -713,10 +714,27 @@ export default function AdminDashboard() {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {subscriptions.map(sub => (
-                    <div key={sub.id} className="bg-[#06141B] border border-[#253745] p-4 rounded-xl flex flex-col justify-between shadow-lg">
+                  {subscriptions.map((sub, index) => (
+                    <div 
+                      key={sub.id} 
+                      draggable
+                      onDragStart={() => setDraggedSubIndex(index)}
+                      onDragOver={(e) => e.preventDefault()}
+                      onDrop={(e) => {
+                        e.preventDefault();
+                        if (draggedSubIndex === null || draggedSubIndex === index) return;
+                        const newSubs = [...subscriptions];
+                        const dragged = newSubs[draggedSubIndex];
+                        newSubs.splice(draggedSubIndex, 1);
+                        newSubs.splice(index, 0, dragged);
+                        reorderSubscriptions(newSubs);
+                        setDraggedSubIndex(null);
+                      }}
+                      className="bg-[#06141B] border border-[#253745] p-4 rounded-xl flex flex-col justify-between shadow-lg cursor-grab active:cursor-grabbing"
+                    >
                       <div className="flex justify-between items-start">
                         <div className="flex items-center gap-3">
+                          <GripVertical className="w-5 h-5 text-[#4A5C6A] cursor-grab" />
                           {sub.logoUrl ? (
                             <img src={sub.logoUrl} alt={sub.name} className="w-10 h-10 rounded-lg object-cover bg-white p-0.5" />
                           ) : (
@@ -869,21 +887,19 @@ export default function AdminDashboard() {
                             />
                             <span className={`text-[9px] font-bold uppercase ${game.showInHero ? 'text-white' : 'text-[#9BA8AB]'}`}>Hero</span>
                           </label>
-                          <label className={`flex items-center gap-1.5 cursor-pointer px-2 py-1 rounded-md border transition-all ${game.isFeaturedPromo ? 'bg-[#4A5C6A] border-[#4A5C6A]' : 'bg-[#06141B] border-[#253745]'}`}>
+
+                          <label className={`flex items-center gap-1.5 cursor-pointer px-2 py-1 rounded-md border transition-all ${game.categories?.includes('Bundle-Eligible') ? 'bg-[#4A5C6A] border-[#4A5C6A]' : 'bg-[#06141B] border-[#253745]'}`}>
                             <input
-                              type="checkbox" checked={game.isFeaturedPromo || false}
-                              onChange={(e) => updateGame(game.title, { ...game, isFeaturedPromo: e.target.checked })}
+                              type="checkbox" checked={game.categories?.includes('Bundle-Eligible') || false}
+                              onChange={(e) => {
+                                const newCategories = e.target.checked 
+                                  ? [...(game.categories || []), 'Bundle-Eligible']
+                                  : (game.categories || []).filter(c => c !== 'Bundle-Eligible');
+                                updateGame(game.title, { ...game, categories: newCategories });
+                              }}
                               className="hidden"
                             />
-                            <span className={`text-[9px] font-bold uppercase ${game.isFeaturedPromo ? 'text-white' : 'text-[#9BA8AB]'}`}>Promo</span>
-                          </label>
-                          <label className={`flex items-center gap-1.5 cursor-pointer px-2 py-1 rounded-md border transition-all ${game.isPlayerReview ? 'bg-[#4A5C6A] border-[#4A5C6A]' : 'bg-[#06141B] border-[#253745]'}`}>
-                            <input
-                              type="checkbox" checked={game.isPlayerReview || false}
-                              onChange={(e) => updateGame(game.title, { ...game, isPlayerReview: e.target.checked })}
-                              className="hidden"
-                            />
-                            <span className={`text-[9px] font-bold uppercase ${game.isPlayerReview ? 'text-white' : 'text-[#9BA8AB]'}`}>Review</span>
+                            <span className={`text-[9px] font-bold uppercase ${game.categories?.includes('Bundle-Eligible') ? 'text-white' : 'text-[#9BA8AB]'}`}>Bundle</span>
                           </label>
                         </div>
                       </td>
@@ -1602,16 +1618,7 @@ export default function AdminDashboard() {
                           <input type="checkbox" checked={formData.showInHero || false} onChange={e => setFormData({ ...formData, showInHero: e.target.checked })} className="accent-[#4A5C6A] cursor-pointer" />
                           <span>Hero Carousel</span>
                         </label>
-                        <div className="w-px h-4 bg-[#253745]" />
-                        <label className="flex items-center gap-2 cursor-pointer text-white text-xs">
-                          <input type="checkbox" checked={formData.isFeaturedPromo || false} onChange={e => setFormData({ ...formData, isFeaturedPromo: e.target.checked })} className="accent-[#4A5C6A] cursor-pointer" />
-                          <span>Promo Banner</span>
-                        </label>
-                        <div className="w-px h-4 bg-[#253745]" />
-                        <label className="flex items-center gap-2 cursor-pointer text-white text-xs">
-                          <input type="checkbox" checked={formData.isPlayerReview || false} onChange={e => setFormData({ ...formData, isPlayerReview: e.target.checked })} className="accent-[#4A5C6A] cursor-pointer" />
-                          <span>Player Review</span>
-                        </label>
+
                       </div>
                     </div>
 

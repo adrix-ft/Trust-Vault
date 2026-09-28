@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useStore, matchesPlatform } from '../context/StoreContext';
 import { getGameCoverUrl } from '../utils/image';
 import { ShoppingCart, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -6,6 +6,12 @@ import PlatformTags from './PlatformTags';
 
 export default function CollectionsView() {
   const { addToCart, catalog, platformFilter, collections } = useStore();
+  
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, [platformFilter]);
   
   // References to keep track of the scroll containers for each collection
   const sliderRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
@@ -26,7 +32,27 @@ export default function CollectionsView() {
       </div>
       
       <div className="flex flex-col gap-12">
-        {collections.map(collection => {
+        {loading ? (
+          Array.from({ length: 2 }).map((_, i) => (
+            <div key={i} className="bg-[#11212D] rounded-xl overflow-hidden border border-[#253745] shadow-lg flex flex-col md:flex-row group relative animate-pulse">
+              <div className="w-full md:w-2/5 aspect-[16/9] md:aspect-auto bg-[#253745]" />
+              <div className="w-full md:w-3/5 p-4 sm:p-6 bg-[#06141B]">
+                <div className="flex gap-4 overflow-x-hidden">
+                  {Array.from({ length: 3 }).map((_, j) => (
+                    <div key={j} className="min-w-[140px] max-w-[140px] sm:min-w-[160px] sm:max-w-[160px] rounded-md overflow-hidden bg-[#11212D] border border-[#253745] flex flex-col">
+                      <div className="aspect-[3/4] w-full bg-[#253745]" />
+                      <div className="p-3">
+                        <div className="h-3 bg-[#253745] rounded w-full mb-2" />
+                        <div className="h-3 bg-[#253745] rounded w-2/3" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+        collections.map(collection => {
           const safeKeywords = collection.keywords || [];
 
           const collectionGames = catalog.filter(game => {
@@ -137,7 +163,8 @@ export default function CollectionsView() {
               </div>
             </div>
           );
-        })}
+        })
+        )}
       </div>
     </div>
   );

@@ -97,6 +97,7 @@ type StoreContextType = {
   addSubscription: (sub: Subscription) => void;
   updateSubscription: (id: string, updatedSub: Subscription) => void;
   removeSubscription: (id: string) => void;
+  reorderSubscriptions: (reorderedSubs: Subscription[]) => void;
   cart: CartItem[];
   addToCart: (game: Game, purchaseType?: 'permanent' | 'rent') => void;
   removeFromCart: (title: string) => void;
@@ -147,7 +148,11 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     return defaultGamesList;
   });
 
-  const [catalogLoaded, setCatalogLoaded] = useState(true);
+  const [catalogLoaded, setCatalogLoaded] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => setCatalogLoaded(true), 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const [isAdmin, setIsAdmin] = useState(() => {
     try { return localStorage.getItem('gaming_admin') === 'true'; } catch { return false; }
@@ -323,6 +328,21 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
       });
     }
   };
+
+  const reorderSubscriptions = async (reorderedSubs: Subscription[]) => {
+    setSubscriptions(reorderedSubs);
+    localStorage.setItem('amin_subscriptions', JSON.stringify(reorderedSubs));
+    // Since backend might not have bulk update, we'll try to just fire individual updates or assume UI uses localStorage / UI state for now
+    try {
+      await fetch(`${API_BASE_URL}/api/subscriptions/bulk`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(reorderedSubs)
+      });
+    } catch(err) {
+      console.warn("Bulk update might not be supported on backend yet, but local state updated");
+    }
+  };
   const updateCollection = async (id: string, updatedCollection: Collection) => {
     setCollections(prev => {
       const next = prev.map(c => c.id === id ? updatedCollection : c);
@@ -425,7 +445,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     value: {
       collections, updateCollection, addCollection, removeCollection,
       bundleDiscounts, updateBundleDiscounts,
-      subscriptions, addSubscription, updateSubscription, removeSubscription,
+      subscriptions, addSubscription, updateSubscription, removeSubscription, reorderSubscriptions,
       cart, addToCart, removeFromCart, clearCart,
       isCartOpen, setIsCartOpen,
       selectedCategory, setSelectedCategory,
