@@ -87,11 +87,11 @@ export default function CustomBundleBuilder() {
   return (
     <div className="w-full relative pb-32">
       {/* Header Banner */}
-      <div className="relative w-full h-[250px] sm:h-[300px] bg-gradient-to-br from-[#06141B] via-[#11212D] to-[#253745] overflow-hidden flex items-center justify-center border-b border-[#4A5C6A]/30">
+      <div className="relative w-full min-h-[280px] sm:min-h-[300px] bg-gradient-to-br from-[#06141B] via-[#11212D] to-[#253745] overflow-hidden flex items-center justify-center border-b border-[#4A5C6A]/30 pt-24 pb-12 sm:pt-12 sm:pb-12">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&q=80')] opacity-10 bg-cover bg-center mix-blend-overlay" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#06141B] via-transparent to-transparent" />
         
-        <div className="relative z-10 text-center space-y-4 px-4 max-w-2xl mt-12 md:mt-0">
+        <div className="relative z-10 text-center space-y-4 px-4 max-w-2xl">
           <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-green-400 flex items-center justify-center shadow-[0_0_40px_rgba(16,185,129,0.3)] mb-6">
             <Package className="w-8 h-8 text-[#06141B]" />
           </div>
