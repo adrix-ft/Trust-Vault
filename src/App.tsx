@@ -2,28 +2,24 @@ import GlobalOverlays from './components/GlobalOverlays';
 import FloatingMobileCart from './components/FloatingMobileCart';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import Promos from './components/Promos';
-import GameBundles from './components/GameBundles';
-import PlayerReviews from './components/PlayerReviews';
+import FeaturesBanner from './components/FeaturesBanner';
 import GameLibrary from './components/GameLibrary';
-import Subscriptions from './components/Subscriptions';
-import ContactUs from './components/ContactUs';
-import Footer from './components/Footer';
-import CartDrawer from './components/CartDrawer';
 import { StoreProvider, useStore } from './context/StoreContext';
 import PlatformFilter from './components/PlatformFilter';
-import VideoModal from './components/VideoModal';
-import FilteredGames from './components/FilteredGames';
-import CollectionsView from './components/CollectionsView';
-import ProofSection from './components/ProofSection';
-import AdminDashboard from './components/AdminDashboard';
-import AdminLogin from './components/AdminLogin';
-import UpcomingView from './components/UpcomingView';
-import GameDetailsView from './components/GameDetailsView';
-import CustomBundleBuilder from './components/CustomBundleBuilder';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, MessageCircle } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
+
+const Subscriptions = lazy(() => import('./components/Subscriptions'));
+const ContactUs = lazy(() => import('./components/ContactUs'));
+const Footer = lazy(() => import('./components/Footer'));
+const CartDrawer = lazy(() => import('./components/CartDrawer'));
+const VideoModal = lazy(() => import('./components/VideoModal'));
+const ProofSection = lazy(() => import('./components/ProofSection'));
+const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
+const AdminLogin = lazy(() => import('./components/AdminLogin'));
+const GameDetailsView = lazy(() => import('./components/GameDetailsView'));
+const CustomBundleBuilder = lazy(() => import('./components/CustomBundleBuilder'));
 
 function FloatingWhatsApp() {
   const { isCartOpen } = useStore();
@@ -62,10 +58,10 @@ function AppContent() {
   // If Admin is logged in, show Dashboard but KEEP the Overlays so Toasts work!
   if (isAdmin) {
     return (
-      <>
+      <Suspense fallback={<div className="h-screen bg-[#06141B] flex items-center justify-center"><div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div></div>}>
         <AdminDashboard />
         <GlobalOverlays />
-      </>
+      </Suspense>
     );
   }
 
@@ -101,52 +97,56 @@ function AppContent() {
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3 }}
         >
-          {selectedCategory === 'Store' && (
-            <>
-              <Hero />
-              <main className="w-full mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 space-y-10 md:space-y-16 py-6 md:py-12 relative z-10">
-                <PlayerReviews />
-                <GameLibrary />
+          <Suspense fallback={<div className="h-[50vh] flex items-center justify-center"><div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div></div>}>
+            {selectedCategory === 'Store' && (
+              <>
+                <Hero />
+                <main className="w-full mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 space-y-10 md:space-y-16 py-6 md:py-12 relative z-10">
+                  <FeaturesBanner />
+                  <GameLibrary />
+                </main>
+              </>
+            )}
+
+            {selectedCategory === 'Proofs' && (
+              <main className="w-full mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 py-12 relative z-10">
+                <ProofSection onSelectImage={setSelectedProofImage} />
               </main>
-            </>
-          )}
+            )}
 
-          {selectedCategory === 'Proofs' && (
-            <main className="w-full mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 py-12 relative z-10">
-              <ProofSection onSelectImage={setSelectedProofImage} />
-            </main>
-          )}
+            {selectedCategory === 'Contact Us' && (
+              <main className="w-full mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 py-12 relative z-10">
+                <ContactUs />
+              </main>
+            )}
 
-          {selectedCategory === 'Contact Us' && (
-            <main className="w-full mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 py-12 relative z-10">
-              <ContactUs />
-            </main>
-          )}
+            {selectedCategory === 'Custom Bundle' && (
+              <main className="w-full relative z-10">
+                <CustomBundleBuilder />
+              </main>
+            )}
 
-          {selectedCategory === 'Custom Bundle' && (
-            <main className="w-full relative z-10">
-              <CustomBundleBuilder />
-            </main>
-          )}
+            {selectedCategory.startsWith('Game: ') && (
+              <main className="w-full relative z-10">
+                <GameDetailsView gameTitle={selectedCategory.replace('Game: ', '')} />
+              </main>
+            )}
 
-          {selectedCategory.startsWith('Game: ') && (
-            <main className="w-full relative z-10">
-              <GameDetailsView gameTitle={selectedCategory.replace('Game: ', '')} />
-            </main>
-          )}
-
-          {selectedCategory === 'Subscriptions' && (
-            <main className="w-full relative z-10">
-              <Subscriptions />
-            </main>
-          )}
+            {selectedCategory === 'Subscriptions' && (
+              <main className="w-full relative z-10">
+                <Subscriptions />
+              </main>
+            )}
+          </Suspense>
         </motion.div>
       </AnimatePresence>
 
-      <Footer />
-      <CartDrawer />
-      <AdminLogin />
-      <VideoModal />
+      <Suspense fallback={null}>
+        <Footer />
+        <CartDrawer />
+        <AdminLogin />
+        <VideoModal />
+      </Suspense>
 
       {/* LIGHTBOX FOR PROOF IMAGES */}
       {selectedProofImage && (
