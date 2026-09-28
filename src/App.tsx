@@ -10,16 +10,27 @@ import { motion, AnimatePresence } from 'motion/react';
 import { X, MessageCircle } from 'lucide-react';
 import { useState, useEffect, lazy, Suspense } from 'react';
 
-const Subscriptions = lazy(() => import('./components/Subscriptions'));
-const ContactUs = lazy(() => import('./components/ContactUs'));
-const Footer = lazy(() => import('./components/Footer'));
-const CartDrawer = lazy(() => import('./components/CartDrawer'));
-const VideoModal = lazy(() => import('./components/VideoModal'));
-const ProofSection = lazy(() => import('./components/ProofSection'));
-const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
-const AdminLogin = lazy(() => import('./components/AdminLogin'));
-const GameDetailsView = lazy(() => import('./components/GameDetailsView'));
-const CustomBundleBuilder = lazy(() => import('./components/CustomBundleBuilder'));
+const loadSubscriptions = () => import('./components/Subscriptions');
+const loadContactUs = () => import('./components/ContactUs');
+const loadFooter = () => import('./components/Footer');
+const loadCartDrawer = () => import('./components/CartDrawer');
+const loadVideoModal = () => import('./components/VideoModal');
+const loadProofSection = () => import('./components/ProofSection');
+const loadAdminDashboard = () => import('./components/AdminDashboard');
+const loadAdminLogin = () => import('./components/AdminLogin');
+const loadGameDetailsView = () => import('./components/GameDetailsView');
+const loadCustomBundleBuilder = () => import('./components/CustomBundleBuilder');
+
+const Subscriptions = lazy(loadSubscriptions);
+const ContactUs = lazy(loadContactUs);
+const Footer = lazy(loadFooter);
+const CartDrawer = lazy(loadCartDrawer);
+const VideoModal = lazy(loadVideoModal);
+const ProofSection = lazy(loadProofSection);
+const AdminDashboard = lazy(loadAdminDashboard);
+const AdminLogin = lazy(loadAdminLogin);
+const GameDetailsView = lazy(loadGameDetailsView);
+const CustomBundleBuilder = lazy(loadCustomBundleBuilder);
 
 function FloatingWhatsApp() {
   const { isCartOpen } = useStore();
@@ -54,6 +65,28 @@ function FloatingWhatsApp() {
 function AppContent() {
   const { selectedCategory, setSelectedCategory, isAdmin, catalogLoaded } = useStore();
   const [selectedProofImage, setSelectedProofImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Prefetch all lazy components in the background after initial render
+    const prefetchComponents = () => {
+      loadSubscriptions();
+      loadContactUs();
+      loadFooter();
+      loadCartDrawer();
+      loadVideoModal();
+      loadProofSection();
+      loadAdminDashboard();
+      loadAdminLogin();
+      loadGameDetailsView();
+      loadCustomBundleBuilder();
+    };
+
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(prefetchComponents, { timeout: 2000 });
+    } else {
+      setTimeout(prefetchComponents, 2000);
+    }
+  }, []);
 
   // If Admin is logged in, show Dashboard but KEEP the Overlays so Toasts work!
   if (isAdmin) {

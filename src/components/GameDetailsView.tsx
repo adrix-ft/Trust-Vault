@@ -29,6 +29,9 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
   const [rentMonths, setRentMonths] = useState<number>(1);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [infoVariant, setInfoVariant] = useState<string | null>(null);
+  
+  const [steamScreenshots, setSteamScreenshots] = useState<string[]>([]);
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://amin-game-store-backend.onrender.com';
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -40,7 +43,29 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
     setActivePlatform(newPlat);
     setSelectedVariantIndex(newPlat === 'PS' && game?.variants && game.variants.length > 0 ? 0 : -1);
     setRentMonths(1);
-  }, [gameTitle, platformFilter, isAvailablePC, isAvailablePS, game?.variants]);
+    setSteamScreenshots([]); // reset on game change
+
+    // Fetch screenshots dynamically if missing
+    if (gameTitle && (!game?.screenshots || game.screenshots.length === 0)) {
+      const fetchScreenshots = async () => {
+        try {
+          const searchRes = await fetch(`${API_BASE_URL}/api/games/search?q=${encodeURIComponent(gameTitle)}`);
+          const searchData = await searchRes.json();
+          if (searchData.games && searchData.games.length > 0) {
+            const appId = searchData.games[0].steam_app_id;
+            const detailsRes = await fetch(`${API_BASE_URL}/api/games/details/${appId}`);
+            const details = await detailsRes.json();
+            if (details && details.screenshots) {
+              setSteamScreenshots(details.screenshots.map((s: any) => s.path_full));
+            }
+          }
+        } catch (err) {
+          console.error("Failed to fetch steam screenshots", err);
+        }
+      };
+      fetchScreenshots();
+    }
+  }, [gameTitle, platformFilter, isAvailablePC, isAvailablePS, game?.variants, game?.screenshots, API_BASE_URL]);
 
   if (!catalogLoaded) {
     return (
@@ -93,7 +118,8 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
     ? { ...game, title: `${game.title} - ${activeVariant.name}`, price: activeVariant.price, originalPrice: activeVariant.originalPrice }
     : game;
 
-  const coverUrl = selectedImage || game.horizontalCoverUrl || (game.screenshots && game.screenshots.length > 0 ? game.screenshots[0] : (game.customCoverUrl || getGameCoverUrl(game.title)));
+  const displayScreenshots = game.screenshots?.length ? game.screenshots : steamScreenshots;
+  const coverUrl = selectedImage || game.horizontalCoverUrl || (displayScreenshots.length > 0 ? displayScreenshots[0] : (game.customCoverUrl || getGameCoverUrl(game.title)));
   const inCartPermanent = cart.some(item => item.title === gameToAdd.title && item.purchaseType === 'permanent');
   const inCartRent = cart.some(item => item.title === gameToAdd.title && item.purchaseType === 'rent');
 
@@ -170,7 +196,7 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
         {/* Left Column: Description & Media */}
         <div className="lg:col-span-2 space-y-8">
           {/* Screenshots Gallery */}
-          {game.screenshots && game.screenshots.length > 0 && (
+          {displayScreenshots && displayScreenshots.length > 0 && (
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -178,8 +204,8 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
               className="mb-8"
             >
               <h2 className="text-xl font-black text-white uppercase tracking-wider mb-4 px-2">Gallery</h2>
-              <div className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-[#4A5C6A] scrollbar-track-[#11212D]">
-                {game.screenshots.map((src, idx) => (
+              <div className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory custom-scrollbar">
+                {displayScreenshots.map((src, idx) => (
                   <img 
                     key={idx} 
                     src={src} 

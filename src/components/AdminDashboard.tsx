@@ -222,9 +222,11 @@ export default function AdminDashboard() {
               screenshots: screenshots,
               isRentable: false,
               variants: [
-                { name: 'Primary online', price: '' },
+                { name: 'Secondary Access - 30 Days', price: '' },
+                { name: 'Secondary access', price: '' },
+                { name: 'Primary offline - 30 Days', price: '' },
                 { name: 'Primary offline', price: '' },
-                { name: 'Secondary access', price: '' }
+                { name: 'Primary online', price: '' }
               ]
             };
 
@@ -411,9 +413,11 @@ export default function AdminDashboard() {
   const defaultGame: Game = {
     title: '', price: '', categories: ['Store'], description: '', onSale: false, originalPrice: '', customCoverUrl: '', horizontalCoverUrl: '', showInHero: false, isFeaturedPromo: false, isPlayerReview: false, trailer: '',
     variants: [
-      { name: 'Primary online', price: '' },
+      { name: 'Secondary Access - 30 Days', price: '' },
+      { name: 'Secondary access', price: '' },
+      { name: 'Primary offline - 30 Days', price: '' },
       { name: 'Primary offline', price: '' },
-      { name: 'Secondary access', price: '' }
+      { name: 'Primary online', price: '' }
     ]
   };
   const [formData, setFormData] = useState<Game>(defaultGame);
