@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import SectionHeader from './SectionHeader';
-import { useStore } from '../context/StoreContext';
+import { useStore, matchesPlatform } from '../context/StoreContext';
 import { ShoppingCart, Plus, ChevronLeft, ChevronRight } from 'lucide-react';
 import { getGameCoverUrl } from '../utils/image';
 import PlatformTags from './PlatformTags';
@@ -13,9 +13,7 @@ export default function GameBundles() {
     const isBundle = game.categories?.some(cat => cat.toLowerCase() === 'bundles');
     if (!isBundle) return false;
 
-    if (platformFilter !== 'All') {
-      return game.categories?.some(cat => String(cat).toUpperCase() === platformFilter.toUpperCase());
-    }
+    if (!matchesPlatform(game.categories, platformFilter)) return false;
     return true;
   });
 

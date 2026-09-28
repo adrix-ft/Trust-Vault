@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useStore } from '../context/StoreContext';
+import { useStore, matchesPlatform, isPlayStationPlatform } from '../context/StoreContext';
 import { getGameCoverUrl } from '../utils/image';
 import { motion, AnimatePresence } from 'motion/react';
 import { ShoppingCart, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -13,13 +13,7 @@ export default function Hero() {
   let heroGames = catalog.filter(game => {
     if (!game.showInHero) return false;
 
-    if (platformFilter !== 'All') {
-      const isMatch = game.categories?.some(cat => {
-        if (platformFilter === 'PS' && String(cat).toUpperCase().includes('PS')) return true;
-        return String(cat).toUpperCase() === platformFilter.toUpperCase();
-      });
-      if (!isMatch) return false;
-    }
+    if (!matchesPlatform(game.categories, platformFilter)) return false;
     return true;
   });
 
@@ -27,12 +21,7 @@ export default function Hero() {
   // grab the top 5 games on sale for this specific platform.
   if (heroGames.length === 0) {
     heroGames = catalog.filter(game => {
-      if (platformFilter !== 'All') {
-        return game.categories?.some(cat => {
-          if (platformFilter === 'PS' && String(cat).toUpperCase().includes('PS')) return true;
-          return String(cat).toUpperCase() === platformFilter.toUpperCase();
-        });
-      }
+      if (!matchesPlatform(game.categories, platformFilter)) return false;
       return true;
     }).sort((a, b) => (b.onSale ? 1 : 0) - (a.onSale ? 1 : 0)).slice(0, 5);
   }
@@ -171,7 +160,7 @@ export default function Hero() {
               <div className="pt-2 sm:pt-4 mt-auto">
                 {(() => {
                   const isAvailablePS = activeGame.categories?.some(c => c.includes('PS'));
-                  const showPSPrice = platformFilter === 'PS5' && isAvailablePS && activeGame.variants && activeGame.variants.length > 0;
+                  const showPSPrice = isPlayStationPlatform(platformFilter) && isAvailablePS && activeGame.variants && activeGame.variants.length > 0;
                   const displayPrice = showPSPrice ? activeGame.variants![0].price : activeGame.price;
                   const displayOriginalPrice = showPSPrice ? activeGame.variants![0].originalPrice : (activeGame.onSale ? activeGame.originalPrice : undefined);
                   

@@ -1,4 +1,4 @@
-import { useStore } from '../context/StoreContext';
+import { useStore, matchesPlatform } from '../context/StoreContext';
 import { getGameCoverUrl } from '../utils/image';
 import { ShoppingCart, Star, Clock } from 'lucide-react';
 import PlatformTags from './PlatformTags';
@@ -12,12 +12,7 @@ export default function FilteredGames({ category, genre, title, actionType = 'bu
       if (!game.categories?.includes(category)) return false;
     }
     
-    if (platformFilter !== 'All') {
-      if (!game.categories?.some(cat => {
-        if (platformFilter === 'PS' && cat.toUpperCase().includes('PS')) return true;
-        return cat.toUpperCase() === platformFilter.toUpperCase();
-      })) return false;
-    }
+    if (!matchesPlatform(game.categories, platformFilter)) return false;
     return true;
   });
   

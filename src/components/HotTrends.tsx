@@ -1,5 +1,5 @@
 import SectionHeader from './SectionHeader';
-import { useStore } from '../context/StoreContext';
+import { useStore, matchesPlatform } from '../context/StoreContext';
 import { ShoppingCart } from 'lucide-react';
 import { getGameCoverUrl } from '../utils/image';
 import { useState, useMemo } from 'react';
@@ -10,7 +10,7 @@ export default function HotTrends() {
   const [activeCard, setActiveCard] = useState<string | null>(null);
   
   const filteredCatalog = catalog.filter(game => {
-    if (platformFilter !== 'All' && !game.categories?.includes(platformFilter)) return false;
+    if (!matchesPlatform(game.categories, platformFilter)) return false;
     return true;
   });
 

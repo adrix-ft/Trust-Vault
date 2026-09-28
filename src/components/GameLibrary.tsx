@@ -1,6 +1,6 @@
 import SectionHeader from './SectionHeader';
 import { ShoppingCart, Check, ChevronDown } from 'lucide-react';
-import { useStore } from '../context/StoreContext';
+import { useStore, matchesPlatform, isPlayStationPlatform } from '../context/StoreContext';
 import { motion, AnimatePresence } from 'motion/react';
 import { useState, useEffect } from 'react';
 import { getGameCoverUrl } from '../utils/image';
@@ -19,10 +19,7 @@ export default function GameLibrary() {
   const filteredGames = catalog.filter(game => {
     if (game.categories?.some(cat => cat.toLowerCase() === 'bundles')) return false;
     if (!game.categories?.includes(selectedCategory)) return false;
-    if (platformFilter !== 'All') {
-      const matchesStrict = game.categories?.some(cat => String(cat).toUpperCase() === platformFilter.toUpperCase());
-      if (!matchesStrict) return false;
-    }
+    if (!matchesPlatform(game.categories, platformFilter)) return false;
     return true;
   });
 
@@ -111,7 +108,7 @@ export default function GameLibrary() {
                       <div className="mt-4 flex items-center justify-between">
                         {(() => {
                           const isAvailablePS = game.categories?.some(c => c.includes('PS'));
-                          const showPSPrice = platformFilter === 'PS5' && isAvailablePS && game.variants && game.variants.length > 0;
+                          const showPSPrice = isPlayStationPlatform(platformFilter) && isAvailablePS && game.variants && game.variants.length > 0;
                           const displayPrice = showPSPrice ? game.variants![0].price : game.price;
                           const displayOriginalPrice = showPSPrice ? game.variants![0].originalPrice : (game.onSale ? game.originalPrice : undefined);
                           

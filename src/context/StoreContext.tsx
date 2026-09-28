@@ -31,6 +31,29 @@ export type Game = {
   sysReqRecommended?: string;
 };
 
+export const isPlayStationPlatform = (filter?: string): boolean => {
+  if (!filter) return false;
+  const f = filter.toUpperCase();
+  return f === 'PS' || f === 'PS5' || f === 'PS4';
+};
+
+export const matchesPlatform = (categories?: string[], platformFilter?: string): boolean => {
+  if (!platformFilter || platformFilter === 'All') return true;
+  if (!categories || categories.length === 0) return false;
+  
+  const pf = platformFilter.toUpperCase();
+  return categories.some(cat => {
+    const c = String(cat).toUpperCase();
+    if (pf === 'PS' || pf === 'PS5' || pf === 'PS4') {
+      return c.includes('PS');
+    }
+    if (pf === 'PC') {
+      return c === 'PC' || c === 'STEAM';
+    }
+    return c === pf;
+  });
+};
+
 export type Collection = {
   id: string;
   title: string;
@@ -349,7 +372,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   const [showAdminLogin, setShowAdminLogin] = useState(false);
   const [playingTrailerUrl, setPlayingTrailerUrl] = useState<string | null>(null);
 
-  const [platformFilter, setPlatformFilter] = useState('PS5');
+  const [platformFilter, setPlatformFilter] = useState('PS');
 
   const addToCart = (game: Game, purchaseType: 'permanent' | 'rent' = 'permanent') => {
     setCart(prev => {

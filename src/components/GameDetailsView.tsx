@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { useStore } from '../context/StoreContext';
+import { useStore, isPlayStationPlatform } from '../context/StoreContext';
 import { getGameCoverUrl } from '../utils/image';
 import { ArrowLeft, ShoppingCart, Clock, Check, Star, ShieldCheck, Gamepad2, Minus, Plus, X, Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -18,7 +18,7 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
   const isAvailablePS = game?.categories?.some(c => c.includes('PS')) || false;
 
   const [activePlatform, setActivePlatform] = useState<'PC' | 'PS'>(() => {
-    if (platformFilter === 'PS5' && isAvailablePS) return 'PS';
+    if (isPlayStationPlatform(platformFilter) && isAvailablePS) return 'PS';
     if (platformFilter === 'PC' && isAvailablePC) return 'PC';
     return isAvailablePS ? 'PS' : 'PC';
   });
@@ -37,7 +37,7 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
     window.scrollTo(0, 0);
     // Auto-detect platform again if game changes
     let newPlat: 'PC' | 'PS' = isAvailablePS ? 'PS' : 'PC';
-    if (platformFilter === 'PS5' && isAvailablePS) newPlat = 'PS';
+    if (isPlayStationPlatform(platformFilter) && isAvailablePS) newPlat = 'PS';
     if (platformFilter === 'PC' && isAvailablePC) newPlat = 'PC';
     
     setActivePlatform(newPlat);

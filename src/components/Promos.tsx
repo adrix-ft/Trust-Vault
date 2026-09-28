@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useStore } from '../context/StoreContext';
+import { useStore, matchesPlatform } from '../context/StoreContext';
 import { Play, ShoppingCart } from 'lucide-react';
 import { getGameCoverUrl } from '../utils/image';
 import { motion, AnimatePresence } from 'motion/react';
@@ -9,7 +9,7 @@ export default function Promos() {
   const { addToCart, catalog, platformFilter, setPlayingTrailerUrl } = useStore();
 
   const filteredCatalog = catalog.filter(game => {
-    if (platformFilter !== 'All' && !game.categories?.includes(platformFilter)) return false;
+    if (!matchesPlatform(game.categories, platformFilter)) return false;
     return true;
   });
 

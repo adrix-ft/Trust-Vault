@@ -1,4 +1,4 @@
-import { useStore } from '../context/StoreContext';
+import { useStore, isPlayStationPlatform } from '../context/StoreContext';
 import { Layers, Crown, ShieldCheck, Package, MessageCircle, Repeat } from 'lucide-react';
 import { SteamIcon, PSIcon } from './Navbar';
 
@@ -6,7 +6,7 @@ export default function PlatformFilter() {
   const { platformFilter, setPlatformFilter, selectedCategory, setSelectedCategory } = useStore();
 
   const filters = [
-    { id: 'PS5', type: 'platform', icon: PSIcon, isCustom: true },
+    { id: 'PS', type: 'platform', icon: PSIcon, isCustom: true },
     { id: 'PC', type: 'platform', icon: SteamIcon, isCustom: true },
     { id: 'Subscriptions', label: 'Subscriptions', type: 'category', icon: Repeat, iconClass: 'text-purple-400' },
     { id: 'Custom Bundle', label: 'Build Bundle', icon: Package, type: 'category', iconClass: 'text-emerald-400' },
@@ -20,7 +20,7 @@ export default function PlatformFilter() {
         
         const isActive = filter.type === 'category' 
           ? selectedCategory === filter.id
-          : platformFilter === filter.id && selectedCategory === 'Store';
+          : (filter.id === 'PS' ? isPlayStationPlatform(platformFilter) : platformFilter === filter.id) && selectedCategory === 'Store';
 
         const isProofsHover = filter.id === 'Proofs' && !isActive 
           ? 'hover:border-green-500/50 hover:bg-green-500/5 hover:text-white' 

@@ -1,5 +1,5 @@
 import SectionHeader from './SectionHeader';
-import { useStore } from '../context/StoreContext';
+import { useStore, matchesPlatform } from '../context/StoreContext';
 import { ShoppingCart, Clock } from 'lucide-react';
 import { getGameCoverUrl } from '../utils/image';
 import { useState } from 'react';
@@ -12,7 +12,7 @@ export default function Discounts() {
   const discountGames = catalog.filter(game => {
     if (!game.onSale) return false;
     if (game.categories?.some(cat => cat.toLowerCase() === 'bundles')) return false;
-    if (platformFilter !== 'All' && !game.categories?.includes(platformFilter)) return false;
+    if (!matchesPlatform(game.categories, platformFilter)) return false;
     return true;
   });
 

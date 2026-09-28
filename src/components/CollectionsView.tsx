@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { useStore } from '../context/StoreContext';
+import { useStore, matchesPlatform } from '../context/StoreContext';
 import { getGameCoverUrl } from '../utils/image';
 import { ShoppingCart, ChevronLeft, ChevronRight } from 'lucide-react';
 import PlatformTags from './PlatformTags';
@@ -36,7 +36,7 @@ export default function CollectionsView() {
             );
             
             if (!matchesKeyword) return false;
-            if (platformFilter !== 'All' && !game.categories?.includes(platformFilter)) return false;
+            if (!matchesPlatform(game.categories, platformFilter)) return false;
             
             return true;
           });

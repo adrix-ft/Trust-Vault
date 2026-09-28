@@ -1,5 +1,5 @@
 import { Search, ShoppingCart, Check, X, MessageCircle, Zap, TrendingUp, Monitor, Gamepad2, ShieldCheck, Clock, Package, Repeat } from 'lucide-react';
-import { useStore, Game } from '../context/StoreContext';
+import { useStore, Game, isPlayStationPlatform } from '../context/StoreContext';
 import { motion, AnimatePresence } from 'motion/react';
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { getGameCoverUrl } from '../utils/image';
@@ -105,7 +105,7 @@ export default function Navbar() {
             const Icon = filter.icon;
             const isActive = filter.type === 'category'
               ? selectedCategory === filter.id
-              : platformFilter === filter.id && selectedCategory === 'Store';
+              : (filter.id === 'PS' ? isPlayStationPlatform(platformFilter) : platformFilter === filter.id) && selectedCategory === 'Store';
 
             const isProofsHover = filter.id === 'Proofs' && !isActive
               ? 'hover:border-green-500/50 hover:bg-green-500/5 hover:text-white'
