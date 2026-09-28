@@ -66,6 +66,30 @@ app.post('/api/admin/login', async (req, res) => {
 
 // ==================== SUBSCRIPTIONS ENDPOINTS ====================
 
+const subscriptionsOrderPath = path.join(process.cwd(), 'subscriptions_order.json');
+
+app.get('/api/subscriptions/order', (req, res) => {
+  try {
+    if (fs.existsSync(subscriptionsOrderPath)) {
+      const order = JSON.parse(fs.readFileSync(subscriptionsOrderPath, 'utf8'));
+      res.json(order);
+    } else {
+      res.json([]);
+    }
+  } catch (err) {
+    res.json([]);
+  }
+});
+
+app.put('/api/subscriptions/order', (req, res) => {
+  try {
+    fs.writeFileSync(subscriptionsOrderPath, JSON.stringify(req.body, null, 2), 'utf8');
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get('/api/subscriptions', async (req, res) => {
   try {
     const { data, error } = await supabase.from('subscriptions').select('*').order('id', { ascending: true });

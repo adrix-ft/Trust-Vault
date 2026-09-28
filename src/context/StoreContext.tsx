@@ -241,6 +241,22 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
         const response = await fetch(`${API_BASE_URL}/api/subscriptions`);
         if (response.ok) {
           const data = await response.json();
+          try {
+            const orderRes = await fetch(`${API_BASE_URL}/api/subscriptions/order`);
+            if (orderRes.ok) {
+              const orderIds = await orderRes.json();
+              if (Array.isArray(orderIds) && orderIds.length > 0) {
+                data.sort((a: any, b: any) => {
+                  const idxA = orderIds.indexOf(a.id);
+                  const idxB = orderIds.indexOf(b.id);
+                  if (idxA === -1 && idxB === -1) return 0;
+                  if (idxA === -1) return 1;
+                  if (idxB === -1) return -1;
+                  return idxA - idxB;
+                });
+              }
+            }
+          } catch(e) {}
           setSubscriptions(data);
         } else {
           // Fallback to local storage if API fails initially
@@ -332,15 +348,16 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   const reorderSubscriptions = async (reorderedSubs: Subscription[]) => {
     setSubscriptions(reorderedSubs);
     localStorage.setItem('amin_subscriptions', JSON.stringify(reorderedSubs));
-    // Since backend might not have bulk update, we'll try to just fire individual updates or assume UI uses localStorage / UI state for now
+    // Save the order array to backend
     try {
-      await fetch(`${API_BASE_URL}/api/subscriptions/bulk`, {
+      const orderIds = reorderedSubs.map(s => s.id);
+      await fetch(`${API_BASE_URL}/api/subscriptions/order`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(reorderedSubs)
+        body: JSON.stringify(orderIds)
       });
     } catch(err) {
-      console.warn("Bulk update might not be supported on backend yet, but local state updated");
+      console.warn("Could not save order to backend");
     }
   };
   const updateCollection = async (id: string, updatedCollection: Collection) => {
