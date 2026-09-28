@@ -351,11 +351,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   const [showAdminLogin, setShowAdminLogin] = useState(false);
   const [playingTrailerUrl, setPlayingTrailerUrl] = useState<string | null>(null);
 
-  const [platformFilter, setPlatformFilter] = useState(() => {
-    try { return localStorage.getItem('gaming_platform_filter') || 'PC'; } catch { return 'PC'; }
-  });
-
-  useEffect(() => { localStorage.setItem('gaming_platform_filter', platformFilter); }, [platformFilter]);
+  const [platformFilter, setPlatformFilter] = useState('PS5');
 
   const addToCart = (game: Game, purchaseType: 'permanent' | 'rent' = 'permanent') => {
     setCart(prev => {
