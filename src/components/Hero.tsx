@@ -6,7 +6,7 @@ import { ShoppingCart, ChevronLeft, ChevronRight } from 'lucide-react';
 import PlatformTags from './PlatformTags';
 
 export default function Hero() {
-  const { addToCart, catalog, catalogLoaded, platformFilter, setSelectedCategory } = useStore();
+  const { addToCart, catalog, heroOrder, catalogLoaded, platformFilter, setSelectedCategory } = useStore();
   const [activeIndex, setActiveIndex] = useState(0);
 
   // 1. Initial filter: Must be showInHero AND match the current platform tab
@@ -26,14 +26,25 @@ export default function Hero() {
     }).sort((a, b) => (b.onSale ? 1 : 0) - (a.onSale ? 1 : 0)).slice(0, 5);
   }
 
-  // 3. Priority Sorting
+  // 3. Independent Hero Ordering
   heroGames.sort((a, b) => {
+    const idxA = heroOrder.indexOf(a.title);
+    const idxB = heroOrder.indexOf(b.title);
+    
+    // If both are found in heroOrder, sort by their index
+    if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+    // If only one is found, prioritize the one that's in heroOrder
+    if (idxA !== -1) return -1;
+    if (idxB !== -1) return 1;
+    
+    // Fallback: Default Hardcoded priority if they aren't in heroOrder yet
     const priorityTitles = ['God of War', 'God of War Ragnarök', "Marvel's Spider-Man 2", 'Ghost of Tsushima'];
-    const indexA = priorityTitles.indexOf(a.title);
-    const indexB = priorityTitles.indexOf(b.title);
-    if (indexA !== -1 && indexB !== -1) return indexA - indexB;
-    if (indexA !== -1) return -1;
-    if (indexB !== -1) return 1;
+    const pIdxA = priorityTitles.indexOf(a.title);
+    const pIdxB = priorityTitles.indexOf(b.title);
+    if (pIdxA !== -1 && pIdxB !== -1) return pIdxA - pIdxB;
+    if (pIdxA !== -1) return -1;
+    if (pIdxB !== -1) return 1;
+    
     return 0;
   });
 

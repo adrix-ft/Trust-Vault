@@ -3,21 +3,12 @@ import { useStore } from '../context/StoreContext';
 import React, { useState, useEffect } from 'react';
 
 export default function Subscriptions() {
-  const { addToCart, subscriptions } = useStore();
+  const { addToCart, subscriptions, subscriptionsLoaded } = useStore();
   const [selectedPricing, setSelectedPricing] = useState<Record<string, number>>({});
 
   const handleSelectPricing = (subId: string, idx: number) => {
     setSelectedPricing(prev => ({ ...prev, [subId]: idx }));
   };
-
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    if (subscriptions.length > 0) {
-      setLoading(false);
-    }
-    const timer = setTimeout(() => setLoading(false), 2000);
-    return () => clearTimeout(timer);
-  }, [subscriptions]);
 
   return (
     <div className="w-full mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 py-16">
@@ -33,7 +24,7 @@ export default function Subscriptions() {
         </p>
       </div>
 
-      {loading ? (
+      {(!subscriptionsLoaded) ? (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
           {[...Array(3)].map((_, i) => (
             <div key={i} className="bg-[#11212D] rounded-3xl overflow-hidden border border-[#253745] animate-pulse h-96 flex flex-col">

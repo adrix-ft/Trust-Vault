@@ -14,6 +14,7 @@ export type Game = {
   categories?: string[];
   description?: string;
   originalPrice?: string;
+  customTags?: string[];
   onSale?: boolean;
   customCoverUrl?: string;
   horizontalCoverUrl?: string;
@@ -111,14 +112,18 @@ type StoreContextType = {
   platformFilter: string;
   setPlatformFilter: (platform: string) => void;
   catalogLoaded: boolean;
+  subscriptionsLoaded: boolean;
   isAdmin: boolean;
   setIsAdmin: (isAdmin: boolean) => void;
   showAdminLogin: boolean;
   setShowAdminLogin: (show: boolean) => void;
   catalog: Game[];
+  heroOrder: string[];
+  setHeroOrder: (order: string[]) => void;
   updateGame: (oldTitle: string, updatedGame: Game) => void;
   addGame: (game: Game) => void;
   removeGame: (title: string) => void;
+  reorderCatalog: (reorderedGames: Game[]) => void;
   resetCatalog: () => void;
   toasts: ToastMessage[];
   showToast: (message: string, type?: ToastType) => void;
@@ -148,9 +153,32 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     return defaultGamesList;
   });
 
+  const [heroOrder, setHeroOrderState] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem('amin_hero_order');
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return [];
+  });
+
+  const setHeroOrder = async (order: string[]) => {
+    setHeroOrderState(order);
+    localStorage.setItem('amin_hero_order', JSON.stringify(order));
+    try {
+      await fetch(`${API_BASE_URL}/api/products/hero-order`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(order)
+      });
+    } catch(err) {
+      console.warn("Could not save hero order to backend");
+    }
+  };
+
   const [catalogLoaded, setCatalogLoaded] = useState(false);
+  const [subscriptionsLoaded, setSubscriptionsLoaded] = useState(false);
   useEffect(() => {
-    const timer = setTimeout(() => setCatalogLoaded(true), 2000);
+    const timer = setTimeout(() => { setCatalogLoaded(true); setSubscriptionsLoaded(true); }, 10000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -258,15 +286,18 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
             }
           } catch(e) {}
           setSubscriptions(data);
+          setSubscriptionsLoaded(true);
         } else {
           // Fallback to local storage if API fails initially
           const saved = localStorage.getItem('amin_subscriptions');
           if (saved) setSubscriptions(JSON.parse(saved));
+          setSubscriptionsLoaded(true);
         }
       } catch (err) {
         console.error('Failed to fetch subscriptions:', err);
         const saved = localStorage.getItem('amin_subscriptions');
         if (saved) setSubscriptions(JSON.parse(saved));
+        setSubscriptionsLoaded(true);
       }
     };
     fetchSubscriptions();
@@ -390,6 +421,34 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
         const response = await fetch(`${API_BASE_URL}/api/products`);
         const data = await response.json();
         if (Array.isArray(data)) {
+          try {
+            const orderRes = await fetch(`${API_BASE_URL}/api/products/order`);
+            if (orderRes.ok) {
+              const orderTitles = await orderRes.json();
+              if (Array.isArray(orderTitles) && orderTitles.length > 0) {
+                data.sort((a: any, b: any) => {
+                  const idxA = orderTitles.indexOf(a.title);
+                  const idxB = orderTitles.indexOf(b.title);
+                  if (idxA === -1 && idxB === -1) return 0;
+                  if (idxA === -1) return 1;
+                  if (idxB === -1) return -1;
+                  return idxA - idxB;
+                });
+              }
+            }
+          } catch(e) {}
+          
+          try {
+            const heroOrderRes = await fetch(`${API_BASE_URL}/api/products/hero-order`);
+            if (heroOrderRes.ok) {
+              const heroOrderTitles = await heroOrderRes.json();
+              if (Array.isArray(heroOrderTitles)) {
+                setHeroOrderState(heroOrderTitles);
+                localStorage.setItem('amin_hero_order', JSON.stringify(heroOrderTitles));
+              }
+            }
+          } catch(e) {}
+          
           setCatalog(data);
           localStorage.setItem('amin_game_catalog', JSON.stringify(data));
         }
@@ -405,11 +464,61 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => { localStorage.setItem('gaming_admin', isAdmin.toString()); }, [isAdmin]);
 
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState('Store');
   const [showAdminLogin, setShowAdminLogin] = useState(false);
   const [playingTrailerUrl, setPlayingTrailerUrl] = useState<string | null>(null);
 
-  const [platformFilter, setPlatformFilter] = useState('PS');
+  // Sync state with URL to enable shareable links
+  const [selectedCategory, setSelectedCategoryState] = useState(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('page') || 'Store';
+    } catch { return 'Store'; }
+  });
+
+  const [platformFilter, setPlatformFilterState] = useState(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('tab') || 'PS';
+    } catch { return 'PS'; }
+  });
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      setSelectedCategoryState(params.get('page') || 'Store');
+      setPlatformFilterState(params.get('tab') || 'PS');
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const setSelectedCategory = (cat: string) => {
+    setSelectedCategoryState(cat);
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (cat === 'Store') {
+        params.delete('page');
+      } else {
+        params.set('page', cat);
+      }
+      const newUrl = `${window.location.pathname}${params.toString() ? '?' + params.toString() : ''}`;
+      window.history.pushState({}, '', newUrl);
+    } catch {}
+  };
+
+  const setPlatformFilter = (pf: string) => {
+    setPlatformFilterState(pf);
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (pf === 'PS') {
+        params.delete('tab');
+      } else {
+        params.set('tab', pf);
+      }
+      const newUrl = `${window.location.pathname}${params.toString() ? '?' + params.toString() : ''}`;
+      window.history.pushState({}, '', newUrl);
+    } catch {}
+  };
 
   const addToCart = (game: Game, purchaseType: 'permanent' | 'rent' = 'permanent') => {
     setCart(prev => {
@@ -452,6 +561,21 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     try { await fetch(`${API_BASE_URL}/api/products/${encodeURIComponent(title)}`, { method: 'DELETE' }); } catch (err) {}
   };
 
+  const reorderCatalog = async (reorderedGames: Game[]) => {
+    setCatalog(reorderedGames);
+    localStorage.setItem('amin_game_catalog', JSON.stringify(reorderedGames));
+    try {
+      const orderTitles = reorderedGames.map(g => g.title);
+      await fetch(`${API_BASE_URL}/api/products/order`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderTitles)
+      });
+    } catch(err) {
+      console.warn("Could not save catalog order to backend");
+    }
+  };
+
   const resetCatalog = () => {
     setCatalog([]);
     localStorage.setItem('amin_game_catalog', JSON.stringify([]));
@@ -468,10 +592,10 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
       selectedCategory, setSelectedCategory,
       playingTrailerUrl, setPlayingTrailerUrl,
       platformFilter, setPlatformFilter,
-      catalogLoaded,
+      catalogLoaded, subscriptionsLoaded,
       isAdmin, setIsAdmin,
       showAdminLogin, setShowAdminLogin,
-      catalog, updateGame, addGame, removeGame, resetCatalog,
+      catalog, heroOrder, setHeroOrder, updateGame, addGame, removeGame, reorderCatalog, resetCatalog,
       toasts, showToast, removeToast, confirmReq, setConfirmReq
     }
   }, children);

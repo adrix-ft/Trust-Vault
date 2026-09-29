@@ -10,8 +10,13 @@ export default function PlatformTags({ platforms, className }: { platforms?: str
   // If there's a generic PS tag but no PS4 or PS5
   const isGenericPS = platforms.some(p => p.toUpperCase() === 'PS') && !isPS4 && !isPS5;
 
+  // Extract non-platform custom tags
+  const knownPlatformTags = ['PC', 'STEAM', 'PS5', 'PS4', 'XBOX', 'PS', 'BUNDLE-ELIGIBLE', 'STORE'];
+  const customTags = platforms.filter(p => !knownPlatformTags.includes(p.toUpperCase()));
+
   return (
-    <div className={className || "absolute top-1.5 right-1.5 md:top-2 md:right-2 flex flex-wrap justify-end gap-1 z-20 max-w-[90%]"}>
+    <div className={className || "absolute top-1.5 right-1.5 md:top-2 md:right-2 flex flex-col items-end gap-1.5 z-20 max-w-[90%]"}>
+      <div className="flex flex-wrap justify-end gap-1">
       {isPS5 && (
         <span className="bg-white text-black px-1.5 py-0.5 md:px-2 md:py-1 rounded-sm shadow-md flex items-center justify-center">
           <svg viewBox="0 9.2 24 5.6" className="h-[7px] md:h-[8px] w-auto fill-current" xmlns="http://www.w3.org/2000/svg">
@@ -44,6 +49,17 @@ export default function PlatformTags({ platforms, className }: { platforms?: str
         <span className="bg-green-600 text-white px-1.5 py-0.5 md:px-2 md:py-1 rounded-sm shadow-md flex items-center justify-center">
           <span className="text-[7.5px] md:text-[8px] font-black tracking-wider">XBOX</span>
         </span>
+      )}
+      </div>
+      
+      {customTags && customTags.length > 0 && (
+        <div className="flex flex-wrap justify-end gap-1.5 mt-0.5">
+          {customTags.map((tag, idx) => (
+            <span key={idx} className="bg-cyan-950/80 text-cyan-400 font-black text-[9px] md:text-[10px] uppercase tracking-widest border-[1.5px] border-cyan-400 rounded-full px-2.5 py-0.5 shadow-[0_0_10px_rgba(34,211,238,0.5)] backdrop-blur-sm">
+              {tag}
+            </span>
+          ))}
+        </div>
       )}
     </div>
   );

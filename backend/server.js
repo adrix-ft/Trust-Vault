@@ -64,29 +64,47 @@ app.post('/api/admin/login', async (req, res) => {
 
 // ==================== PRODUCTS ENDPOINTS ====================
 
+// ==================== SETTINGS WRAPPER (SUPABASE) ====================
+async function getSetting(key, defaultVal, filePath) {
+  try {
+    const { data, error } = await supabase.from('store_settings').select('value').eq('id', key).single();
+    if (error) throw error;
+    if (data) return data.value;
+  } catch (err) {
+    try {
+      if (fs.existsSync(filePath)) {
+        return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      }
+    } catch(e) {}
+  }
+  return defaultVal;
+}
+
+async function setSetting(key, val, filePath) {
+  try {
+    const { error } = await supabase.from('store_settings').upsert({ id: key, value: val });
+    if (error) throw error;
+  } catch (err) {
+    try {
+      fs.writeFileSync(filePath, JSON.stringify(val, null, 2), 'utf8');
+    } catch(e) {}
+  }
+}
+
 // ==================== SUBSCRIPTIONS ENDPOINTS ====================
 
 const subscriptionsOrderPath = path.join(process.cwd(), 'subscriptions_order.json');
 
-app.get('/api/subscriptions/order', (req, res) => {
-  try {
-    if (fs.existsSync(subscriptionsOrderPath)) {
-      const order = JSON.parse(fs.readFileSync(subscriptionsOrderPath, 'utf8'));
-      res.json(order);
-    } else {
-      res.json([]);
-    }
-  } catch (err) {
-    res.json([]);
-  }
+app.get('/api/subscriptions/order', async (req, res) => {
+  res.json(await getSetting('subscriptionsOrder', [], subscriptionsOrderPath));
 });
 
-app.put('/api/subscriptions/order', (req, res) => {
-  try {
-    fs.writeFileSync(subscriptionsOrderPath, JSON.stringify(req.body, null, 2), 'utf8');
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+app.put('/api/subscriptions/order', async (req, res) => {
+  try { 
+    await setSetting('subscriptionsOrder', req.body, subscriptionsOrderPath); 
+    res.json({success:true}); 
+  } catch(e) { 
+    res.status(500).json({error:e.message}); 
   }
 });
 
@@ -189,12 +207,57 @@ app.delete('/api/subscriptions/:id', async (req, res) => {
   }
 });
 
+const productsOrderPath = path.join(process.cwd(), 'products_order.json');
+const heroOrderPath = path.join(process.cwd(), 'hero_order.json');
+
+app.get('/api/products/order', async (req, res) => {
+  res.json(await getSetting('productsOrder', [], productsOrderPath));
+});
+
+app.put('/api/products/order', async (req, res) => {
+  try { 
+    await setSetting('productsOrder', req.body, productsOrderPath); 
+    res.json({success:true}); 
+  } catch(e) { 
+    res.status(500).json({error:e.message}); 
+  }
+});
+
+app.get('/api/products/hero-order', async (req, res) => {
+  res.json(await getSetting('heroOrder', [], heroOrderPath));
+});
+
+app.put('/api/products/hero-order', async (req, res) => {
+  try { 
+    await setSetting('heroOrder', req.body, heroOrderPath); 
+    res.json({success:true}); 
+  } catch(e) { 
+    res.status(500).json({error:e.message}); 
+  }
+});
+
+let cachedProducts = null;
+let productsCacheTime = 0;
+const CACHE_DURATION = 60 * 1000; // 1 minute cache
+
 app.get('/api/products', async (req, res) => {
   try {
+    // Set headers to allow browsers to cache for a short time
+    res.set('Cache-Control', 'public, max-age=10, stale-while-revalidate=86400');
+    
+    // Return in-memory cache if valid
+    if (cachedProducts && Date.now() - productsCacheTime < CACHE_DURATION) {
+      return res.json(cachedProducts);
+    }
+    
     const { data, error } = await supabase.from('products').select('*');
     if (error) throw error;
+    
+    cachedProducts = data;
+    productsCacheTime = Date.now();
     res.json(data);
   } catch (err) {
+    if (cachedProducts) return res.json(cachedProducts);
     res.status(500).json({ error: err.message });
   }
 });
@@ -204,6 +267,7 @@ app.post('/api/products', async (req, res) => {
     const game = req.body;
     const { data, error } = await supabase.from('products').insert([game]).select();
     if (error) throw error;
+    cachedProducts = null; // Invalidate cache
     res.json(data[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -220,6 +284,7 @@ app.put('/api/products/:title', async (req, res) => {
       .eq('title', title)
       .select();
     if (error) throw error;
+    cachedProducts = null; // Invalidate cache
     res.json(data[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -231,6 +296,7 @@ app.delete('/api/products/:title', async (req, res) => {
     const title = decodeURIComponent(req.params.title);
     const { error } = await supabase.from('products').delete().eq('title', title);
     if (error) throw error;
+    cachedProducts = null; // Invalidate cache
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -665,38 +731,17 @@ app.delete('/api/rents/:id', async (req, res) => {
 // ==================== BUNDLE DISCOUNTS ENDPOINTS (LOCAL JSON) ====================
 const bundleDiscountsPath = path.join(process.cwd(), 'bundleDiscounts.json');
 
-const readBundleDiscounts = () => {
-  if (!fs.existsSync(bundleDiscountsPath)) {
-    const defaultDiscounts = [
-      { minGames: 3, discountPercentage: 10 },
-      { minGames: 5, discountPercentage: 20 }
-    ];
-    fs.writeFileSync(bundleDiscountsPath, JSON.stringify(defaultDiscounts));
-  }
-  const data = fs.readFileSync(bundleDiscountsPath);
-  return JSON.parse(data);
-};
-
-const writeBundleDiscounts = (data) => {
-  fs.writeFileSync(bundleDiscountsPath, JSON.stringify(data, null, 2));
-};
-
-app.get('/api/bundle-discounts', (req, res) => {
-  try {
-    const discounts = readBundleDiscounts();
-    res.json(discounts);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+app.get('/api/bundle-discounts', async (req, res) => {
+  const defaultDisc = [{ minGames: 3, discountPercentage: 10 }, { minGames: 5, discountPercentage: 20 }];
+  res.json(await getSetting('bundleDiscounts', defaultDisc, bundleDiscountsPath));
 });
 
-app.put('/api/bundle-discounts', (req, res) => {
-  try {
-    const newDiscounts = req.body;
-    writeBundleDiscounts(newDiscounts);
-    res.json({ success: true, data: newDiscounts });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+app.put('/api/bundle-discounts', async (req, res) => {
+  try { 
+    await setSetting('bundleDiscounts', req.body, bundleDiscountsPath); 
+    res.json({success:true, data: req.body}); 
+  } catch(e) { 
+    res.status(500).json({error:e.message}); 
   }
 });
 

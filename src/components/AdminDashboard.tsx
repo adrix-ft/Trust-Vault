@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useStore, Game } from '../context/StoreContext';
 import { motion, AnimatePresence } from 'motion/react';
-import { LogOut, Plus, Trash2, Edit2, Copy, X, RefreshCw, Image as ImageIcon, Upload, ChevronLeft, ChevronRight, ShieldCheck, Clock, Layers, Gamepad2, Database, Package, Search, MessageCircle, CheckCircle, Repeat, GripVertical, ExternalLink } from 'lucide-react';
+import { LogOut, Plus, Trash2, Edit2, Copy, X, RefreshCw, Image as ImageIcon, Upload, ChevronLeft, ChevronRight, ShieldCheck, Clock, Layers, Gamepad2, Database, Package, Search, MessageCircle, CheckCircle, Repeat, GripVertical, ExternalLink, Star, Monitor } from 'lucide-react';
 import { getGameCoverUrl } from '../utils/image';
 
 // FIXED: Dynamically load the API URL from Vercel Environment Variables
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://amin-game-store-backend.onrender.com';
 
 export default function AdminDashboard() {
-  const { catalog, updateGame, addGame, removeGame, resetCatalog, setIsAdmin, collections, updateCollection, addCollection, removeCollection, bundleDiscounts, updateBundleDiscounts, showToast, setConfirmReq } = useStore();
+  const { catalog, heroOrder, setHeroOrder, updateGame, addGame, removeGame, reorderCatalog, resetCatalog, setIsAdmin, collections, updateCollection, addCollection, removeCollection, bundleDiscounts, updateBundleDiscounts, showToast, setConfirmReq } = useStore();
 
-  const [activeTab, setActiveTab] = useState<'catalog' | 'bundles' | 'proofs' | 'rents' | 'subscriptions'>('bundles');
+  const [activeTab, setActiveTab] = useState<'pc_games' | 'ps_games' | 'hero_pc' | 'hero_ps' | 'bundles' | 'proofs' | 'rents' | 'subscriptions'>('bundles');
   const [showForm, setShowForm] = useState(false);
+  const [customTagInput, setCustomTagInput] = useState('');
   const [editingTitle, setEditingTitle] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPlatform, setSelectedPlatform] = useState('All');
@@ -123,6 +124,7 @@ export default function AdminDashboard() {
 
   const { subscriptions, addSubscription, updateSubscription, removeSubscription, reorderSubscriptions } = useStore();
   const [draggedSubIndex, setDraggedSubIndex] = useState<number | null>(null);
+  const [draggedGameTitle, setDraggedGameTitle] = useState<string | null>(null);
 
   const handleSaveSubscription = () => {
     if (!subFormData.name || subFormData.pricing.length === 0) {
@@ -432,13 +434,32 @@ export default function AdminDashboard() {
     const matchesSearch = game.title.toLowerCase().includes(searchTerm.toLowerCase());
     if (!matchesSearch) return false;
 
-    if (selectedPlatform === 'All') return true;
-    return game.categories?.some(cat => cat.toLowerCase() === selectedPlatform.toLowerCase());
+    if (activeTab === 'hero_pc') {
+      return game.showInHero && game.categories?.some(c => c.toUpperCase() === 'PC' || c.toUpperCase() === 'STEAM');
+    } else if (activeTab === 'hero_ps') {
+      return game.showInHero && game.categories?.some(c => c.toUpperCase().includes('PS'));
+    } else if (activeTab === 'ps_games') {
+      return game.categories?.some(c => c.toUpperCase().includes('PS'));
+    } else if (activeTab === 'pc_games') {
+      return game.categories?.some(c => c.toUpperCase() === 'PC' || c.toUpperCase() === 'STEAM');
+    }
+    
+    return true;
   }).sort((a, b) => {
     if (sortBy === 'az') return a.title.localeCompare(b.title);
     if (sortBy === 'za') return b.title.localeCompare(a.title);
     if (sortBy === 'priceLow') return parsePriceNum(a.price) - parsePriceNum(b.price);
     if (sortBy === 'priceHigh') return parsePriceNum(b.price) - parsePriceNum(a.price);
+    
+    if ((activeTab === 'hero_pc' || activeTab === 'hero_ps') && sortBy === 'default') {
+      const idxA = heroOrder.indexOf(a.title);
+      const idxB = heroOrder.indexOf(b.title);
+      if (idxA === -1 && idxB === -1) return 0;
+      if (idxA === -1) return 1;
+      if (idxB === -1) return -1;
+      return idxA - idxB;
+    }
+    
     return 0;
   });
 
@@ -606,9 +627,15 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 bg-[#11212D]/50 border border-[#253745] p-1.5 rounded-2xl overflow-x-auto">
+        <div className="flex flex-col lg:flex-row gap-6 items-start">
+          {/* Sidebar Tabs */}
+          <div className="w-full lg:w-64 shrink-0 flex flex-col gap-1.5 bg-[#11212D]/50 border border-[#253745] p-2 rounded-2xl overflow-x-auto lg:overflow-x-visible">
+            <div className="flex lg:flex-col gap-1.5">
           {[
-            { id: 'catalog', label: 'Store Catalog', icon: Gamepad2, count: catalog.length },
+            { id: 'hero_pc', label: 'Hero - PC', icon: Monitor, count: catalog.filter(g => g.showInHero && (g.categories?.some(c => c.toUpperCase() === 'PC' || c.toUpperCase() === 'STEAM'))).length },
+            { id: 'hero_ps', label: 'Hero - PS5', icon: Gamepad2, count: catalog.filter(g => g.showInHero && (g.categories?.some(c => c.toUpperCase().includes('PS')))).length },
+            { id: 'ps_games', label: 'PS Games', icon: Gamepad2, count: catalog.filter(g => g.categories?.some(c => c.toUpperCase().includes('PS'))).length },
+            { id: 'pc_games', label: 'PC Games', icon: Monitor, count: catalog.filter(g => g.categories?.some(c => c.toUpperCase() === 'PC' || c.toUpperCase() === 'STEAM')).length },
             { id: 'bundles', label: 'Bundle Game List', icon: Package, count: existingBundles.length },
             { id: 'subscriptions', label: 'Subscriptions', icon: Repeat },
             { id: 'proofs', label: 'Customer Proofs', icon: ShieldCheck },
@@ -620,22 +647,27 @@ export default function AdminDashboard() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center gap-2.5 px-5 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap ${isActive ? 'bg-gradient-to-r from-[#253745] to-[#4A5C6A] text-white shadow-lg border border-[#4A5C6A]' : 'text-[#9BA8AB] hover:text-white hover:bg-[#11212D] border border-transparent'
+                className={`flex items-center justify-between px-4 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap lg:whitespace-normal ${isActive ? 'bg-gradient-to-r from-[#253745] to-[#4A5C6A] text-white shadow-lg border border-[#4A5C6A]' : 'text-[#9BA8AB] hover:text-white hover:bg-[#11212D] border border-transparent'
                   }`}
               >
-                <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-[#4A5C6A]'}`} />
-                <span>{tab.label}</span>
+                <div className="flex items-center gap-3">
+                  <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-[#4A5C6A]'}`} />
+                  <span>{tab.label}</span>
+                </div>
                 {tab.count !== undefined && (
-                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-black ${isActive ? 'bg-black/30 text-white' : 'bg-[#06141B] text-[#9BA8AB]'}`}>
+                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-black ml-2 shrink-0 ${isActive ? 'bg-black/30 text-white' : 'bg-[#06141B] text-[#9BA8AB]'}`}>
                     {tab.count}
                   </span>
                 )}
               </button>
             );
           })}
-        </div>
+            </div>
+          </div>
 
-        {activeTab === 'subscriptions' && (
+          {/* Main Content Area */}
+          <div className="flex-1 w-full min-w-0">
+            {activeTab === 'subscriptions' && (
           <div className="bg-[#11212D] border border-[#253745] rounded-2xl overflow-hidden shadow-2xl p-6">
             <h2 className="text-xl font-bold text-white mb-4">Manage Subscriptions</h2>
             <p className="text-[#9BA8AB] text-sm">Add, edit, or remove subscription offerings from your store.</p>
@@ -779,27 +811,15 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {activeTab === 'catalog' && (
+        {(activeTab === 'pc_games' || activeTab === 'ps_games' || activeTab === 'hero_pc' || activeTab === 'hero_ps') && (
           <div className="bg-[#11212D] border border-[#253745] rounded-2xl overflow-hidden shadow-2xl space-y-0">
             <div className="p-5 border-b border-[#253745] flex flex-col lg:flex-row justify-between items-center gap-4 bg-[#11212D]">
               <div className="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
                 <input
-                  type="text" placeholder="Search store inventory..." value={searchTerm}
+                  type="text" placeholder="Search inventory..." value={searchTerm}
                   onChange={e => { setSearchTerm(e.target.value); setCurrentPage(1); }}
                   className="bg-[#06141B] border border-[#253745] rounded-xl px-4 py-2.5 text-xs text-white placeholder:text-[#4A5C6A] focus:outline-none focus:border-[#4A5C6A] w-full sm:w-72 shadow-inner"
                 />
-                <div className="flex items-center gap-1.5 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
-                  {['All', 'PC', 'PS5', 'PS4', 'Bundle-Eligible'].map(platform => (
-                    <button
-                      key={platform}
-                      onClick={() => { setSelectedPlatform(platform); setCurrentPage(1); }}
-                      className={`px-3.5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap border cursor-pointer ${selectedPlatform === platform ? 'bg-[#253745] border-[#4A5C6A] text-white shadow-md' : 'bg-[#06141B] border-[#253745] text-[#9BA8AB] hover:border-[#4A5C6A]'
-                        }`}
-                    >
-                      {platform}
-                    </button>
-                  ))}
-                </div>
                 <div className="flex items-center gap-2 w-full sm:w-auto">
                   <select
                     value={sortBy} onChange={(e) => { setSortBy(e.target.value as any); setCurrentPage(1); }}
@@ -845,8 +865,52 @@ export default function AdminDashboard() {
                 </thead>
                 <tbody className="divide-y divide-[#253745]/60">
                   {currentTableData.map(game => (
-                    <tr key={game.title} className="hover:bg-[#06141B]/40 transition-colors">
-                      <td className="p-4">
+                    <tr 
+                      key={game.title} 
+                      className="hover:bg-[#06141B]/40 transition-colors cursor-grab active:cursor-grabbing"
+                      draggable
+                      onDragStart={() => setDraggedGameTitle(game.title)}
+                      onDragOver={(e) => e.preventDefault()}
+                      onDrop={(e) => {
+                        e.preventDefault();
+                        if (!draggedGameTitle || draggedGameTitle === game.title) return;
+                        
+                        const newCatalog = [...catalog];
+                        const draggedIdx = newCatalog.findIndex(g => g.title === draggedGameTitle);
+                        const dropIdx = newCatalog.findIndex(g => g.title === game.title);
+                        
+                        if (draggedIdx !== -1 && dropIdx !== -1) {
+                          if (activeTab === 'hero_pc' || activeTab === 'hero_ps') {
+                            // Independent hero ordering
+                            const newHeroOrder = [...heroOrder];
+                            if (newHeroOrder.length === 0) {
+                              // Initialize with current order if empty
+                              newHeroOrder.push(...catalog.filter(g => g.showInHero).map(g => g.title));
+                            }
+                            
+                            const hDraggedIdx = newHeroOrder.indexOf(draggedGameTitle);
+                            const hDropIdx = newHeroOrder.indexOf(game.title);
+                            
+                            if (hDraggedIdx !== -1 && hDropIdx !== -1) {
+                              newHeroOrder.splice(hDraggedIdx, 1);
+                              const newDropIdx = hDraggedIdx < hDropIdx ? hDropIdx - 1 : hDropIdx;
+                              newHeroOrder.splice(newDropIdx, 0, draggedGameTitle);
+                              setHeroOrder(newHeroOrder);
+                            }
+                          } else {
+                            // Regular catalog ordering
+                            const draggedGame = newCatalog[draggedIdx];
+                            newCatalog.splice(draggedIdx, 1);
+                            const newDropIdx = draggedIdx < dropIdx ? dropIdx - 1 : dropIdx;
+                            newCatalog.splice(newDropIdx, 0, draggedGame);
+                            reorderCatalog(newCatalog);
+                          }
+                        }
+                        setDraggedGameTitle(null);
+                      }}
+                    >
+                      <td className="p-4 flex items-center gap-2">
+                        <GripVertical className="w-4 h-4 text-[#4A5C6A] cursor-grab shrink-0" />
                         <div
                           className="w-12 h-16 bg-cover bg-center rounded-lg border border-[#253745] shadow-md"
                           style={{ backgroundImage: `url('${game.customCoverUrl || getGameCoverUrl(game.title)}')` }}
@@ -1783,6 +1847,73 @@ export default function AdminDashboard() {
                       </div>
                     </div>
 
+                    <div className="pt-2">
+                      <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Custom Tags / Editions</label>
+                      <div className="flex flex-col gap-3">
+                        <div className="flex gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleCategoryToggle('DELUXE EDITION')}
+                            className={`px-4 py-2 rounded-xl text-xs font-bold uppercase border transition-colors cursor-pointer ${formData.categories?.includes('DELUXE EDITION')
+                                ? 'bg-cyan-950/80 text-cyan-400 border-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.5)]'
+                                : 'bg-[#06141B] text-[#9BA8AB] border-[#253745] hover:border-cyan-500/50 hover:text-cyan-400'
+                              }`}
+                          >
+                            Deluxe Edition
+                          </button>
+                        </div>
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            value={customTagInput}
+                            onChange={(e) => setCustomTagInput(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                if (customTagInput.trim()) {
+                                  const tag = customTagInput.trim().toUpperCase();
+                                  if (!formData.categories?.includes(tag)) {
+                                    setFormData({ ...formData, categories: [...(formData.categories || []), tag] });
+                                  }
+                                  setCustomTagInput('');
+                                }
+                              }
+                            }}
+                            placeholder="Add custom tag (e.g. ULTIMATE EDITION)..."
+                            className="flex-1 bg-[#06141B] border border-[#253745] rounded-xl p-2.5 text-sm text-white placeholder-[#4A5C6A] focus:outline-none focus:border-cyan-500 transition-colors"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (customTagInput.trim()) {
+                                const tag = customTagInput.trim().toUpperCase();
+                                if (!formData.categories?.includes(tag)) {
+                                  setFormData({ ...formData, categories: [...(formData.categories || []), tag] });
+                                }
+                                setCustomTagInput('');
+                              }
+                            }}
+                            className="bg-[#253745] hover:bg-[#4A5C6A] text-white px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
+                          >
+                            Add
+                          </button>
+                        </div>
+                        {/* Display custom tags that are already added but aren't standard platforms/Deluxe */}
+                        {formData.categories && formData.categories.filter(c => !['PC', 'PS5', 'PS4', 'PS', 'XBOX', 'STEAM', 'BUNDLE-ELIGIBLE', 'DELUXE EDITION', 'STORE'].includes(c.toUpperCase())).length > 0 && (
+                          <div className="flex gap-2 flex-wrap mt-1">
+                            {formData.categories.filter(c => !['PC', 'PS5', 'PS4', 'PS', 'XBOX', 'STEAM', 'BUNDLE-ELIGIBLE', 'DELUXE EDITION', 'STORE'].includes(c.toUpperCase())).map(tag => (
+                              <div key={tag} className="flex items-center gap-1 bg-cyan-950/40 border border-cyan-500/30 text-cyan-400 px-2 py-1 rounded-lg text-[10px] font-bold uppercase">
+                                <span>{tag}</span>
+                                <button type="button" onClick={() => handleCategoryToggle(tag)} className="text-cyan-400 hover:text-white hover:bg-cyan-500/50 rounded-full p-0.5 transition-colors">
+                                  <X className="w-3 h-3" />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
                     <div className="flex justify-end pt-4 border-t border-[#253745]">
                       <button type="submit" className="bg-gradient-to-r from-[#253745] to-[#4A5C6A] hover:from-[#4A5C6A] hover:to-[#596F80] text-white px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-xs transition-all shadow-md cursor-pointer border border-[#4A5C6A]/50">
                         {editingTitle ? 'Update Game' : 'Save Game'}
@@ -1799,6 +1930,8 @@ export default function AdminDashboard() {
           // existing code... omitted here to preserve context!
           null
         )}
+          </div>
+        </div>
       </div>
 
       {showBulkAdd && (
