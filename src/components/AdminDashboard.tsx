@@ -738,7 +738,11 @@ export default function AdminDashboard() {
               <RefreshCw className="w-3.5 h-3.5" /> Reset Catalog
             </button>
             <button
-              onClick={() => setIsAdmin(false)}
+              onClick={() => {
+                setIsAdmin(false);
+                localStorage.removeItem('gaming_admin');
+                window.location.href = '/';
+              }}
               className="flex items-center gap-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 px-4 py-2.5 rounded-xl font-bold uppercase tracking-wider text-xs transition-all border border-red-500/30 cursor-pointer shadow-sm"
             >
               <LogOut className="w-3.5 h-3.5" /> Logout
