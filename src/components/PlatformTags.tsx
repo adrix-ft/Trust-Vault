@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function PlatformTags({ platforms, className }: { platforms?: string[], className?: string }) {
+export default function PlatformTags({ platforms, tagColors, className }: { platforms?: string[], tagColors?: Record<string, string>, className?: string }) {
   if (!platforms) return null;
   const isPC = platforms.some(p => p.toUpperCase() === 'PC' || p.toUpperCase() === 'STEAM');
   const isPS5 = platforms.some(p => p.toUpperCase() === 'PS5');
@@ -54,11 +54,24 @@ export default function PlatformTags({ platforms, className }: { platforms?: str
       
       {customTags && customTags.length > 0 && (
         <div className="flex flex-wrap justify-end gap-1.5 mt-0.5">
-          {customTags.map((tag, idx) => (
-            <span key={idx} className="bg-cyan-950/80 text-cyan-400 font-black text-[9px] md:text-[10px] uppercase tracking-widest border-[1.5px] border-cyan-400 rounded-full px-2.5 py-0.5 shadow-[0_0_10px_rgba(34,211,238,0.5)] backdrop-blur-sm">
-              {tag}
-            </span>
-          ))}
+          {customTags.map((tag, idx) => {
+            const customColor = tagColors?.[tag];
+            const hasCustomColor = !!customColor;
+            
+            return (
+              <span key={idx} 
+                className={`font-black text-[9px] md:text-[10px] uppercase tracking-widest border-[1.5px] rounded-full px-2.5 py-0.5 backdrop-blur-sm ${hasCustomColor ? '' : 'bg-cyan-950/80 text-cyan-400 border-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.5)]'}`}
+                style={hasCustomColor ? { 
+                  backgroundColor: `${customColor}33`, 
+                  color: customColor, 
+                  borderColor: customColor,
+                  boxShadow: `0 0 10px ${customColor}80` 
+                } : undefined}
+              >
+                {tag}
+              </span>
+            );
+          })}
         </div>
       )}
     </div>

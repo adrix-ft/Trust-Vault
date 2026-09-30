@@ -129,7 +129,7 @@ export default function CollectionsView() {
                           style={{ backgroundImage: `url('${game.customCoverUrl || getGameCoverUrl(game.title)}')` }}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-[#06141B] via-transparent to-transparent opacity-80" />
-                        <PlatformTags platforms={game.categories} />
+                        <PlatformTags platforms={game.categories} tagColors={game.tagColors} />
                         {game.onSale && (
                           <div className="absolute top-1 left-1 bg-green-500 text-[8px] font-black px-1.5 py-0.5 rounded text-[#06141B] shadow-[0_0_10px_rgba(34,197,94,0.3)] uppercase tracking-wider">
                             SALE

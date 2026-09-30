@@ -88,7 +88,7 @@ const FilteredGameCard = memo(({ game, category, actionType }: any) => {
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 saturate-[1.1]"
         />
               <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#06141B] via-[#06141B]/40 to-transparent opacity-80" />
-              <PlatformTags platforms={game.categories} />
+              <PlatformTags platforms={game.categories} tagColors={game.tagColors} />
               {category === 'Top Sellers' && !game.onSale && (
                 <div className="absolute top-2 left-2 bg-[#4A5C6A] text-[9px] font-bold px-1.5 py-0.5 rounded text-[#CCD0CF] shadow-sm uppercase tracking-wider border border-[#4A5C6A]/50 backdrop-blur">
                   Best Seller

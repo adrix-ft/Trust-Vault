@@ -110,7 +110,7 @@ const GameCard = memo(({ game, index, isSelected, setSelectedCategory, inCart, p
           />
           <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#06141B] via-[#06141B]/40 to-transparent opacity-80 pointer-events-none" />
           
-          <PlatformTags platforms={game.categories} />
+          <PlatformTags platforms={game.categories} tagColors={game.tagColors} />
           {game.onSale && (
             /* UPGRADE: SHIMMER ON SALE BADGE */
             <div className="absolute top-2 left-2 bg-green-500 text-[10px] font-black px-2 py-0.5 rounded text-[#06141B] shadow uppercase tracking-wider z-10 overflow-hidden">

@@ -155,7 +155,7 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
             animate={{ opacity: 1, y: 0 }}
             className="flex flex-wrap gap-2 mb-4 items-center"
           >
-            <PlatformTags platforms={game.categories} className="flex gap-1.5 z-20 relative" />
+            <PlatformTags platforms={game.categories} tagColors={game.tagColors} className="flex gap-1.5 z-20 relative" />
             
             {game.categories?.filter(cat => !['PC', 'STEAM', 'PS', 'PS4', 'PS5', 'XBOX'].includes(cat.toUpperCase())).map(cat => (
               <span key={cat} className="px-3 py-1 text-[10px] sm:text-xs font-black uppercase tracking-wider bg-[#253745]/80 backdrop-blur border border-[#4A5C6A]/50 text-[#CCD0CF] rounded-full shadow-sm">

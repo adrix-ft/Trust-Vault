@@ -84,7 +84,7 @@ export default function UpcomingView() {
                     }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#06141B] via-transparent to-transparent opacity-80" />
-                  <PlatformTags platforms={game.categories} />
+                  <PlatformTags platforms={game.categories} tagColors={game.tagColors} />
                   <div className="absolute top-2 left-2 bg-amber-500 text-[9px] font-black px-2 py-0.5 rounded text-[#06141B] uppercase tracking-wider shadow">
                     SOON
                   </div>

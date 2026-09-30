@@ -171,7 +171,7 @@ export default function CustomBundleBuilder() {
                     className={`w-full h-full object-cover transition-transform duration-700 ${isSelected ? 'scale-105' : 'group-hover:scale-110'}`}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-                  <PlatformTags platforms={game.categories} />
+                  <PlatformTags platforms={game.categories} tagColors={game.tagColors} />
                   
                   {isSelected && (
                     <div className="absolute inset-0 bg-emerald-500/20 backdrop-blur-[2px] flex items-center justify-center">

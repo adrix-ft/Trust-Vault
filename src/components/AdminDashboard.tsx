@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useStore, Game } from '../context/StoreContext';
 import { motion, AnimatePresence } from 'motion/react';
-import { LogOut, Plus, Trash2, Edit2, Copy, X, RefreshCw, Image as ImageIcon, Upload, ChevronLeft, ChevronRight, ShieldCheck, Clock, Layers, Gamepad2, Database, Package, Search, MessageCircle, CheckCircle, Repeat, GripVertical, ExternalLink, Star, Monitor } from 'lucide-react';
+import { LogOut, Plus, Trash2, Edit2, Copy, X, RefreshCw, Image as ImageIcon, Upload, ChevronLeft, ChevronRight, ShieldCheck, Clock, Layers, Gamepad2, Database, Package, Search, MessageCircle, CheckCircle, Repeat, GripVertical, ExternalLink, Star, Monitor, ArrowUpToLine, ArrowDownToLine, List } from 'lucide-react';
 import { getGameCoverUrl } from '../utils/image';
 
 // FIXED: Dynamically load the API URL from Vercel Environment Variables
@@ -12,6 +12,7 @@ export default function AdminDashboard() {
 
   const [activeTab, setActiveTab] = useState<'pc_games' | 'ps_games' | 'hero_pc' | 'hero_ps' | 'bundles' | 'proofs' | 'rents' | 'subscriptions'>('bundles');
   const [showForm, setShowForm] = useState(false);
+  const [activeFormTab, setActiveFormTab] = useState<'basic' | 'media' | 'pricing' | 'tags'>('basic');
   const [customTagInput, setCustomTagInput] = useState('');
   const [editingTitle, setEditingTitle] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -19,6 +20,7 @@ export default function AdminDashboard() {
   const [sortBy, setSortBy] = useState<'default' | 'az' | 'za' | 'priceLow' | 'priceHigh'>('default');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
+  const [viewAll, setViewAll] = useState(false);
 
   const [upcomingGames, setUpcomingGames] = useState<any[]>([]);
   const [showUpcomingForm, setShowUpcomingForm] = useState(false);
@@ -450,6 +452,7 @@ export default function AdminDashboard() {
     if (sortBy === 'za') return b.title.localeCompare(a.title);
     if (sortBy === 'priceLow') return parsePriceNum(a.price) - parsePriceNum(b.price);
     if (sortBy === 'priceHigh') return parsePriceNum(b.price) - parsePriceNum(a.price);
+
     
     if ((activeTab === 'hero_pc' || activeTab === 'hero_ps') && sortBy === 'default') {
       const idxA = heroOrder.indexOf(a.title);
@@ -465,10 +468,10 @@ export default function AdminDashboard() {
 
   const totalPages = Math.ceil(filteredCatalog.length / itemsPerPage) || 1;
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentTableData = filteredCatalog.slice(startIndex, startIndex + itemsPerPage);
+  const currentTableData = viewAll ? filteredCatalog : filteredCatalog.slice(startIndex, startIndex + itemsPerPage);
 
-  const openAddForm = () => { setEditingTitle(null); setFormData(defaultGame); setShowForm(true); };
-  const openEditForm = (game: Game) => { setEditingTitle(game.title); setFormData({ ...defaultGame, ...game, variants: game.variants?.length ? game.variants : defaultGame.variants }); setShowForm(true); };
+  const openAddForm = () => { setEditingTitle(null); setFormData(defaultGame); setShowForm(true); setActiveFormTab('basic'); };
+  const openEditForm = (game: Game) => { setEditingTitle(game.title); setFormData({ ...defaultGame, ...game, variants: game.variants?.length ? game.variants : defaultGame.variants }); setShowForm(true); setActiveFormTab('basic'); };
 
   const [steamResults, setSteamResults] = useState<any[]>([]);
   const [isSearchingSteam, setIsSearchingSteam] = useState(false);
@@ -529,6 +532,7 @@ export default function AdminDashboard() {
         screenshots: screenshots,
         sysReqMinimum: sysReqMin,
         sysReqRecommended: sysReqRec,
+        releaseDate: details.release_date?.date || formData.releaseDate,
         categories: Array.from(new Set([...(formData.categories || []), 'PC', 'Steam']))
       });
       setSteamResults([]);
@@ -586,6 +590,121 @@ export default function AdminDashboard() {
     });
   };
 
+  const handleTagColorChange = (tag: string, color: string) => {
+    setFormData(prev => ({
+      ...prev,
+      tagColors: {
+        ...(prev.tagColors || {}),
+        [tag]: color
+      }
+    }));
+  };
+
+  const handleMoveToTop = (gameTitle: string) => {
+    if (activeTab === 'hero_pc' || activeTab === 'hero_ps') {
+      const newHeroOrder = [...heroOrder];
+      if (newHeroOrder.length === 0) newHeroOrder.push(...catalog.filter(g => g.showInHero).map(g => g.title));
+      const hIdx = newHeroOrder.indexOf(gameTitle);
+      if (hIdx !== -1) {
+        newHeroOrder.splice(hIdx, 1);
+        newHeroOrder.unshift(gameTitle);
+        setHeroOrder(newHeroOrder);
+      }
+    } else {
+      const newCatalog = [...catalog];
+      const idx = newCatalog.findIndex(g => g.title === gameTitle);
+      if (idx !== -1) {
+        const game = newCatalog[idx];
+        newCatalog.splice(idx, 1);
+        newCatalog.unshift(game);
+        reorderCatalog(newCatalog);
+      }
+    }
+  };
+
+  const handleMoveToBottom = (gameTitle: string) => {
+    if (activeTab === 'hero_pc' || activeTab === 'hero_ps') {
+      const newHeroOrder = [...heroOrder];
+      if (newHeroOrder.length === 0) newHeroOrder.push(...catalog.filter(g => g.showInHero).map(g => g.title));
+      const hIdx = newHeroOrder.indexOf(gameTitle);
+      if (hIdx !== -1) {
+        newHeroOrder.splice(hIdx, 1);
+        newHeroOrder.push(gameTitle);
+        setHeroOrder(newHeroOrder);
+      }
+    } else {
+      const newCatalog = [...catalog];
+      const idx = newCatalog.findIndex(g => g.title === gameTitle);
+      if (idx !== -1) {
+        const game = newCatalog[idx];
+        newCatalog.splice(idx, 1);
+        newCatalog.push(game);
+        reorderCatalog(newCatalog);
+      }
+    }
+  };
+
+  const handleMoveToPosition = (gameTitle: string, newPos: number) => {
+    if (newPos < 0) newPos = 0;
+    if (activeTab === 'hero_pc' || activeTab === 'hero_ps') {
+      const newHeroOrder = [...heroOrder];
+      if (newHeroOrder.length === 0) newHeroOrder.push(...catalog.filter(g => g.showInHero).map(g => g.title));
+      
+      const isPC = activeTab === 'hero_pc';
+      const filteredHeroes = newHeroOrder.filter(title => {
+        const g = catalog.find(x => x.title === title);
+        if (!g) return false;
+        if (isPC) return g.categories?.some(c => c.toUpperCase() === 'PC' || c.toUpperCase() === 'STEAM');
+        return g.categories?.some(c => c.toUpperCase().includes('PS'));
+      });
+      
+      const filteredWithoutGame = filteredHeroes.filter(t => t !== gameTitle);
+      const targetTitle = filteredWithoutGame[newPos];
+      
+      const hIdx = newHeroOrder.indexOf(gameTitle);
+      if (hIdx !== -1) {
+        newHeroOrder.splice(hIdx, 1);
+        if (targetTitle) {
+          const insertIdx = newHeroOrder.indexOf(targetTitle);
+          newHeroOrder.splice(insertIdx, 0, gameTitle);
+        } else {
+          const lastTitle = filteredWithoutGame[filteredWithoutGame.length - 1];
+          if (lastTitle) {
+             const insertIdx = newHeroOrder.indexOf(lastTitle);
+             newHeroOrder.splice(insertIdx + 1, 0, gameTitle);
+          } else {
+             newHeroOrder.push(gameTitle);
+          }
+        }
+        setHeroOrder(newHeroOrder);
+      }
+    } else {
+      const newCatalog = [...catalog];
+      const gameIdx = newCatalog.findIndex(g => g.title === gameTitle);
+      if (gameIdx === -1) return;
+      const game = newCatalog[gameIdx];
+      
+      const filteredWithoutGame = filteredCatalog.filter(g => g.title !== gameTitle);
+      const targetGame = filteredWithoutGame[newPos];
+      
+      newCatalog.splice(gameIdx, 1);
+      
+      if (targetGame) {
+        const insertIdx = newCatalog.findIndex(g => g.title === targetGame.title);
+        newCatalog.splice(insertIdx, 0, game);
+      } else {
+        const lastGame = filteredWithoutGame[filteredWithoutGame.length - 1];
+        if (lastGame) {
+          const insertIdx = newCatalog.findIndex(g => g.title === lastGame.title);
+          newCatalog.splice(insertIdx + 1, 0, game);
+        } else {
+          newCatalog.push(game);
+        }
+      }
+      reorderCatalog(newCatalog);
+    }
+  };
+
   const currentCoverPreview = formData.customCoverUrl || (formData.title ? getGameCoverUrl(formData.title) : '');
   const existingBundles = catalog.filter(g => g.categories?.includes('Bundle-Eligible'));
 
@@ -629,7 +748,7 @@ export default function AdminDashboard() {
 
         <div className="flex flex-col lg:flex-row gap-6 items-start">
           {/* Sidebar Tabs */}
-          <div className="w-full lg:w-64 shrink-0 flex flex-col gap-1.5 bg-[#11212D]/50 border border-[#253745] p-2 rounded-2xl overflow-x-auto lg:overflow-x-visible">
+          <div className="w-full lg:w-auto shrink-0 flex flex-col gap-1.5 bg-[#11212D]/50 border border-[#253745] p-2 rounded-2xl overflow-x-auto lg:overflow-x-visible">
             <div className="flex lg:flex-col gap-1.5">
           {[
             { id: 'hero_pc', label: 'Hero - PC', icon: Monitor, count: catalog.filter(g => g.showInHero && (g.categories?.some(c => c.toUpperCase() === 'PC' || c.toUpperCase() === 'STEAM'))).length },
@@ -646,16 +765,14 @@ export default function AdminDashboard() {
             return (
               <button
                 key={tab.id}
+                title={tab.label}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center justify-between px-4 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap lg:whitespace-normal ${isActive ? 'bg-gradient-to-r from-[#253745] to-[#4A5C6A] text-white shadow-lg border border-[#4A5C6A]' : 'text-[#9BA8AB] hover:text-white hover:bg-[#11212D] border border-transparent'
+                className={`flex items-center justify-center p-3.5 rounded-xl transition-all cursor-pointer relative ${isActive ? 'bg-gradient-to-r from-[#253745] to-[#4A5C6A] text-white shadow-lg border border-[#4A5C6A]' : 'text-[#9BA8AB] hover:text-white hover:bg-[#11212D] border border-transparent'
                   }`}
               >
-                <div className="flex items-center gap-3">
-                  <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-[#4A5C6A]'}`} />
-                  <span>{tab.label}</span>
-                </div>
+                <Icon className={`w-6 h-6 shrink-0 ${isActive ? 'text-white' : 'text-[#4A5C6A]'}`} />
                 {tab.count !== undefined && (
-                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-black ml-2 shrink-0 ${isActive ? 'bg-black/30 text-white' : 'bg-[#06141B] text-[#9BA8AB]'}`}>
+                  <span className={`absolute -top-1 -right-1 text-[9px] px-1.5 py-0.5 rounded-full font-black shadow-md ${isActive ? 'bg-cyan-500 text-black' : 'bg-[#06141B] text-[#9BA8AB] border border-[#253745]'}`}>
                     {tab.count}
                   </span>
                 )}
@@ -825,7 +942,7 @@ export default function AdminDashboard() {
                     value={sortBy} onChange={(e) => { setSortBy(e.target.value as any); setCurrentPage(1); }}
                     className="bg-[#06141B] border border-[#253745] rounded-xl px-3.5 py-2.5 text-xs font-bold uppercase tracking-wider text-[#CCD0CF] focus:outline-none focus:border-[#4A5C6A] w-full sm:w-auto shadow-inner"
                   >
-                    <option value="default">Sort: Newest Added</option>
+                    <option value="default">Sort: Newest First (Custom)</option>
                     <option value="az">Alphabetical (A - Z)</option>
                     <option value="za">Alphabetical (Z - A)</option>
                     <option value="priceLow">Price: Low to High</option>
@@ -835,7 +952,18 @@ export default function AdminDashboard() {
               </div>
 
               <div className="flex items-center justify-between w-full lg:w-auto gap-4">
-                <span className="text-xs text-[#9BA8AB]">Showing {startIndex + 1}-{Math.min(startIndex + itemsPerPage, filteredCatalog.length)} of {filteredCatalog.length}</span>
+                <div className="flex items-center gap-3">
+                  <span className="text-xs text-[#9BA8AB] hidden xl:inline">
+                    Showing {viewAll ? 'All' : `${startIndex + 1}-${Math.min(startIndex + itemsPerPage, filteredCatalog.length)}`} of {filteredCatalog.length}
+                  </span>
+                  <button
+                    onClick={() => { setViewAll(!viewAll); setCurrentPage(1); }}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase border transition-colors cursor-pointer ${viewAll ? 'bg-cyan-900/50 text-cyan-400 border-cyan-500/50 shadow-[0_0_10px_rgba(34,211,238,0.2)]' : 'bg-[#06141B] text-[#9BA8AB] border-[#253745] hover:text-white hover:bg-[#253745]'}`}
+                  >
+                    {viewAll ? <Layers className="w-3.5 h-3.5" /> : <List className="w-3.5 h-3.5" />}
+                    {viewAll ? 'Pages Mode' : 'View All'}
+                  </button>
+                </div>
                 <button
                   onClick={() => setShowBulkAdd(true)}
                   className="flex items-center gap-2 bg-gradient-to-r from-emerald-900 to-emerald-700 hover:from-emerald-700 hover:to-emerald-600 text-white px-5 py-2.5 rounded-xl font-bold uppercase tracking-wider text-xs transition-all shadow-md whitespace-nowrap cursor-pointer border border-emerald-600/50"
@@ -851,20 +979,20 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            <div className="overflow-x-auto">
+            <div className="w-full">
               <table className="w-full text-left">
                 <thead className="bg-[#06141B]/80 text-[#9BA8AB] text-[11px] uppercase tracking-wider border-b border-[#253745]">
                   <tr>
-                    <th className="p-4 font-bold">Cover</th>
-                    <th className="p-4 font-bold w-1/4">Title & Status</th>
-                    <th className="p-4 font-bold">Price</th>
-                    <th className="p-4 font-bold">Platforms</th>
-                    <th className="p-4 font-bold text-center">Store Placements</th>
-                    <th className="p-4 font-bold text-right">Actions</th>
+                    <th className="p-4 font-bold w-auto">Cover</th>
+                    <th className="p-4 font-bold w-full max-w-[250px]">Title & Status</th>
+                    <th className="p-4 font-bold w-auto whitespace-nowrap">Price</th>
+                    <th className="p-4 font-bold w-auto">Platforms</th>
+                    <th className="p-4 font-bold text-center w-auto">Store Placements</th>
+                    <th className="p-4 font-bold text-right w-auto whitespace-nowrap">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#253745]/60">
-                  {currentTableData.map(game => (
+                  {currentTableData.map((game, index) => (
                     <tr 
                       key={game.title} 
                       className="hover:bg-[#06141B]/40 transition-colors cursor-grab active:cursor-grabbing"
@@ -909,14 +1037,43 @@ export default function AdminDashboard() {
                         setDraggedGameTitle(null);
                       }}
                     >
-                      <td className="p-4 flex items-center gap-2">
-                        <GripVertical className="w-4 h-4 text-[#4A5C6A] cursor-grab shrink-0" />
+                      <td className="p-4 flex items-center gap-3">
+                        <div className="flex flex-col items-center gap-1.5 shrink-0 bg-[#06141B] p-1.5 rounded-lg border border-[#253745]">
+                          <button 
+                            type="button" 
+                            title="Move to Top"
+                            onClick={() => handleMoveToTop(game.title)}
+                            className="p-1 text-[#9BA8AB] hover:text-emerald-400 hover:bg-[#253745] rounded transition-colors"
+                          >
+                            <ArrowUpToLine className="w-3.5 h-3.5" />
+                          </button>
+                          <GripVertical className="w-4 h-4 text-[#4A5C6A] cursor-grab" />
+                          <input 
+                            type="text" 
+                            title="Exact position (press Enter to move)"
+                            defaultValue={viewAll ? index + 1 : (currentPage - 1) * itemsPerPage + index + 1}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                handleMoveToPosition(game.title, parseInt(e.currentTarget.value) - 1);
+                              }
+                            }}
+                            className="w-7 h-5 text-center text-[9px] font-bold bg-[#11212D] border border-[#253745] rounded text-[#9BA8AB] focus:text-white focus:border-cyan-400 focus:outline-none"
+                          />
+                          <button 
+                            type="button" 
+                            title="Move to Bottom"
+                            onClick={() => handleMoveToBottom(game.title)}
+                            className="p-1 text-[#9BA8AB] hover:text-red-400 hover:bg-[#253745] rounded transition-colors"
+                          >
+                            <ArrowDownToLine className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
                         <div
-                          className="w-12 h-16 bg-cover bg-center rounded-lg border border-[#253745] shadow-md"
+                          className="w-12 h-16 shrink-0 bg-cover bg-center rounded-lg border border-[#253745] shadow-md"
                           style={{ backgroundImage: `url('${game.customCoverUrl || getGameCoverUrl(game.title)}')` }}
                         />
                       </td>
-                      <td className="p-4">
+                      <td className="p-4 truncate">
                         <div className="font-bold text-sm tracking-wide text-white uppercase truncate" title={game.title}>{game.title}</div>
                         {game.onSale && (
                           <span className="inline-block mt-1 bg-green-500/15 text-green-400 text-[9px] px-2 py-0.5 rounded-full font-black tracking-widest uppercase border border-green-500/30 shadow-sm">
@@ -942,7 +1099,7 @@ export default function AdminDashboard() {
                         </div>
                       </td>
                       <td className="p-4 text-center">
-                        <div className="flex items-center justify-center gap-1.5 flex-wrap w-full max-w-[170px] mx-auto">
+                        <div className="flex items-center justify-center gap-1.5 flex-wrap mx-auto">
                           <label className={`flex items-center gap-1.5 cursor-pointer px-2 py-1 rounded-md border transition-all ${game.showInHero ? 'bg-[#4A5C6A] border-[#4A5C6A]' : 'bg-[#06141B] border-[#253745]'}`}>
                             <input
                               type="checkbox" checked={game.showInHero || false}
@@ -965,10 +1122,42 @@ export default function AdminDashboard() {
                             />
                             <span className={`text-[9px] font-bold uppercase ${game.categories?.includes('Bundle-Eligible') ? 'text-white' : 'text-[#9BA8AB]'}`}>Bundle</span>
                           </label>
+
+                          <label className={`flex items-center gap-1.5 cursor-pointer px-2 py-1 rounded-md border transition-all ${game.categories?.includes('DELUXE EDITION') ? 'bg-cyan-950/80 border-cyan-400' : 'bg-[#06141B] border-[#253745]'}`}>
+                            <input
+                              type="checkbox" checked={game.categories?.includes('DELUXE EDITION') || false}
+                              onChange={(e) => {
+                                const newCategories = e.target.checked 
+                                  ? [...(game.categories || []), 'DELUXE EDITION']
+                                  : (game.categories || []).filter(c => c !== 'DELUXE EDITION');
+                                updateGame(game.title, { ...game, categories: newCategories });
+                              }}
+                              className="hidden"
+                            />
+                            <span className={`text-[9px] font-bold uppercase ${game.categories?.includes('DELUXE EDITION') ? 'text-cyan-400' : 'text-[#9BA8AB]'}`}>Deluxe</span>
+                          </label>
+
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const tag = window.prompt(`Enter custom tag for ${game.title}:`);
+                              if (tag && tag.trim()) {
+                                const newTag = tag.trim().toUpperCase();
+                                if (!game.categories?.includes(newTag)) {
+                                  updateGame(game.title, { ...game, categories: [...(game.categories || []), newTag] });
+                                  showToast(`Added tag ${newTag} to ${game.title}`, 'success');
+                                }
+                              }
+                            }}
+                            className="flex items-center justify-center px-2 py-1 rounded-md border border-[#253745] bg-[#06141B] hover:bg-[#253745] text-[#9BA8AB] hover:text-white transition-colors cursor-pointer"
+                            title="Add Custom Tag"
+                          >
+                            <Plus className="w-3.5 h-3.5" />
+                          </button>
                         </div>
                       </td>
-                      <td className="p-4 text-right">
-                        <div className="flex items-center justify-end gap-1.5">
+                      <td className="p-4 text-right pr-6 whitespace-nowrap">
+                        <div className="flex items-center justify-end gap-1">
                           <button onClick={() => handleDuplicateGame(game)} className="p-2 text-[#9BA8AB] hover:text-white hover:bg-[#253745] rounded-xl transition-colors cursor-pointer"><Copy className="w-4 h-4" /></button>
                           <button onClick={() => openEditForm(game)} className="p-2 text-[#9BA8AB] hover:text-white hover:bg-[#253745] rounded-xl transition-colors cursor-pointer"><Edit2 className="w-4 h-4" /></button>
                           <button
@@ -993,7 +1182,7 @@ export default function AdminDashboard() {
               </table>
             </div>
 
-            {totalPages > 1 && (
+            {!viewAll && totalPages > 1 && (
               <div className="p-4 border-t border-[#253745] flex items-center justify-between bg-[#06141B]">
                 <button onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1} className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#11212D] border border-[#253745] text-xs font-bold uppercase disabled:opacity-40 cursor-pointer"><ChevronLeft className="w-4 h-4" /> Previous</button>
                 <span className="text-xs font-bold text-[#9BA8AB]">Page {currentPage} of {totalPages}</span>
@@ -1559,30 +1748,54 @@ export default function AdminDashboard() {
                   </div>
 
                   <div className="md:col-span-2 space-y-4">
-                    <div>
-                      <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Game Title</label>
-                      <div className="flex gap-2">
-                        <input type="text" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} className="flex-1 bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" required />
-                        <button type="button" onClick={() => searchSteam(formData.title)} disabled={isSearchingSteam} className="bg-blue-600 hover:bg-blue-500 text-white rounded-xl px-4 py-3 flex items-center justify-center font-bold text-xs uppercase shrink-0 transition-colors disabled:opacity-50">
-                          <Search className="w-3.5 h-3.5 mr-1.5" /> Steam
+                    <div className="flex border-b border-[#253745] mb-2 overflow-x-auto no-scrollbar">
+                      {['basic', 'media', 'pricing', 'tags'].map(tab => (
+                        <button
+                          key={tab}
+                          type="button"
+                          onClick={() => setActiveFormTab(tab as any)}
+                          className={`px-3 py-2 text-xs font-bold uppercase transition-colors border-b-2 whitespace-nowrap ${activeFormTab === tab ? 'text-white border-cyan-500' : 'text-[#4A5C6A] border-transparent hover:text-[#9BA8AB]'}`}
+                        >
+                          {tab === 'basic' ? 'Basic Info' : tab === 'media' ? 'Media' : tab === 'pricing' ? 'Pricing & Rent' : 'Tags & Variants'}
                         </button>
-                      </div>
-
-                      {steamResults.length > 0 && (
-                        <div className="mt-2 bg-[#06141B] border border-[#253745] rounded-xl max-h-40 overflow-y-auto z-50 p-1 shadow-2xl relative">
-                          <button type="button" onClick={() => setSteamResults([])} className="absolute right-2 top-2 text-[#4A5C6A] hover:text-white"><X className="w-3 h-3" /></button>
-                          {steamResults.map(game => (
-                            <div key={game.steam_app_id} onClick={() => selectSteamGame(game.steam_app_id)} className="flex items-center gap-3 p-2 hover:bg-[#11212D] cursor-pointer rounded-lg transition-colors mt-4 first:mt-0">
-                              <img src={game.cover_image_url} alt={game.title} className="w-8 h-10 object-cover rounded" />
-                              <span className="text-xs text-white font-bold">{game.title}</span>
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                      ))}
                     </div>
 
-                    <div>
-                      <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Cover URL / Upload</label>
+                    {activeFormTab === 'basic' && (
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Game Title</label>
+                          <div className="flex gap-2">
+                            <input type="text" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} className="flex-1 bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" required />
+                            <button type="button" onClick={() => searchSteam(formData.title)} disabled={isSearchingSteam} className="bg-blue-600 hover:bg-blue-500 text-white rounded-xl px-4 py-3 flex items-center justify-center font-bold text-xs uppercase shrink-0 transition-colors disabled:opacity-50">
+                              <Search className="w-3.5 h-3.5 mr-1.5" /> Steam
+                            </button>
+                          </div>
+
+                          {steamResults.length > 0 && (
+                            <div className="mt-2 bg-[#06141B] border border-[#253745] rounded-xl max-h-40 overflow-y-auto z-50 p-1 shadow-2xl relative">
+                              <button type="button" onClick={() => setSteamResults([])} className="absolute right-2 top-2 text-[#4A5C6A] hover:text-white"><X className="w-3 h-3" /></button>
+                              {steamResults.map(game => (
+                                <div key={game.steam_app_id} onClick={() => selectSteamGame(game.steam_app_id)} className="flex items-center gap-3 p-2 hover:bg-[#11212D] cursor-pointer rounded-lg transition-colors mt-4 first:mt-0">
+                                  <img src={game.cover_image_url} alt={game.title} className="w-8 h-10 object-cover rounded" />
+                                  <span className="text-xs text-white font-bold">{game.title}</span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="mt-4">
+                          <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Game Description (Optional for Non-Steam)</label>
+                          <textarea value={formData.description || ''} onChange={e => setFormData({ ...formData, description: e.target.value })} className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A] min-h-[120px]" placeholder="Enter description manually for games not on Steam (supports HTML formatting)"></textarea>
+                        </div>
+                      </div>
+                    )}
+
+                    {activeFormTab === 'media' && (
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Cover URL / Upload</label>
                       <div className="flex gap-2">
                         <input type="text" value={formData.customCoverUrl || ''} onChange={e => setFormData({ ...formData, customCoverUrl: e.target.value })} className="flex-1 bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" placeholder="Image URL" />
                         <label className="cursor-pointer bg-[#253745] hover:bg-[#4A5C6A] border border-[#4A5C6A] text-white rounded-xl px-4 py-3 flex items-center justify-center font-bold text-xs uppercase transition-colors shrink-0">
@@ -1673,9 +1886,13 @@ export default function AdminDashboard() {
                         </div>
                       )}
                     </div>
+                  </div>
+                )}
 
-                    {/* UPGRADE: New section for Store Placements inside the Edit Game modal */}
-                    <div>
+                  {activeFormTab === 'pricing' && (
+                    <div className="space-y-4">
+                      {/* UPGRADE: New section for Store Placements inside the Edit Game modal */}
+                      <div>
                       <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Store Placements</label>
                       <div className="flex items-center gap-3 bg-[#06141B] border border-[#253745] rounded-xl p-3 h-[42px]">
                         <label className="flex items-center gap-2 cursor-pointer text-white text-xs">
@@ -1728,8 +1945,13 @@ export default function AdminDashboard() {
                       </div>
                     )}
 
+                    </div>
+                  )}
+
+                {activeFormTab === 'tags' && (
+                  <div className="space-y-4">
                     {formData.categories?.some(c => c.includes('PS')) && (
-                      <div className="pt-4 border-t border-[#253745]">
+                      <div className="pt-2">
                         <div className="flex items-center justify-between mb-3">
                           <label className="block text-[#9BA8AB] text-[11px] font-bold uppercase">Game Variants (Editions)</label>
                           <button
@@ -1850,7 +2072,7 @@ export default function AdminDashboard() {
                     <div className="pt-2">
                       <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Custom Tags / Editions</label>
                       <div className="flex flex-col gap-3">
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 items-center">
                           <button
                             type="button"
                             onClick={() => handleCategoryToggle('DELUXE EDITION')}
@@ -1861,6 +2083,17 @@ export default function AdminDashboard() {
                           >
                             Deluxe Edition
                           </button>
+                          {formData.categories?.includes('DELUXE EDITION') && (
+                            <div className="flex items-center gap-2 bg-[#06141B] border border-[#253745] px-2 py-1 rounded-xl h-full shadow-sm">
+                              <label className="text-[9px] text-[#9BA8AB] font-bold uppercase tracking-wider">Color:</label>
+                              <input 
+                                type="color" 
+                                value={formData.tagColors?.['DELUXE EDITION'] || '#22d3ee'} 
+                                onChange={(e) => handleTagColorChange('DELUXE EDITION', e.target.value)}
+                                className="w-5 h-5 rounded cursor-pointer bg-transparent border-0 p-0"
+                              />
+                            </div>
+                          )}
                         </div>
                         <div className="flex gap-2">
                           <input
@@ -1900,11 +2133,18 @@ export default function AdminDashboard() {
                         </div>
                         {/* Display custom tags that are already added but aren't standard platforms/Deluxe */}
                         {formData.categories && formData.categories.filter(c => !['PC', 'PS5', 'PS4', 'PS', 'XBOX', 'STEAM', 'BUNDLE-ELIGIBLE', 'DELUXE EDITION', 'STORE'].includes(c.toUpperCase())).length > 0 && (
-                          <div className="flex gap-2 flex-wrap mt-1">
+                          <div className="flex gap-2 flex-wrap mt-2">
                             {formData.categories.filter(c => !['PC', 'PS5', 'PS4', 'PS', 'XBOX', 'STEAM', 'BUNDLE-ELIGIBLE', 'DELUXE EDITION', 'STORE'].includes(c.toUpperCase())).map(tag => (
-                              <div key={tag} className="flex items-center gap-1 bg-cyan-950/40 border border-cyan-500/30 text-cyan-400 px-2 py-1 rounded-lg text-[10px] font-bold uppercase">
+                              <div key={tag} className="flex items-center gap-1.5 bg-cyan-950/40 border border-cyan-500/30 text-cyan-400 pl-2 pr-1 py-1 rounded-lg text-[10px] font-bold uppercase">
                                 <span>{tag}</span>
-                                <button type="button" onClick={() => handleCategoryToggle(tag)} className="text-cyan-400 hover:text-white hover:bg-cyan-500/50 rounded-full p-0.5 transition-colors">
+                                <input 
+                                  type="color" 
+                                  value={formData.tagColors?.[tag] || '#22d3ee'} 
+                                  onChange={(e) => handleTagColorChange(tag, e.target.value)}
+                                  className="w-4 h-4 ml-1 rounded cursor-pointer bg-transparent border-0 p-0"
+                                  title="Choose Tag Color"
+                                />
+                                <button type="button" onClick={() => handleCategoryToggle(tag)} className="text-cyan-400 hover:text-white hover:bg-cyan-500/50 rounded-full p-0.5 transition-colors ml-0.5">
                                   <X className="w-3 h-3" />
                                 </button>
                               </div>
@@ -1913,6 +2153,8 @@ export default function AdminDashboard() {
                         )}
                       </div>
                     </div>
+                  </div>
+                )}
 
                     <div className="flex justify-end pt-4 border-t border-[#253745]">
                       <button type="submit" className="bg-gradient-to-r from-[#253745] to-[#4A5C6A] hover:from-[#4A5C6A] hover:to-[#596F80] text-white px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-xs transition-all shadow-md cursor-pointer border border-[#4A5C6A]/50">

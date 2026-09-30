@@ -43,7 +43,7 @@ export default function HotTrends() {
                   TREND
                 </div>
               </div>
-              <PlatformTags platforms={t.categories} />
+              <PlatformTags platforms={t.categories} tagColors={t.tagColors} />
 
               <div className="absolute inset-0 bg-cover bg-center transition-all duration-500 ease-out saturate-[1.2] contrast-[1.1] brightness-100 group-hover:scale-110 group-hover:saturate-[1.3] group-hover:brightness-110 z-0" style={{ backgroundImage: `url('${t.customCoverUrl || getGameCoverUrl(t.title)}')` }}></div>
               

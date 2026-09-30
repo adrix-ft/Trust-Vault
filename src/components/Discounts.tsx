@@ -66,7 +66,7 @@ export default function Discounts() {
               />
 
               <div className={`absolute inset-0 rounded-xl overflow-hidden border border-[#253745] group-hover:border-[#4A5C6A] transition-colors bg-gradient-to-b ${idx % 2 === 0 ? 'from-[#11212D] to-[#06141B]' : 'from-[#253745] to-[#06141B]'}`}>
-                <PlatformTags platforms={game.categories} />
+                <PlatformTags platforms={game.categories} tagColors={game.tagColors} />
 
                 <div className="absolute inset-0 bg-cover bg-center transition-all duration-500 ease-out saturate-[1.1] contrast-[1.05] group-hover:scale-110 z-0" style={{ backgroundImage: `url('${coverUrl}')` }}></div>
                 <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#06141B]/95 via-[#06141B]/60 to-transparent pointer-events-none transition-opacity duration-300 z-0" />

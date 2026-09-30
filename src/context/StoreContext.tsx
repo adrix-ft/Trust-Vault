@@ -15,6 +15,7 @@ export type Game = {
   description?: string;
   originalPrice?: string;
   customTags?: string[];
+  tagColors?: Record<string, string>;
   onSale?: boolean;
   customCoverUrl?: string;
   horizontalCoverUrl?: string;
@@ -22,6 +23,7 @@ export type Game = {
   isFeaturedPromo?: boolean;
   isPlayerReview?: boolean;
   trailer?: string;
+  releaseDate?: string;
   genre?: string;
   isRentable?: boolean;
   rentPrice?: string;
@@ -420,34 +422,39 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         const response = await fetch(`${API_BASE_URL}/api/products`);
         const data = await response.json();
+        
         if (Array.isArray(data)) {
-          try {
-            const orderRes = await fetch(`${API_BASE_URL}/api/products/order`);
-            if (orderRes.ok) {
-              const orderTitles = await orderRes.json();
-              if (Array.isArray(orderTitles) && orderTitles.length > 0) {
-                data.sort((a: any, b: any) => {
-                  const idxA = orderTitles.indexOf(a.title);
-                  const idxB = orderTitles.indexOf(b.title);
-                  if (idxA === -1 && idxB === -1) return 0;
-                  if (idxA === -1) return 1;
-                  if (idxB === -1) return -1;
-                  return idxA - idxB;
-                });
-              }
+          // Fetch orders concurrently
+          const [orderRes, heroOrderRes] = await Promise.all([
+            fetch(`${API_BASE_URL}/api/products/order`).catch(() => null),
+            fetch(`${API_BASE_URL}/api/products/hero-order`).catch(() => null)
+          ]);
+
+          if (orderRes && orderRes.ok) {
+            const orderTitles = await orderRes.json();
+            if (Array.isArray(orderTitles) && orderTitles.length > 0) {
+              data.sort((a: any, b: any) => {
+                const idxA = orderTitles.indexOf(a.title);
+                const idxB = orderTitles.indexOf(b.title);
+                if (idxA === -1 && idxB === -1) {
+                  const dateA = a.releaseDate ? new Date(a.releaseDate).getTime() : 0;
+                  const dateB = b.releaseDate ? new Date(b.releaseDate).getTime() : 0;
+                  return dateB - dateA;
+                }
+                if (idxA === -1) return 1;
+                if (idxB === -1) return -1;
+                return idxA - idxB;
+              });
             }
-          } catch(e) {}
+          }
           
-          try {
-            const heroOrderRes = await fetch(`${API_BASE_URL}/api/products/hero-order`);
-            if (heroOrderRes.ok) {
-              const heroOrderTitles = await heroOrderRes.json();
-              if (Array.isArray(heroOrderTitles)) {
-                setHeroOrderState(heroOrderTitles);
-                localStorage.setItem('amin_hero_order', JSON.stringify(heroOrderTitles));
-              }
+          if (heroOrderRes && heroOrderRes.ok) {
+            const heroOrderTitles = await heroOrderRes.json();
+            if (Array.isArray(heroOrderTitles)) {
+              setHeroOrderState(heroOrderTitles);
+              localStorage.setItem('amin_hero_order', JSON.stringify(heroOrderTitles));
             }
-          } catch(e) {}
+          }
           
           setCatalog(data);
           localStorage.setItem('amin_game_catalog', JSON.stringify(data));

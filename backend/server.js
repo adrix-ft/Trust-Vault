@@ -64,12 +64,22 @@ app.post('/api/admin/login', async (req, res) => {
 
 // ==================== PRODUCTS ENDPOINTS ====================
 
+const settingsCache = {};
+const settingsCacheTime = {};
+
 // ==================== SETTINGS WRAPPER (SUPABASE) ====================
 async function getSetting(key, defaultVal, filePath) {
+  if (settingsCache[key] && Date.now() - (settingsCacheTime[key] || 0) < CACHE_DURATION) {
+    return settingsCache[key];
+  }
   try {
     const { data, error } = await supabase.from('store_settings').select('value').eq('id', key).single();
     if (error) throw error;
-    if (data) return data.value;
+    if (data) {
+      settingsCache[key] = data.value;
+      settingsCacheTime[key] = Date.now();
+      return data.value;
+    }
   } catch (err) {
     try {
       if (fs.existsSync(filePath)) {
@@ -81,6 +91,8 @@ async function getSetting(key, defaultVal, filePath) {
 }
 
 async function setSetting(key, val, filePath) {
+  settingsCache[key] = val;
+  settingsCacheTime[key] = Date.now();
   try {
     const { error } = await supabase.from('store_settings').upsert({ id: key, value: val });
     if (error) throw error;
@@ -240,12 +252,11 @@ let cachedProducts = null;
 let productsCacheTime = 0;
 const CACHE_DURATION = 60 * 1000; // 1 minute cache
 
+const gameExtraPath = path.join(process.cwd(), 'game_extra.json');
+
 app.get('/api/products', async (req, res) => {
   try {
-    // Set headers to allow browsers to cache for a short time
     res.set('Cache-Control', 'public, max-age=10, stale-while-revalidate=86400');
-    
-    // Return in-memory cache if valid
     if (cachedProducts && Date.now() - productsCacheTime < CACHE_DURATION) {
       return res.json(cachedProducts);
     }
@@ -253,9 +264,15 @@ app.get('/api/products', async (req, res) => {
     const { data, error } = await supabase.from('products').select('*');
     if (error) throw error;
     
-    cachedProducts = data;
+    const extraData = await getSetting('gameExtraData', {}, gameExtraPath);
+    const mergedData = data.map(game => ({
+      ...game,
+      ...(extraData[game.title] || {})
+    }));
+    
+    cachedProducts = mergedData;
     productsCacheTime = Date.now();
-    res.json(data);
+    res.json(mergedData);
   } catch (err) {
     if (cachedProducts) return res.json(cachedProducts);
     res.status(500).json({ error: err.message });
@@ -264,11 +281,17 @@ app.get('/api/products', async (req, res) => {
 
 app.post('/api/products', async (req, res) => {
   try {
-    const game = req.body;
-    const { data, error } = await supabase.from('products').insert([game]).select();
+    const { customTags, tagColors, releaseDate, ...dbGame } = req.body;
+    const { data, error } = await supabase.from('products').insert([dbGame]).select();
     if (error) throw error;
-    cachedProducts = null; // Invalidate cache
-    res.json(data[0]);
+    
+    const inserted = data[0];
+    const extraData = await getSetting('gameExtraData', {}, gameExtraPath);
+    extraData[inserted.title] = { customTags, tagColors, releaseDate };
+    await setSetting('gameExtraData', extraData, gameExtraPath);
+    
+    cachedProducts = null;
+    res.json({ ...inserted, customTags, tagColors, releaseDate });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -277,15 +300,26 @@ app.post('/api/products', async (req, res) => {
 app.put('/api/products/:title', async (req, res) => {
   try {
     const title = decodeURIComponent(req.params.title);
-    const updatedGame = req.body;
+    const { customTags, tagColors, releaseDate, ...dbGame } = req.body;
     const { data, error } = await supabase
       .from('products')
-      .update(updatedGame)
+      .update(dbGame)
       .eq('title', title)
       .select();
     if (error) throw error;
-    cachedProducts = null; // Invalidate cache
-    res.json(data[0]);
+    
+    const updated = data[0];
+    const extraData = await getSetting('gameExtraData', {}, gameExtraPath);
+    extraData[updated.title] = { customTags, tagColors, releaseDate };
+    
+    // If title changed, clean up old title
+    if (updated.title !== title) {
+      delete extraData[title];
+    }
+    await setSetting('gameExtraData', extraData, gameExtraPath);
+    
+    cachedProducts = null;
+    res.json({ ...updated, customTags, tagColors, releaseDate });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -296,7 +330,14 @@ app.delete('/api/products/:title', async (req, res) => {
     const title = decodeURIComponent(req.params.title);
     const { error } = await supabase.from('products').delete().eq('title', title);
     if (error) throw error;
-    cachedProducts = null; // Invalidate cache
+    
+    const extraData = await getSetting('gameExtraData', {}, gameExtraPath);
+    if (extraData[title]) {
+      delete extraData[title];
+      await setSetting('gameExtraData', extraData, gameExtraPath);
+    }
+    
+    cachedProducts = null;
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ error: err.message });
