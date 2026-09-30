@@ -420,15 +420,16 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/products`);
+        // Fetch all data concurrently
+        const [response, orderRes, heroOrderRes] = await Promise.all([
+          fetch(`${API_BASE_URL}/api/products`),
+          fetch(`${API_BASE_URL}/api/products/order`).catch(() => null),
+          fetch(`${API_BASE_URL}/api/products/hero-order`).catch(() => null)
+        ]);
+        
         const data = await response.json();
         
         if (Array.isArray(data)) {
-          // Fetch orders concurrently
-          const [orderRes, heroOrderRes] = await Promise.all([
-            fetch(`${API_BASE_URL}/api/products/order`).catch(() => null),
-            fetch(`${API_BASE_URL}/api/products/hero-order`).catch(() => null)
-          ]);
 
           if (orderRes && orderRes.ok) {
             const orderTitles = await orderRes.json();
