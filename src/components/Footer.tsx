@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import { Globe, Shield, ExternalLink, Code2, ShieldAlert } from 'lucide-react';
-import { useStore } from '../context/StoreContext';
 import ContactModal from './ContactModal';
 import FooterModal from './FooterModal';
 
 export default function Footer() {
-  const { setShowAdminLogin } = useStore();
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [activeModal, setActiveModal] = useState<'discount' | 'privacy' | 'legal' | 'terms' | 'about' | null>(null);
 
@@ -73,10 +71,6 @@ export default function Footer() {
                 <span>English</span>
                 <Globe className="w-3 h-3 opacity-70" />
               </div>
-              <button onClick={() => setShowAdminLogin(true)} className="text-left hover:text-white transition-colors bg-transparent border-none p-0 text-[#9BA8AB] flex items-center gap-1.5 cursor-pointer">
-                <Shield className="w-3 h-3 text-[#4A5C6A]" />
-                <span>Admin Login</span>
-              </button>
             </div>
 
           </div>

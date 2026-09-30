@@ -63,10 +63,15 @@ function FloatingWhatsApp() {
 }
 
 function AppContent() {
-  const { selectedCategory, setSelectedCategory, isAdmin, catalogLoaded } = useStore();
+  const { selectedCategory, setSelectedCategory, isAdmin, catalogLoaded, setShowAdminLogin } = useStore();
   const [selectedProofImage, setSelectedProofImage] = useState<string | null>(null);
 
   useEffect(() => {
+    // Open admin login if URL is /owner
+    if (window.location.pathname === '/owner') {
+      setShowAdminLogin(true);
+    }
+
     // Prefetch all lazy components in the background after initial render
     const prefetchComponents = () => {
       loadSubscriptions();
