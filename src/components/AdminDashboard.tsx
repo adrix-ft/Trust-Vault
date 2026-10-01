@@ -72,7 +72,7 @@ export default function AdminDashboard() {
   };
 
   const [showRentForm, setShowRentForm] = useState(false);
-  const defaultRent = { customerName: '', mobileNumber: '', totalAmount: '', items: [{ title: '', rentPeriod: '1 Month' }] };
+  const defaultRent = { customerName: '', mobileNumber: '', totalAmount: '', items: [{ title: '', startDate: '', endDate: '' }] };
   const [rentFormData, setRentFormData] = useState(defaultRent);
   const [activeRentGameSearch, setActiveRentGameSearch] = useState<number | null>(null);
 
@@ -269,12 +269,19 @@ export default function AdminDashboard() {
     }
   };
 
-  const calculateRemaining = (createdAt: string, rentPeriod: string) => {
-    if (!rentPeriod || rentPeriod === 'Limited') return null;
+  const calculateRemaining = (item: any, createdAt: string) => {
+    if (item.endDate) {
+      const end = new Date(item.endDate);
+      const now = new Date();
+      const diffTime = end.getTime() - now.getTime();
+      return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    }
+    
+    if (!item.rentPeriod || item.rentPeriod === 'Limited') return null;
     const start = new Date(createdAt);
     const end = new Date(start);
 
-    const parts = rentPeriod.split(' ');
+    const parts = item.rentPeriod.split(' ');
     const num = parseInt(parts[0]);
     const unit = parts[1]?.toLowerCase();
 
@@ -1445,12 +1452,12 @@ export default function AdminDashboard() {
                           <td className="p-4 text-white font-bold">{rent.customerName} <br /><span className="text-[#9BA8AB] font-normal">{rent.mobileNumber}</span></td>
                           <td className="p-4 text-white">
                             {rent.items?.map((item: any) => {
-                              const remainingDays = calculateRemaining(rent.created_at, item.rentPeriod);
+                              const remainingDays = calculateRemaining(item, rent.created_at);
                               const isOver = remainingDays !== null && remainingDays <= 0;
 
                               return (
                                 <div key={item.title} className="mb-2">
-                                  <div>{item.title} - {item.rentPeriod || 'Limited'}</div>
+                                  <div>{item.title} - {item.startDate ? `${item.startDate} to ${item.endDate}` : (item.rentPeriod || 'Limited')}</div>
                                   {!isDone && remainingDays !== null && (
                                     <div className={`text-[10px] font-bold ${isOver ? 'text-red-400' : 'text-emerald-400'}`}>
                                       {isOver ? 'Period Over' : `${remainingDays} Days Remaining`}
@@ -1471,7 +1478,7 @@ export default function AdminDashboard() {
                             <div className="flex items-center justify-end gap-2">
                               {!isDone && (() => {
                                 const isOver = rent.items?.some((item: any) => {
-                                  const days = calculateRemaining(rent.created_at, item.rentPeriod);
+                                  const days = calculateRemaining(item, rent.created_at);
                                   return days !== null && days <= 0;
                                 });
                                 const waText = isOver 
@@ -1554,7 +1561,7 @@ export default function AdminDashboard() {
                   <div className="border-t border-[#253745] pt-4 mt-4">
                     <div className="flex justify-between items-center mb-4">
                       <h3 className="text-sm font-bold text-white uppercase">Rented Games</h3>
-                      <button type="button" onClick={() => setRentFormData({...rentFormData, items: [...rentFormData.items, { title: '', rentPeriod: '1 Month' }]})} className="text-emerald-400 text-xs font-bold flex items-center gap-1 cursor-pointer hover:text-emerald-300">
+                      <button type="button" onClick={() => setRentFormData({...rentFormData, items: [...rentFormData.items, { title: '', startDate: '', endDate: '' }]})} className="text-emerald-400 text-xs font-bold flex items-center gap-1 cursor-pointer hover:text-emerald-300">
                         <Plus className="w-3 h-3" /> Add Game
                       </button>
                     </div>
@@ -1598,12 +1605,17 @@ export default function AdminDashboard() {
                             </div>
                           )}
                         </div>
-                        <div className="w-1/3">
-                          <input type="text" placeholder="Period (e.g. 1 Month)" required value={item.rentPeriod} onChange={e => {
+                        <div className="flex w-1/2 gap-2">
+                          <input type="date" title="Start Date" required value={item.startDate || ''} onChange={e => {
                             const newItems = [...rentFormData.items];
-                            newItems[idx].rentPeriod = e.target.value;
+                            newItems[idx].startDate = e.target.value;
                             setRentFormData({...rentFormData, items: newItems});
-                          }} className="w-full bg-[#11212D] border border-[#253745] rounded-lg p-3 text-white text-sm focus:border-emerald-500 outline-none" />
+                          }} className="w-1/2 bg-[#11212D] border border-[#253745] rounded-lg p-3 text-white text-xs focus:border-emerald-500 outline-none" />
+                          <input type="date" title="End Date" required value={item.endDate || ''} onChange={e => {
+                            const newItems = [...rentFormData.items];
+                            newItems[idx].endDate = e.target.value;
+                            setRentFormData({...rentFormData, items: newItems});
+                          }} className="w-1/2 bg-[#11212D] border border-[#253745] rounded-lg p-3 text-white text-xs focus:border-emerald-500 outline-none" />
                         </div>
                         {rentFormData.items.length > 1 && (
                           <button type="button" onClick={() => {
