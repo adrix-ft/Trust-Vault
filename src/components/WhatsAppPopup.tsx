@@ -130,7 +130,7 @@ export default function WhatsAppPopup() {
                   transition={{ delay: 0.6 }}
                 >
                   <a
-                    href="https://chat.whatsapp.com/LkgW1KtpvYM9zj1lsaRYHn"
+                    href="https://chat.whatsapp.com/JLfUrgzjAL885hMN6DFUfT"
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={handleJoin}
