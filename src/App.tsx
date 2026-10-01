@@ -1,4 +1,5 @@
 import GlobalOverlays from './components/GlobalOverlays';
+import WhatsAppPopup from './components/WhatsAppPopup';
 import FloatingMobileCart from './components/FloatingMobileCart';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -219,6 +220,9 @@ function AppContent() {
 
       {/* FLOATING WHATSAPP BUTTON */}
       <FloatingWhatsApp />
+
+      {/* WHATSAPP POPUP */}
+      <WhatsAppPopup />
     </div>
   );
 }
