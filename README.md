@@ -1,8 +1,8 @@
 <div align="center">
-  <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80" alt="Store Vault Banner" width="100%" style="border-radius: 12px; margin-bottom: 20px;">
+  <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80" alt="Trust Vault Banner" width="100%" style="border-radius: 12px; margin-bottom: 20px;">
   
   <br />
-  <h1 align="center">🎮 Store Vault (Trust Vault)</h1>
+  <h1 align="center">🎮 Trust Vault</h1>
   <p align="center">
     <strong>A Premium Next-Gen Game Store Platform & Admin Dashboard</strong>
   </p>
@@ -19,7 +19,7 @@
 
 ## ✨ About The Project
 
-**Store Vault** is a high-performance, full-stack digital game store designed with a sleek, cinematic dark-mode UI. It features a fully integrated **Admin Control Panel** that fetches real-time game data (descriptions, screenshots, requirements) directly from the **Steam API**, saving it to a Supabase PostgreSQL database. 
+**Trust Vault** is a high-performance, full-stack digital game store designed with a sleek, cinematic dark-mode UI. It features a fully integrated **Admin Control Panel** that fetches real-time game data (descriptions, screenshots, requirements) directly from the **Steam API**, saving it to a Supabase PostgreSQL database. 
 
 It provides an end-to-end purchasing and renting experience with an incredibly smooth, animated user interface built using **Framer Motion** and **Tailwind CSS**.
 
@@ -118,5 +118,5 @@ Your app will be available at `http://localhost:5173`.
 
 <div align="center">
   <p><i>Crafted for gamers, built with passion.</i></p>
-  <p>&copy; Store Vault / Trust Vault Team</p>
+  <p>&copy; Trust Vault Team</p>
 </div>
