@@ -1777,7 +1777,8 @@ export default function AdminDashboard() {
                       ))}
                     </div>
 
-                    <div className="space-y-4">
+                    {activeFormTab === 'basic' && (
+                      <div className="space-y-4">
                         <div>
                           <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Game Title</label>
                           <div className="flex gap-2">
@@ -1805,9 +1806,10 @@ export default function AdminDashboard() {
                           <textarea value={formData.description || ''} onChange={e => setFormData({ ...formData, description: e.target.value })} className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A] min-h-[120px]" placeholder="Enter description manually for games not on Steam (supports HTML formatting)"></textarea>
                         </div>
                       </div>
-                    
+                    )}
 
-                    <div className="space-y-4">
+                    {activeFormTab === 'media' && (
+                      <div className="space-y-4">
                         <div>
                           <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Cover URL / Upload</label>
                       <div className="flex gap-2">
@@ -1901,9 +1903,10 @@ export default function AdminDashboard() {
                       )}
                     </div>
                   </div>
-                
+                )}
 
-                  <div className="space-y-4">
+                  {activeFormTab === 'pricing' && (
+                    <div className="space-y-4">
                       {/* UPGRADE: New section for Store Placements inside the Edit Game modal */}
                       <div>
                       <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Store Placements</label>
@@ -1959,9 +1962,10 @@ export default function AdminDashboard() {
                     )}
 
                     </div>
-                  
+                  )}
 
-                <div className="space-y-4">
+                {activeFormTab === 'tags' && (
+                  <div className="space-y-4">
                     {formData.categories?.some(c => c.includes('PS')) && (
                       <div className="pt-2">
                         <div className="flex items-center justify-between mb-3">
@@ -2166,7 +2170,7 @@ export default function AdminDashboard() {
                       </div>
                     </div>
                   </div>
-                
+                )}
 
                     <div className="flex justify-end pt-4 border-t border-[#253745]">
                       <button type="submit" className="bg-gradient-to-r from-[#253745] to-[#4A5C6A] hover:from-[#4A5C6A] hover:to-[#596F80] text-white px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-xs transition-all shadow-md cursor-pointer border border-[#4A5C6A]/50">
