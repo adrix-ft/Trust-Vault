@@ -16,7 +16,7 @@ export default function Discounts() {
     return true;
   });
 
-  if (!catalogLoaded) {
+  if (!catalogLoaded && discountGames.length === 0) {
     return (
       <section>
         <SectionHeader title="SPECIAL OFFERS" />

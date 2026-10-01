@@ -67,7 +67,7 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
     }
   }, [gameTitle, platformFilter, isAvailablePC, isAvailablePS, game?.variants, game?.screenshots, API_BASE_URL]);
 
-  if (!catalogLoaded) {
+  if (!catalogLoaded && !game) {
     return (
       <div className="relative w-full max-w-7xl mx-auto pb-24 animate-pulse">
         {/* Back Button Skeleton */}

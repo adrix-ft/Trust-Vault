@@ -35,7 +35,7 @@ export default function GameLibrary() {
           <AnimatePresence mode="popLayout">
             
             {/* UPGRADE: SKELETON SWEEP ANIMATION */}
-            {!catalogLoaded && Array.from({ length: 10 }).map((_, index) => (
+            {(!catalogLoaded && displayedGames.length === 0) && Array.from({ length: 10 }).map((_, index) => (
               <div 
                 key={`skeleton-${index}`}
                 className="bg-[#11212D] border border-[#253745] rounded-xl overflow-hidden flex flex-col relative"
@@ -55,7 +55,7 @@ export default function GameLibrary() {
               </div>
             ))}
 
-            {catalogLoaded && displayedGames.map((game, index) => {
+            {(catalogLoaded || displayedGames.length > 0) && displayedGames.map((game, index) => {
               const inCart = cart.some(item => item.title === game.title);
               const isSelected = selectedGame === game.title;
               return <GameCard key={game.title} game={game} index={index} isSelected={isSelected} setSelectedCategory={setSelectedCategory} inCart={inCart} platformFilter={platformFilter} />;
@@ -65,7 +65,7 @@ export default function GameLibrary() {
 
 
 
-        {catalogLoaded && hasMore && (
+        {(catalogLoaded || displayedGames.length > 0) && hasMore && (
           <div className="mt-10 flex justify-center">
             <button
               onClick={() => setVisibleCount(prev => prev + 30)}

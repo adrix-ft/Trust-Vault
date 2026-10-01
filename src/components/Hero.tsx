@@ -61,7 +61,7 @@ export default function Hero() {
     return () => clearInterval(timer);
   }, [activeIndex, heroGames.length]);
 
-  if (!catalogLoaded) {
+  if (!catalogLoaded && heroGames.length === 0) {
     return (
       <div className="w-full mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 pt-6 md:pt-8 pb-4">
         <div className="flex flex-col lg:flex-row gap-0 bg-[#11212D] rounded-2xl overflow-hidden border border-[#253745] shadow-2xl w-full animate-pulse h-[350px] lg:h-[400px]">
