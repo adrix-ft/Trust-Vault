@@ -4,7 +4,7 @@ import { getGameCoverUrl } from '../utils/image';
 import PlatformTags from './PlatformTags';
 
 // FIXED: Dynamically load the API URL from Vercel Environment Variables
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://amin-game-store-backend.onrender.com';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://store-vault-backend.onrender.com';
 const STORE_WHATSAPP_NUMBER = "918824647379";
 
 export default function UpcomingView() {

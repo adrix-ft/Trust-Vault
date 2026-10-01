@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { ShieldCheck, ExternalLink } from 'lucide-react';
 
 // FIXED: Dynamically load the API URL from Vercel Environment Variables
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://amin-game-store-backend.onrender.com';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://store-vault-backend.onrender.com';
 
 interface ProofSectionProps {
   onSelectImage: (url: string) => void;

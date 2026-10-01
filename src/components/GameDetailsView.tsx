@@ -31,7 +31,7 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
   const [infoVariant, setInfoVariant] = useState<string | null>(null);
   
   const [steamScreenshots, setSteamScreenshots] = useState<string[]>([]);
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://amin-game-store-backend.onrender.com';
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://store-vault-backend.onrender.com';
 
   useEffect(() => {
     window.scrollTo(0, 0);
