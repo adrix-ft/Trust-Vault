@@ -13,6 +13,8 @@ const app = express();
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 
+app.get('/api/health', (req, res) => res.status(200).send('OK'));
+
 // SECURED: Supabase Connection Configuration (Primary Catalog & Orders)
 // Using SUPABASE_SECRET_KEY so the backend has full access
 const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -250,7 +252,7 @@ app.put('/api/products/hero-order', async (req, res) => {
 
 let cachedProducts = null;
 let productsCacheTime = 0;
-const CACHE_DURATION = 60 * 1000; // 1 minute cache
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minute cache
 
 const gameExtraPath = path.join(process.cwd(), 'game_extra.json');
 
