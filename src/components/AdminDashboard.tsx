@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useStore, Game } from '../context/StoreContext';
 import { motion, AnimatePresence } from 'motion/react';
 import { LogOut, Plus, Trash2, Edit2, Copy, X, RefreshCw, Image as ImageIcon, Upload, ChevronLeft, ChevronRight, ShieldCheck, Clock, Layers, Gamepad2, Database, Package, Search, MessageCircle, CheckCircle, Repeat, GripVertical, ExternalLink, Star, Monitor, ArrowUpToLine, ArrowDownToLine, List } from 'lucide-react';
@@ -1764,19 +1764,6 @@ export default function AdminDashboard() {
                   </div>
 
                   <div className="md:col-span-2 space-y-4">
-                    <div className="flex border-b border-[#253745] mb-2 overflow-x-auto no-scrollbar">
-                      {['basic', 'media', 'pricing', 'tags'].map(tab => (
-                        <button
-                          key={tab}
-                          type="button"
-                          onClick={() => setActiveFormTab(tab as any)}
-                          className={`px-3 py-2 text-xs font-bold uppercase transition-colors border-b-2 whitespace-nowrap ${activeFormTab === tab ? 'text-white border-cyan-500' : 'text-[#4A5C6A] border-transparent hover:text-[#9BA8AB]'}`}
-                        >
-                          {tab === 'basic' ? 'Basic Info' : tab === 'media' ? 'Media' : tab === 'pricing' ? 'Pricing & Rent' : 'Tags & Variants'}
-                        </button>
-                      ))}
-                    </div>
-
                     <div className="space-y-4">
                         <div>
                           <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Game Title</label>
