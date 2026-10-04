@@ -120,7 +120,7 @@ const GameCard = memo(({ game, index, isSelected, setSelectedCategory, inCart, p
             <h3 className={`text-sm font-bold leading-tight transition-colors truncate uppercase ${isSelected ? 'text-gray-900' : 'text-[#1F2937] group-hover:text-gray-900'}`}>
               {game.title}
             </h3>
-            <p className="text-[10px] text-[#D1D5DB] font-bold tracking-widest uppercase mt-1">Digital Edition</p>
+            <p className="text-[10px] text-[#9CA3AF] font-bold tracking-widest uppercase mt-1">Digital Edition</p>
           </div>
           
           <div className="mt-4 flex items-center justify-between">

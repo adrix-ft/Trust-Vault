@@ -382,7 +382,7 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
                   {inCartRent ? <Check className="w-5 h-5" /> : <Clock className="w-5 h-5" />}
                   {inCartRent ? 'In Cart (30 Days)' : 'Secondary Access - 30 Days'}
                 </button>
-                <p className="text-center mt-3 text-[10px] text-[#D1D5DB] uppercase font-bold tracking-wider">
+                <p className="text-center mt-3 text-[10px] text-[#9CA3AF] uppercase font-bold tracking-wider">
                   Digital Delivery • Secure Access
                 </p>
               </div>
@@ -503,7 +503,7 @@ const VariantInfoModal = ({ variant, onClose }: { variant: string, onClose: () =
           <p className="text-[11px] font-black text-red-400/90 uppercase tracking-widest flex items-center gap-1.5 mb-3 border-b border-[#E5E7EB]/50 pb-2">
             📌 Important
           </p>
-          <ul className="space-y-1.5 text-[11px] sm:text-xs text-[#4B5563] list-disc pl-4 marker:text-[#D1D5DB]">
+          <ul className="space-y-1.5 text-[11px] sm:text-xs text-[#4B5563] list-disc pl-4 marker:text-[#9CA3AF]">
             <li>Please read the access type carefully before purchasing.</li>
             <li>Follow the provided activation/setup instructions.</li>
             <li>Account details and access terms will be provided after purchase.</li>

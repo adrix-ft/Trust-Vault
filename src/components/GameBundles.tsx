@@ -149,7 +149,7 @@ export default function GameBundles() {
                   </h3>
                   
                   <div className="text-xs font-semibold text-[#1F2937] mb-3 space-y-1 bg-[#F5F4EE]/50 p-2.5 rounded-xl border border-[#E5E7EB] max-h-[85px] overflow-y-auto hide-scrollbar">
-                    <span className="text-[#D1D5DB] uppercase tracking-wider text-[9px] block mb-0.5">Items Included:</span>
+                    <span className="text-[#9CA3AF] uppercase tracking-wider text-[9px] block mb-0.5">Items Included:</span>
                     {includedGames.length > 0 ? (
                       includedGames.map((g, i) => (
                         <div key={i} className="flex items-center gap-1.5 justify-center sm:justify-start">
