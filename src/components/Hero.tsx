@@ -204,7 +204,7 @@ export default function Hero() {
               <button
                 key={idx}
                 onClick={() => setActiveIndex(idx)}
-                className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${idx === safeIndex ? 'bg-white w-6' : 'bg-[#D1D5DB]/60 w-2 hover:bg-[#4B5563]'}`}
+                className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${idx === safeIndex ? 'bg-gray-900 w-6' : 'bg-gray-300 w-2 hover:bg-gray-400'}`}
               />
             ))}
           </div>

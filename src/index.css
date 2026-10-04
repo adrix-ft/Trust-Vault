@@ -101,7 +101,7 @@
     100% { transform: translateX(calc(-100% - 1.5rem)); }
   }
   .animate-marquee {
-    animation: marquee 75s linear infinite;
+    animation: marquee 150s linear infinite;
   }
   
   @keyframes marquee-reverse {
@@ -109,7 +109,7 @@
     100% { transform: translateX(0); }
   }
   .animate-marquee-reverse {
-    animation: marquee-reverse 75s linear infinite;
+    animation: marquee-reverse 150s linear infinite;
   }
   
   .group:hover .animate-marquee,
