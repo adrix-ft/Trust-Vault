@@ -42,9 +42,9 @@ export default function ProofSection({ onSelectImage }: ProofSectionProps) {
   }, []);
 
   return (
-    <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-[100vw] overflow-hidden bg-transparent">
+    <div className="py-12 w-full overflow-hidden bg-transparent">
       {/* Section Header */}
-      <div className="flex flex-col items-center text-center space-y-3 mb-10">
+      <div className="flex flex-col items-center text-center space-y-3 mb-10 px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl md:text-4xl font-black text-gray-900 uppercase tracking-wider">
           Customer Screenshots
         </h2>
@@ -68,7 +68,7 @@ export default function ProofSection({ onSelectImage }: ProofSectionProps) {
           </p>
         </div>
       ) : (
-        <div className="relative flex flex-col gap-6 overflow-hidden w-full py-4 max-w-[100vw] -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+        <div className="relative flex flex-col gap-6 w-full py-4 overflow-hidden">
           
           {/* Row 1: Moves Left */}
           <div className="flex gap-6 w-full group">

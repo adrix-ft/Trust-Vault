@@ -150,7 +150,7 @@ export default function Navbar() {
           className={`relative group transition-all duration-300 ease-in-out ${isMobileSearchActive ? 'flex-1 flex' : 'hidden sm:block'} ${isSearchFocused ? 'sm:w-[350px] lg:w-[400px]' : 'sm:w-[200px] lg:w-64'}`}
           ref={searchRef}
         >
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#D1D5DB] group-focus-within:text-gray-900 transition-colors z-10" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 group-focus-within:text-gray-900 transition-colors z-10" />
 
           <input
             type="text"
@@ -159,7 +159,7 @@ export default function Navbar() {
             onChange={(e) => setSearchQuery(e.target.value)}
             onFocus={() => setIsSearchFocused(true)}
             autoFocus={isMobileSearchActive}
-            className="bg-[#FCFBF6]/80 border border-[#E5E7EB] rounded-full py-2.5 pl-10 pr-9 text-xs font-medium text-gray-900 placeholder:text-[#D1D5DB] focus:outline-none focus:border-[#D1D5DB] focus:ring-2 focus:ring-[#D1D5DB]/20 transition-all w-full relative z-10 shadow-inner"
+            className="bg-[#FCFBF6]/80 border border-[#E5E7EB] rounded-full py-2.5 pl-10 pr-9 text-xs font-medium text-gray-900 placeholder:text-gray-500 focus:outline-none focus:border-gray-400 focus:ring-2 focus:ring-gray-400/20 transition-all w-full relative z-10 shadow-inner"
           />
 
           <button
@@ -169,7 +169,7 @@ export default function Navbar() {
               setActiveHoverTitle(null);
               if (window.innerWidth < 640) setIsMobileSearchActive(false);
             }}
-            className={`absolute right-3 top-1/2 -translate-y-1/2 text-[#D1D5DB] hover:text-gray-900 z-20 p-1 transition-colors ${!searchQuery && window.innerWidth >= 640 ? 'hidden' : 'block'}`}
+            className={`absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-900 z-20 p-1 transition-colors ${!searchQuery && window.innerWidth >= 640 ? 'hidden' : 'block'}`}
           >
             <X className="w-4 h-4" />
           </button>
