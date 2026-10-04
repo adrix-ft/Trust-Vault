@@ -8,9 +8,9 @@ import { getGameCoverUrl } from '../utils/image';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://store-vault-backend.onrender.com';
 
 export default function AdminDashboard() {
-  const { catalog, heroOrder, setHeroOrder, updateGame, addGame, removeGame, reorderCatalog, resetCatalog, setIsAdmin, collections, updateCollection, addCollection, removeCollection, bundleDiscounts, updateBundleDiscounts, showToast, setConfirmReq } = useStore();
+  const { catalog, heroOrder, setHeroOrder, updateGame, addGame, removeGame, reorderCatalog, resetCatalog, setIsAdmin, collections, updateCollection, addCollection, removeCollection, bundleDiscounts, updateBundleDiscounts, showToast, setConfirmReq, globalTagColors, updateGlobalTagColors } = useStore();
 
-  const [activeTab, setActiveTab] = useState<'pc_games' | 'ps_games' | 'hero_pc' | 'hero_ps' | 'bundles' | 'proofs' | 'rents' | 'subscriptions'>('bundles');
+  const [activeTab, setActiveTab] = useState<'pc_games' | 'ps_games' | 'hero_pc' | 'hero_ps' | 'bundles' | 'proofs' | 'rents' | 'subscriptions' | 'settings'>('bundles');
   const [showForm, setShowForm] = useState(false);
   const [activeFormTab, setActiveFormTab] = useState<'basic' | 'media' | 'pricing' | 'tags'>('basic');
   const [customTagInput, setCustomTagInput] = useState('');
@@ -769,7 +769,8 @@ export default function AdminDashboard() {
             { id: 'bundles', label: 'Bundle Game List', icon: Package, count: existingBundles.length },
             { id: 'subscriptions', label: 'Subscriptions', icon: Repeat },
             { id: 'proofs', label: 'Customer Proofs', icon: ShieldCheck },
-            { id: 'rents', label: 'Rent Tracking', icon: Database, count: rents.length }
+            { id: 'rents', label: 'Rent Tracking', icon: Database, count: rents.length },
+            { id: 'settings', label: 'Global Settings', icon: Layers }
           ].map(tab => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -855,7 +856,7 @@ export default function AdminDashboard() {
               </div>
 
               <div className="flex gap-2 mt-4">
-                <button onClick={handleSaveSubscription} className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold uppercase tracking-wider text-xs px-6 py-2.5 rounded-xl shadow-lg transition-colors cursor-pointer">
+                <button onClick={handleSaveSubscription} className="bg-gradient-to-r from-[#E5E7EB] to-[#D1D5DB] hover:from-[#D1D5DB] hover:to-[#596F80] text-white font-bold uppercase tracking-wider text-xs px-6 py-2.5 rounded-xl shadow-lg transition-all cursor-pointer border border-[#D1D5DB]/50">
                   {editingSubId ? 'Update Subscription' : 'Save Subscription'}
                 </button>
                 {editingSubId && (
@@ -935,6 +936,84 @@ export default function AdminDashboard() {
                   ))}
                 </div>
               )}
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'settings' && (
+          <div className="bg-[#FCFBF6] border border-[#E5E7EB] rounded-2xl p-6 shadow-2xl">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+              <h2 className="text-xl font-black text-gray-900 uppercase tracking-wider flex items-center gap-2">
+                <Layers className="w-5 h-5 text-gray-900" /> Global Settings
+              </h2>
+            </div>
+            
+            <div className="bg-[#F5F4EE] border border-[#E5E7EB] p-6 rounded-2xl">
+              <h3 className="text-sm font-black tracking-wider text-gray-900 uppercase mb-4">Global Tag Colors</h3>
+              <p className="text-[#4B5563] text-xs mb-4">
+                Set a default color for custom tags (like DELUXE EDITION) across the entire store. If a game has its own specific color set, it will override this global setting.
+              </p>
+              
+              <div className="space-y-4">
+                {Object.entries(globalTagColors || {}).map(([tag, color]) => (
+                  <div key={tag} className="flex items-center gap-3">
+                    <div className="flex-1">
+                      <input 
+                        type="text" 
+                        value={tag} 
+                        readOnly
+                        className="w-full bg-[#FCFBF6] border border-[#E5E7EB] rounded-lg p-2 text-gray-900 text-xs font-bold uppercase tracking-wider" 
+                      />
+                    </div>
+                    <div className="flex items-center gap-2 bg-[#FCFBF6] border border-[#E5E7EB] px-3 py-1.5 rounded-lg">
+                      <label className="text-[10px] text-[#4B5563] font-bold uppercase tracking-wider">Color:</label>
+                      <input 
+                        type="color" 
+                        value={color as string} 
+                        onChange={(e) => {
+                          const newColors = { ...globalTagColors, [tag]: e.target.value };
+                          updateGlobalTagColors(newColors);
+                        }}
+                        className="w-6 h-6 rounded cursor-pointer bg-transparent border-0 p-0"
+                      />
+                    </div>
+                    <button 
+                      onClick={() => {
+                        const newColors = { ...globalTagColors };
+                        delete newColors[tag];
+                        updateGlobalTagColors(newColors);
+                      }}
+                      className="p-2 text-red-400 hover:bg-red-500/20 rounded-lg transition-colors cursor-pointer"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+
+                <div className="pt-4 border-t border-[#E5E7EB] flex items-center gap-3">
+                  <div className="flex-1">
+                    <input 
+                      type="text" 
+                      id="newGlobalTagInput"
+                      placeholder="e.g. ULTIMATE EDITION" 
+                      className="w-full bg-[#FCFBF6] border border-[#E5E7EB] rounded-lg p-2 text-gray-900 text-xs uppercase" 
+                    />
+                  </div>
+                  <button 
+                    onClick={() => {
+                      const input = document.getElementById('newGlobalTagInput') as HTMLInputElement;
+                      const tag = input.value.trim().toUpperCase();
+                      if (tag && !globalTagColors[tag]) {
+                        updateGlobalTagColors({ ...globalTagColors, [tag]: '#22d3ee' });
+                        input.value = '';
+                      }
+                    }}
+                    className="flex items-center gap-2 bg-[#E5E7EB] hover:bg-[#D1D5DB] text-gray-900 px-4 py-2 rounded-lg text-[11px] font-bold uppercase transition-colors"
+                  >
+                    <Plus className="w-3.5 h-3.5" /> Add Global Tag Color
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         )}

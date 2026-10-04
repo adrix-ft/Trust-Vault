@@ -132,6 +132,8 @@ type StoreContextType = {
   removeToast: (id: number) => void;
   confirmReq: ConfirmRequest | null;
   setConfirmReq: (req: ConfirmRequest | null) => void;
+  globalTagColors: Record<string, string>;
+  updateGlobalTagColors: (colors: Record<string, string>) => void;
 };
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
@@ -248,6 +250,32 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     fetchBundleDiscounts();
   }, []);
 
+  const [globalTagColors, setGlobalTagColors] = useState<Record<string, string>>(() => {
+    try {
+      const saved = localStorage.getItem('amin_global_tag_colors');
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return { 'DELUXE EDITION': '#22d3ee' };
+  });
+
+  useEffect(() => {
+    const fetchGlobalTagColors = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/settings/global-tag-colors`);
+        if (response.ok) {
+          const data = await response.json();
+          if (Object.keys(data).length > 0) {
+            setGlobalTagColors(data);
+            localStorage.setItem('amin_global_tag_colors', JSON.stringify(data));
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch global tag colors:', err);
+      }
+    };
+    fetchGlobalTagColors();
+  }, []);
+
   const updateBundleDiscounts = async (discounts: BundleDiscount[]) => {
     setBundleDiscounts(discounts);
     localStorage.setItem('amin_game_bundle_discounts', JSON.stringify(discounts));
@@ -259,6 +287,20 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
       });
     } catch (err) {
       console.error('Failed to update bundle discounts:', err);
+    }
+  };
+
+  const updateGlobalTagColors = async (colors: Record<string, string>) => {
+    setGlobalTagColors(colors);
+    localStorage.setItem('amin_global_tag_colors', JSON.stringify(colors));
+    try {
+      await fetch(`${API_BASE_URL}/api/settings/global-tag-colors`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(colors)
+      });
+    } catch (err) {
+      console.error('Failed to update global tag colors:', err);
     }
   };
 
@@ -604,7 +646,8 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
       isAdmin, setIsAdmin,
       showAdminLogin, setShowAdminLogin,
       catalog, heroOrder, setHeroOrder, updateGame, addGame, removeGame, reorderCatalog, resetCatalog,
-      toasts, showToast, removeToast, confirmReq, setConfirmReq
+      toasts, showToast, removeToast, confirmReq, setConfirmReq,
+      globalTagColors, updateGlobalTagColors
     }
   }, children);
 };

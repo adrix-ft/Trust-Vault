@@ -859,6 +859,22 @@ app.get("/api/games/details/:appid", async (req, res) => {
   }
 });
 
+// ==================== GLOBAL TAG COLORS ENDPOINTS ====================
+const globalTagColorsPath = path.join(process.cwd(), 'globalTagColors.json');
+
+app.get('/api/settings/global-tag-colors', async (req, res) => {
+  res.json(await getSetting('globalTagColors', {}, globalTagColorsPath));
+});
+
+app.put('/api/settings/global-tag-colors', async (req, res) => {
+  try {
+    await setSetting('globalTagColors', req.body, globalTagColorsPath);
+    res.json({success:true, data: req.body});
+  } catch(e) {
+    res.status(500).json({error:e.message});
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

@@ -1,6 +1,9 @@
 import React from 'react';
+import { useStore } from '../context/StoreContext';
 
 export default function PlatformTags({ platforms, tagColors, className }: { platforms?: string[], tagColors?: Record<string, string>, className?: string }) {
+  const { globalTagColors } = useStore();
+  
   if (!platforms) return null;
   const isPC = platforms.some(p => p.toUpperCase() === 'PC' || p.toUpperCase() === 'STEAM');
   const isPS5 = platforms.some(p => p.toUpperCase() === 'PS5');
@@ -56,7 +59,8 @@ export default function PlatformTags({ platforms, tagColors, className }: { plat
         <div className="flex flex-wrap justify-end gap-1.5 mt-0.5">
           {customTags.map((tag, idx) => {
             const tagKey = Object.keys(tagColors || {}).find(k => k.toUpperCase() === tag.toUpperCase());
-            const customColor = tagKey ? tagColors?.[tagKey] : undefined;
+            const globalTagKey = Object.keys(globalTagColors || {}).find(k => k.toUpperCase() === tag.toUpperCase());
+            const customColor = tagKey ? tagColors?.[tagKey] : (globalTagKey ? globalTagColors?.[globalTagKey] : undefined);
             const hasCustomColor = !!customColor;
             
             return (
