@@ -42,7 +42,7 @@ export default function ProofSection({ onSelectImage }: ProofSectionProps) {
   }, []);
 
   return (
-    <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-[100vw] overflow-hidden bg-white">
+    <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-[100vw] overflow-hidden bg-transparent">
       {/* Section Header */}
       <div className="flex flex-col items-center text-center space-y-3 mb-10">
         <h2 className="text-3xl md:text-4xl font-black text-gray-900 uppercase tracking-wider">
