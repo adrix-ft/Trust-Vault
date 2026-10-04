@@ -418,12 +418,12 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
             transition={{ delay: 0.4 }}
             className="grid grid-cols-2 gap-4"
           >
-            <div className="bg-[#FCFBF6] border border-[#E5E7EB] rounded-2xl p-4 flex flex-col items-center justify-center text-center gap-2 hover:bg-[#1A2C38] hover:border-[#D1D5DB] transition-colors shadow-lg">
-              <ShieldCheck className="w-8 h-8 text-green-400" />
+            <div className="bg-[#FCFBF6] border border-[#E5E7EB] rounded-2xl p-4 flex flex-col items-center justify-center text-center gap-2 hover:bg-gray-100 hover:border-gray-300 transition-colors shadow-lg">
+              <ShieldCheck className="w-8 h-8 text-green-500" />
               <span className="text-[10px] font-black uppercase text-[#1F2937] tracking-wider">Secure Delivery</span>
             </div>
-            <div className="bg-[#FCFBF6] border border-[#E5E7EB] rounded-2xl p-4 flex flex-col items-center justify-center text-center gap-2 hover:bg-[#1A2C38] hover:border-[#D1D5DB] transition-colors shadow-lg">
-              <Star className="w-8 h-8 text-amber-400" />
+            <div className="bg-[#FCFBF6] border border-[#E5E7EB] rounded-2xl p-4 flex flex-col items-center justify-center text-center gap-2 hover:bg-gray-100 hover:border-gray-300 transition-colors shadow-lg">
+              <Star className="w-8 h-8 text-amber-500" />
               <span className="text-[10px] font-black uppercase text-[#1F2937] tracking-wider">Top Rated</span>
             </div>
           </motion.div>
