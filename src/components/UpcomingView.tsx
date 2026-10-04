@@ -31,7 +31,7 @@ export default function UpcomingView() {
   return (
     <div className="space-y-8 max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
       {/* Notice Banner */}
-      <div className="bg-gradient-to-r from-[#FFFFFF] via-[#E5E7EB]/40 to-[#FFFFFF] border border-[#D1D5DB] rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+      <div className="bg-gradient-to-r from-[#FCFBF6] via-[#E5E7EB]/40 to-[#FCFBF6] border border-[#D1D5DB] rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
         <div className="space-y-2 text-center md:text-left">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-wider">
             <Clock className="w-4 h-4" />
@@ -60,7 +60,7 @@ export default function UpcomingView() {
           Loading upcoming titles...
         </div>
       ) : upcomingGames.length === 0 ? (
-        <div className="text-center py-16 bg-[#FFFFFF]/30 rounded-2xl border border-[#E5E7EB] border-dashed">
+        <div className="text-center py-16 bg-[#FCFBF6]/30 rounded-2xl border border-[#E5E7EB] border-dashed">
           <p className="text-[#1F2937] text-xs font-bold uppercase tracking-wider mb-1">No upcoming games listed yet.</p>
           <p className="text-[#4B5563] text-[11px]">Check back soon or contact us via WhatsApp for upcoming pre-orders.</p>
         </div>
@@ -72,8 +72,8 @@ export default function UpcomingView() {
             const gamePrice = String(game.price || 'TBA');
 
             return (
-              <div key={game.id || game.title} className="bg-[#FFFFFF] rounded-xl overflow-hidden border border-[#E5E7EB] hover:border-[#D1D5DB] transition-all group flex flex-col shadow-lg">
-                <div className="aspect-[3/4] relative overflow-hidden bg-[#F9FAFB]">
+              <div key={game.id || game.title} className="bg-[#FCFBF6] rounded-xl overflow-hidden border border-[#E5E7EB] hover:border-[#D1D5DB] transition-all group flex flex-col shadow-lg">
+                <div className="aspect-[3/4] relative overflow-hidden bg-[#F5F4EE]">
                   <img
                     src={coverUrl}
                     alt={game.title}
@@ -83,14 +83,14 @@ export default function UpcomingView() {
                       e.currentTarget.src = '/placeholder.jpg';
                     }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#F9FAFB] via-transparent to-transparent opacity-80" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#F5F4EE] via-transparent to-transparent opacity-80" />
                   <PlatformTags platforms={game.categories} tagColors={game.tagColors} />
-                  <div className="absolute top-2 left-2 bg-amber-500 text-[9px] font-black px-2 py-0.5 rounded text-[#F9FAFB] uppercase tracking-wider shadow">
+                  <div className="absolute top-2 left-2 bg-amber-500 text-[9px] font-black px-2 py-0.5 rounded text-[#F5F4EE] uppercase tracking-wider shadow">
                     SOON
                   </div>
                 </div>
 
-                <div className="p-4 flex flex-col flex-1 justify-between bg-[#FFFFFF]">
+                <div className="p-4 flex flex-col flex-1 justify-between bg-[#FCFBF6]">
                   <div>
                     <h3 className="font-bold text-[#1F2937] text-sm leading-tight mb-1 tracking-wide uppercase truncate">{game.title}</h3>
                     {(game.release_date || game.releaseDate) && (

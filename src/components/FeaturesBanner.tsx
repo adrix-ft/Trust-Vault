@@ -26,14 +26,14 @@ export default function FeaturesBanner() {
   ];
 
   return (
-    <section className="w-full bg-[#FFFFFF] border-y border-[#E5E7EB] py-4 shadow-sm overflow-hidden group">
+    <section className="w-full bg-[#FCFBF6] border-y border-[#E5E7EB] py-4 shadow-sm overflow-hidden group">
       <div className="flex w-full">
         <div className="flex animate-marquee gap-8 sm:gap-12 whitespace-nowrap min-w-full shrink-0 items-center justify-around px-4">
           {[...features, ...features].map((feat, idx) => {
             const Icon = feat.icon;
             const content = (
               <>
-                <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#F9FAFB] border border-[#E5E7EB] flex items-center justify-center text-emerald-500 group-hover/item:scale-110 group-hover/item:text-emerald-400 group-hover/item:border-emerald-500/30 transition-all shadow-md">
+                <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#F5F4EE] border border-[#E5E7EB] flex items-center justify-center text-emerald-500 group-hover/item:scale-110 group-hover/item:text-emerald-400 group-hover/item:border-emerald-500/30 transition-all shadow-md">
                   <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
                 <div className="flex flex-col justify-center">
@@ -70,7 +70,7 @@ export default function FeaturesBanner() {
             const Icon = feat.icon;
             const content = (
               <>
-                <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#F9FAFB] border border-[#E5E7EB] flex items-center justify-center text-emerald-500 group-hover/item:scale-110 group-hover/item:text-emerald-400 group-hover/item:border-emerald-500/30 transition-all shadow-md">
+                <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#F5F4EE] border border-[#E5E7EB] flex items-center justify-center text-emerald-500 group-hover/item:scale-110 group-hover/item:text-emerald-400 group-hover/item:border-emerald-500/30 transition-all shadow-md">
                   <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
                 <div className="flex flex-col justify-center">

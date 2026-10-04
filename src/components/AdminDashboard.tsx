@@ -716,10 +716,10 @@ export default function AdminDashboard() {
   const existingBundles = catalog.filter(g => g.categories?.includes('Bundle-Eligible'));
 
   return (
-    <div className="min-h-screen bg-[#F9FAFB] text-[#1F2937] p-4 sm:p-8 font-sans">
+    <div className="min-h-screen bg-[#F5F4EE] text-[#1F2937] p-4 sm:p-8 font-sans">
       <div className="max-w-7xl mx-auto space-y-8">
 
-        <div className="flex flex-col md:flex-row justify-between items-center bg-[#FFFFFF]/80 backdrop-blur-md border border-[#E5E7EB] p-6 rounded-2xl shadow-xl gap-4">
+        <div className="flex flex-col md:flex-row justify-between items-center bg-[#FCFBF6]/80 backdrop-blur-md border border-[#E5E7EB] p-6 rounded-2xl shadow-xl gap-4">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#E5E7EB] to-[#D1D5DB] border border-[#D1D5DB]/50 flex items-center justify-center text-gray-900 shadow-lg">
               <Database className="w-6 h-6" />
@@ -740,7 +740,7 @@ export default function AdminDashboard() {
                   }
                 });
               }}
-              className="flex items-center gap-2 bg-[#F9FAFB] hover:bg-[#E5E7EB] text-[#1F2937] px-4 py-2.5 rounded-xl font-bold uppercase tracking-wider text-xs transition-all border border-[#E5E7EB] hover:border-[#D1D5DB] cursor-pointer shadow-sm"
+              className="flex items-center gap-2 bg-[#F5F4EE] hover:bg-[#E5E7EB] text-[#1F2937] px-4 py-2.5 rounded-xl font-bold uppercase tracking-wider text-xs transition-all border border-[#E5E7EB] hover:border-[#D1D5DB] cursor-pointer shadow-sm"
             >
               <RefreshCw className="w-3.5 h-3.5" /> Reset Catalog
             </button>
@@ -759,7 +759,7 @@ export default function AdminDashboard() {
 
         <div className="flex flex-col lg:flex-row gap-6 items-start">
           {/* Sidebar Tabs */}
-          <div className="w-full lg:w-auto shrink-0 flex flex-col gap-1.5 bg-[#FFFFFF]/50 border border-[#E5E7EB] p-2 rounded-2xl overflow-x-auto lg:overflow-x-visible">
+          <div className="w-full lg:w-auto shrink-0 flex flex-col gap-1.5 bg-[#FCFBF6]/50 border border-[#E5E7EB] p-2 rounded-2xl overflow-x-auto lg:overflow-x-visible">
             <div className="flex lg:flex-col gap-1.5">
           {[
             { id: 'hero_pc', label: 'Hero - PC', icon: Monitor, count: catalog.filter(g => g.showInHero && (g.categories?.some(c => c.toUpperCase() === 'PC' || c.toUpperCase() === 'STEAM'))).length },
@@ -778,12 +778,12 @@ export default function AdminDashboard() {
                 key={tab.id}
                 title={tab.label}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center justify-center p-3.5 rounded-xl transition-all cursor-pointer relative ${isActive ? 'bg-gradient-to-r from-[#E5E7EB] to-[#D1D5DB] text-white shadow-lg border border-[#D1D5DB]' : 'text-[#4B5563] hover:text-white hover:bg-[#FFFFFF] border border-transparent'
+                className={`flex items-center justify-center p-3.5 rounded-xl transition-all cursor-pointer relative ${isActive ? 'bg-gradient-to-r from-[#E5E7EB] to-[#D1D5DB] text-white shadow-lg border border-[#D1D5DB]' : 'text-[#4B5563] hover:text-white hover:bg-[#FCFBF6] border border-transparent'
                   }`}
               >
                 <Icon className={`w-6 h-6 shrink-0 ${isActive ? 'text-gray-900' : 'text-[#D1D5DB]'}`} />
                 {tab.count !== undefined && (
-                  <span className={`absolute -top-1 -right-1 text-[9px] px-1.5 py-0.5 rounded-full font-black shadow-md ${isActive ? 'bg-cyan-500 text-black' : 'bg-[#F9FAFB] text-[#4B5563] border border-[#E5E7EB]'}`}>
+                  <span className={`absolute -top-1 -right-1 text-[9px] px-1.5 py-0.5 rounded-full font-black shadow-md ${isActive ? 'bg-cyan-500 text-black' : 'bg-[#F5F4EE] text-[#4B5563] border border-[#E5E7EB]'}`}>
                     {tab.count}
                   </span>
                 )}
@@ -796,41 +796,41 @@ export default function AdminDashboard() {
           {/* Main Content Area */}
           <div className="flex-1 w-full min-w-0">
             {activeTab === 'subscriptions' && (
-          <div className="bg-[#FFFFFF] border border-[#E5E7EB] rounded-2xl overflow-hidden shadow-2xl p-6">
+          <div className="bg-[#FCFBF6] border border-[#E5E7EB] rounded-2xl overflow-hidden shadow-2xl p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Manage Subscriptions</h2>
             <p className="text-[#4B5563] text-sm">Add, edit, or remove subscription offerings from your store.</p>
 
-            <div className="mt-6 border border-[#E5E7EB] p-6 rounded-xl bg-[#F9FAFB]">
+            <div className="mt-6 border border-[#E5E7EB] p-6 rounded-xl bg-[#F5F4EE]">
               <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">{editingSubId ? 'Edit Subscription' : 'Add New Subscription'}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[#4B5563] text-[10px] font-bold uppercase tracking-wider mb-1">Name</label>
-                  <input type="text" value={subFormData.name} onChange={e => setSubFormData({ ...subFormData, name: e.target.value })} className="w-full bg-[#FFFFFF] text-gray-900 px-4 py-2.5 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="e.g. Netflix Premium" />
+                  <input type="text" value={subFormData.name} onChange={e => setSubFormData({ ...subFormData, name: e.target.value })} className="w-full bg-[#FCFBF6] text-gray-900 px-4 py-2.5 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="e.g. Netflix Premium" />
                 </div>
                 <div>
                   <label className="block text-[#4B5563] text-[10px] font-bold uppercase tracking-wider mb-1">Logo URL</label>
-                  <input type="text" value={subFormData.logoUrl} onChange={e => setSubFormData({ ...subFormData, logoUrl: e.target.value })} className="w-full bg-[#FFFFFF] text-gray-900 px-4 py-2.5 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="https://..." />
+                  <input type="text" value={subFormData.logoUrl} onChange={e => setSubFormData({ ...subFormData, logoUrl: e.target.value })} className="w-full bg-[#FCFBF6] text-gray-900 px-4 py-2.5 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="https://..." />
                 </div>
                 <div>
                   <label className="block text-[#4B5563] text-[10px] font-bold uppercase tracking-wider mb-1">Banner Image URL</label>
-                  <input type="text" value={subFormData.bannerUrl} onChange={e => setSubFormData({ ...subFormData, bannerUrl: e.target.value })} className="w-full bg-[#FFFFFF] text-gray-900 px-4 py-2.5 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="https://..." />
+                  <input type="text" value={subFormData.bannerUrl} onChange={e => setSubFormData({ ...subFormData, bannerUrl: e.target.value })} className="w-full bg-[#FCFBF6] text-gray-900 px-4 py-2.5 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="https://..." />
                 </div>
                 <div className="flex gap-4">
                   <div className="flex-1">
                     <label className="block text-[#4B5563] text-[10px] font-bold uppercase tracking-wider mb-1">Theme Color</label>
                     <div className="flex items-center gap-2">
-                      <input type="color" value={subFormData.themeColor || '#10b981'} onChange={e => setSubFormData({ ...subFormData, themeColor: e.target.value })} className="w-10 h-10 rounded cursor-pointer border border-[#E5E7EB] bg-[#FFFFFF]" />
-                      <input type="text" value={subFormData.themeColor} onChange={e => setSubFormData({ ...subFormData, themeColor: e.target.value })} className="flex-1 bg-[#FFFFFF] text-gray-900 px-4 py-2.5 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="#HEX" />
+                      <input type="color" value={subFormData.themeColor || '#10b981'} onChange={e => setSubFormData({ ...subFormData, themeColor: e.target.value })} className="w-10 h-10 rounded cursor-pointer border border-[#E5E7EB] bg-[#FCFBF6]" />
+                      <input type="text" value={subFormData.themeColor} onChange={e => setSubFormData({ ...subFormData, themeColor: e.target.value })} className="flex-1 bg-[#FCFBF6] text-gray-900 px-4 py-2.5 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="#HEX" />
                     </div>
                   </div>
                   <div className="flex-1">
                     <label className="block text-[#4B5563] text-[10px] font-bold uppercase tracking-wider mb-1">Badge Text</label>
-                    <input type="text" value={subFormData.badge} onChange={e => setSubFormData({ ...subFormData, badge: e.target.value })} className="w-full bg-[#FFFFFF] text-gray-900 px-4 py-2.5 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="e.g. Popular" />
+                    <input type="text" value={subFormData.badge} onChange={e => setSubFormData({ ...subFormData, badge: e.target.value })} className="w-full bg-[#FCFBF6] text-gray-900 px-4 py-2.5 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="e.g. Popular" />
                   </div>
                 </div>
                 <div className="md:col-span-2">
                   <label className="block text-[#4B5563] text-[10px] font-bold uppercase tracking-wider mb-1">Short Description</label>
-                  <input type="text" value={subFormData.description} onChange={e => setSubFormData({ ...subFormData, description: e.target.value })} className="w-full bg-[#FFFFFF] text-gray-900 px-4 py-2.5 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="A short catchy description of the plan..." />
+                  <input type="text" value={subFormData.description} onChange={e => setSubFormData({ ...subFormData, description: e.target.value })} className="w-full bg-[#FCFBF6] text-gray-900 px-4 py-2.5 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="A short catchy description of the plan..." />
                 </div>
 
                 <div className="md:col-span-2 space-y-2">
@@ -840,9 +840,9 @@ export default function AdminDashboard() {
                   </div>
                   {(subFormData.pricing || []).map((p, idx) => (
                     <div key={idx} className="flex items-center gap-2">
-                      <input type="text" value={p.duration} onChange={e => { const newP = [...subFormData.pricing]; newP[idx].duration = e.target.value; setSubFormData({ ...subFormData, pricing: newP }); }} className="flex-1 bg-[#FFFFFF] text-gray-900 px-4 py-2 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="Duration (1 Month)" />
-                      <input type="text" value={p.price} onChange={e => { const newP = [...subFormData.pricing]; newP[idx].price = e.target.value; setSubFormData({ ...subFormData, pricing: newP }); }} className="flex-1 bg-[#FFFFFF] text-gray-900 px-4 py-2 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="Price (500Rs)" />
-                      <input type="text" value={p.originalPrice || ''} onChange={e => { const newP = [...subFormData.pricing]; newP[idx].originalPrice = e.target.value; setSubFormData({ ...subFormData, pricing: newP }); }} className="flex-1 bg-[#FFFFFF] text-[#4B5563] px-4 py-2 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="Old Price (Optional)" />
+                      <input type="text" value={p.duration} onChange={e => { const newP = [...subFormData.pricing]; newP[idx].duration = e.target.value; setSubFormData({ ...subFormData, pricing: newP }); }} className="flex-1 bg-[#FCFBF6] text-gray-900 px-4 py-2 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="Duration (1 Month)" />
+                      <input type="text" value={p.price} onChange={e => { const newP = [...subFormData.pricing]; newP[idx].price = e.target.value; setSubFormData({ ...subFormData, pricing: newP }); }} className="flex-1 bg-[#FCFBF6] text-gray-900 px-4 py-2 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="Price (500Rs)" />
+                      <input type="text" value={p.originalPrice || ''} onChange={e => { const newP = [...subFormData.pricing]; newP[idx].originalPrice = e.target.value; setSubFormData({ ...subFormData, pricing: newP }); }} className="flex-1 bg-[#FCFBF6] text-[#4B5563] px-4 py-2 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="Old Price (Optional)" />
                       <button onClick={() => setSubFormData({ ...subFormData, pricing: subFormData.pricing.filter((_, i) => i !== idx) })} className="p-2 bg-red-500/10 text-red-400 rounded-xl hover:bg-red-500/20 cursor-pointer"><Trash2 className="w-4 h-4" /></button>
                     </div>
                   ))}
@@ -850,7 +850,7 @@ export default function AdminDashboard() {
 
                 <div className="md:col-span-2">
                   <label className="block text-[#4B5563] text-[10px] font-bold uppercase tracking-wider mb-1">Subscription Details (One feature per line)</label>
-                  <textarea value={subFormData.details} onChange={e => setSubFormData({ ...subFormData, details: e.target.value })} className="w-full bg-[#FFFFFF] text-gray-900 px-4 py-2.5 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none h-24" placeholder="4K Ultra HD&#10;4 Screens&#10;No Ads"></textarea>
+                  <textarea value={subFormData.details} onChange={e => setSubFormData({ ...subFormData, details: e.target.value })} className="w-full bg-[#FCFBF6] text-gray-900 px-4 py-2.5 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none h-24" placeholder="4K Ultra HD&#10;4 Screens&#10;No Ads"></textarea>
                 </div>
               </div>
 
@@ -869,7 +869,7 @@ export default function AdminDashboard() {
             <div className="mt-8 space-y-4">
               <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider">Current Subscriptions ({subscriptions.length})</h3>
               {subscriptions.length === 0 ? (
-                <div className="text-[#4B5563] text-sm text-center py-10 bg-[#F9FAFB] rounded-xl border border-[#E5E7EB]">
+                <div className="text-[#4B5563] text-sm text-center py-10 bg-[#F5F4EE] rounded-xl border border-[#E5E7EB]">
                   No subscriptions added yet.
                 </div>
               ) : (
@@ -890,7 +890,7 @@ export default function AdminDashboard() {
                         reorderSubscriptions(newSubs);
                         setDraggedSubIndex(null);
                       }}
-                      className="bg-[#F9FAFB] border border-[#E5E7EB] p-4 rounded-xl flex flex-col justify-between shadow-lg cursor-grab active:cursor-grabbing"
+                      className="bg-[#F5F4EE] border border-[#E5E7EB] p-4 rounded-xl flex flex-col justify-between shadow-lg cursor-grab active:cursor-grabbing"
                     >
                       <div className="flex justify-between items-start">
                         <div className="flex items-center gap-3">
@@ -940,18 +940,18 @@ export default function AdminDashboard() {
         )}
 
         {(activeTab === 'pc_games' || activeTab === 'ps_games' || activeTab === 'hero_pc' || activeTab === 'hero_ps') && (
-          <div className="bg-[#FFFFFF] border border-[#E5E7EB] rounded-2xl overflow-hidden shadow-2xl space-y-0">
-            <div className="p-5 border-b border-[#E5E7EB] flex flex-col lg:flex-row justify-between items-center gap-4 bg-[#FFFFFF]">
+          <div className="bg-[#FCFBF6] border border-[#E5E7EB] rounded-2xl overflow-hidden shadow-2xl space-y-0">
+            <div className="p-5 border-b border-[#E5E7EB] flex flex-col lg:flex-row justify-between items-center gap-4 bg-[#FCFBF6]">
               <div className="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
                 <input
                   type="text" placeholder="Search inventory..." value={searchTerm}
                   onChange={e => { setSearchTerm(e.target.value); setCurrentPage(1); }}
-                  className="bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-4 py-2.5 text-xs text-gray-900 placeholder:text-[#D1D5DB] focus:outline-none focus:border-[#D1D5DB] w-full sm:w-72 shadow-inner"
+                  className="bg-[#F5F4EE] border border-[#E5E7EB] rounded-xl px-4 py-2.5 text-xs text-gray-900 placeholder:text-[#D1D5DB] focus:outline-none focus:border-[#D1D5DB] w-full sm:w-72 shadow-inner"
                 />
                 <div className="flex items-center gap-2 w-full sm:w-auto">
                   <select
                     value={sortBy} onChange={(e) => { setSortBy(e.target.value as any); setCurrentPage(1); }}
-                    className="bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs font-bold uppercase tracking-wider text-[#1F2937] focus:outline-none focus:border-[#D1D5DB] w-full sm:w-auto shadow-inner"
+                    className="bg-[#F5F4EE] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs font-bold uppercase tracking-wider text-[#1F2937] focus:outline-none focus:border-[#D1D5DB] w-full sm:w-auto shadow-inner"
                   >
                     <option value="default">Sort: Newest First (Custom)</option>
                     <option value="az">Alphabetical (A - Z)</option>
@@ -969,7 +969,7 @@ export default function AdminDashboard() {
                   </span>
                   <button
                     onClick={() => { setViewAll(!viewAll); setCurrentPage(1); }}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase border transition-colors cursor-pointer ${viewAll ? 'bg-cyan-900/50 text-cyan-400 border-cyan-500/50 shadow-[0_0_10px_rgba(34,211,238,0.2)]' : 'bg-[#F9FAFB] text-[#4B5563] border-[#E5E7EB] hover:text-gray-900 hover:bg-[#E5E7EB]'}`}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase border transition-colors cursor-pointer ${viewAll ? 'bg-cyan-900/50 text-cyan-400 border-cyan-500/50 shadow-[0_0_10px_rgba(34,211,238,0.2)]' : 'bg-[#F5F4EE] text-[#4B5563] border-[#E5E7EB] hover:text-gray-900 hover:bg-[#E5E7EB]'}`}
                   >
                     {viewAll ? <Layers className="w-3.5 h-3.5" /> : <List className="w-3.5 h-3.5" />}
                     {viewAll ? 'Pages Mode' : 'View All'}
@@ -992,7 +992,7 @@ export default function AdminDashboard() {
 
             <div className="w-full">
               <table className="w-full text-left">
-                <thead className="bg-[#F9FAFB]/80 text-[#4B5563] text-[11px] uppercase tracking-wider border-b border-[#E5E7EB]">
+                <thead className="bg-[#F5F4EE]/80 text-[#4B5563] text-[11px] uppercase tracking-wider border-b border-[#E5E7EB]">
                   <tr>
                     <th className="p-4 font-bold w-auto">Cover</th>
                     <th className="p-4 font-bold w-full max-w-[250px]">Title & Status</th>
@@ -1006,7 +1006,7 @@ export default function AdminDashboard() {
                   {currentTableData.map((game, index) => (
                     <tr 
                       key={game.title} 
-                      className="hover:bg-[#F9FAFB]/40 transition-colors cursor-grab active:cursor-grabbing"
+                      className="hover:bg-[#F5F4EE]/40 transition-colors cursor-grab active:cursor-grabbing"
                       draggable
                       onDragStart={() => setDraggedGameTitle(game.title)}
                       onDragOver={(e) => e.preventDefault()}
@@ -1049,7 +1049,7 @@ export default function AdminDashboard() {
                       }}
                     >
                       <td className="p-4 flex items-center gap-3">
-                        <div className="flex flex-col items-center gap-1.5 shrink-0 bg-[#F9FAFB] p-1.5 rounded-lg border border-[#E5E7EB]">
+                        <div className="flex flex-col items-center gap-1.5 shrink-0 bg-[#F5F4EE] p-1.5 rounded-lg border border-[#E5E7EB]">
                           <button 
                             type="button" 
                             title="Move to Top"
@@ -1068,7 +1068,7 @@ export default function AdminDashboard() {
                                 handleMoveToPosition(game.title, parseInt(e.currentTarget.value) - 1);
                               }
                             }}
-                            className="w-7 h-5 text-center text-[9px] font-bold bg-[#FFFFFF] border border-[#E5E7EB] rounded text-[#4B5563] focus:text-gray-900 focus:border-cyan-400 focus:outline-none"
+                            className="w-7 h-5 text-center text-[9px] font-bold bg-[#FCFBF6] border border-[#E5E7EB] rounded text-[#4B5563] focus:text-gray-900 focus:border-cyan-400 focus:outline-none"
                           />
                           <button 
                             type="button" 
@@ -1111,7 +1111,7 @@ export default function AdminDashboard() {
                       </td>
                       <td className="p-4 text-center">
                         <div className="flex items-center justify-center gap-1.5 flex-wrap mx-auto">
-                          <label className={`flex items-center gap-1.5 cursor-pointer px-2 py-1 rounded-md border transition-all ${game.showInHero ? 'bg-[#D1D5DB] border-[#D1D5DB]' : 'bg-[#F9FAFB] border-[#E5E7EB]'}`}>
+                          <label className={`flex items-center gap-1.5 cursor-pointer px-2 py-1 rounded-md border transition-all ${game.showInHero ? 'bg-[#D1D5DB] border-[#D1D5DB]' : 'bg-[#F5F4EE] border-[#E5E7EB]'}`}>
                             <input
                               type="checkbox" checked={game.showInHero || false}
                               onChange={(e) => updateGame(game.title, { ...game, showInHero: e.target.checked })}
@@ -1120,7 +1120,7 @@ export default function AdminDashboard() {
                             <span className={`text-[9px] font-bold uppercase ${game.showInHero ? 'text-gray-900' : 'text-[#4B5563]'}`}>Hero</span>
                           </label>
 
-                          <label className={`flex items-center gap-1.5 cursor-pointer px-2 py-1 rounded-md border transition-all ${game.categories?.includes('Bundle-Eligible') ? 'bg-[#D1D5DB] border-[#D1D5DB]' : 'bg-[#F9FAFB] border-[#E5E7EB]'}`}>
+                          <label className={`flex items-center gap-1.5 cursor-pointer px-2 py-1 rounded-md border transition-all ${game.categories?.includes('Bundle-Eligible') ? 'bg-[#D1D5DB] border-[#D1D5DB]' : 'bg-[#F5F4EE] border-[#E5E7EB]'}`}>
                             <input
                               type="checkbox" checked={game.categories?.includes('Bundle-Eligible') || false}
                               onChange={(e) => {
@@ -1134,7 +1134,7 @@ export default function AdminDashboard() {
                             <span className={`text-[9px] font-bold uppercase ${game.categories?.includes('Bundle-Eligible') ? 'text-gray-900' : 'text-[#4B5563]'}`}>Bundle</span>
                           </label>
 
-                          <label className={`flex items-center gap-1.5 cursor-pointer px-2 py-1 rounded-md border transition-all ${game.categories?.includes('DELUXE EDITION') ? 'bg-cyan-950/80 border-cyan-400' : 'bg-[#F9FAFB] border-[#E5E7EB]'}`}>
+                          <label className={`flex items-center gap-1.5 cursor-pointer px-2 py-1 rounded-md border transition-all ${game.categories?.includes('DELUXE EDITION') ? 'bg-cyan-950/80 border-cyan-400' : 'bg-[#F5F4EE] border-[#E5E7EB]'}`}>
                             <input
                               type="checkbox" checked={game.categories?.includes('DELUXE EDITION') || false}
                               onChange={(e) => {
@@ -1160,7 +1160,7 @@ export default function AdminDashboard() {
                                 }
                               }
                             }}
-                            className="flex items-center justify-center px-2 py-1 rounded-md border border-[#E5E7EB] bg-[#F9FAFB] hover:bg-[#E5E7EB] text-[#4B5563] hover:text-gray-900 transition-colors cursor-pointer"
+                            className="flex items-center justify-center px-2 py-1 rounded-md border border-[#E5E7EB] bg-[#F5F4EE] hover:bg-[#E5E7EB] text-[#4B5563] hover:text-gray-900 transition-colors cursor-pointer"
                             title="Add Custom Tag"
                           >
                             <Plus className="w-3.5 h-3.5" />
@@ -1194,10 +1194,10 @@ export default function AdminDashboard() {
             </div>
 
             {!viewAll && totalPages > 1 && (
-              <div className="p-4 border-t border-[#E5E7EB] flex items-center justify-between bg-[#F9FAFB]">
-                <button onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1} className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#FFFFFF] border border-[#E5E7EB] text-xs font-bold uppercase disabled:opacity-40 cursor-pointer"><ChevronLeft className="w-4 h-4" /> Previous</button>
+              <div className="p-4 border-t border-[#E5E7EB] flex items-center justify-between bg-[#F5F4EE]">
+                <button onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1} className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#FCFBF6] border border-[#E5E7EB] text-xs font-bold uppercase disabled:opacity-40 cursor-pointer"><ChevronLeft className="w-4 h-4" /> Previous</button>
                 <span className="text-xs font-bold text-[#4B5563]">Page {currentPage} of {totalPages}</span>
-                <button onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages} className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#FFFFFF] border border-[#E5E7EB] text-xs font-bold uppercase disabled:opacity-40 cursor-pointer">Next <ChevronRight className="w-4 h-4" /></button>
+                <button onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages} className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#FCFBF6] border border-[#E5E7EB] text-xs font-bold uppercase disabled:opacity-40 cursor-pointer">Next <ChevronRight className="w-4 h-4" /></button>
               </div>
             )}
           </div>
@@ -1205,7 +1205,7 @@ export default function AdminDashboard() {
 
         {activeTab === 'bundles' && (
           <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-center bg-[#FFFFFF] border border-[#E5E7EB] p-6 rounded-2xl shadow-xl gap-4">
+            <div className="flex flex-col sm:flex-row justify-between items-center bg-[#FCFBF6] border border-[#E5E7EB] p-6 rounded-2xl shadow-xl gap-4">
               <div>
                 <h2 className="text-xl font-black tracking-wider text-gray-900 uppercase flex items-center gap-2.5">
                   <Package className="w-5 h-5 text-emerald-400" />
@@ -1215,11 +1215,11 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            <div className="bg-[#FFFFFF] border border-[#E5E7EB] p-6 rounded-2xl shadow-xl">
+            <div className="bg-[#FCFBF6] border border-[#E5E7EB] p-6 rounded-2xl shadow-xl">
               <h3 className="text-sm font-black tracking-wider text-gray-900 uppercase mb-4">Discount Configurations</h3>
               <div className="space-y-3">
                 {bundleDiscounts.sort((a, b) => a.minGames - b.minGames).map((discount, idx) => (
-                  <div key={idx} className="flex items-center gap-3 bg-[#F9FAFB] p-3 rounded-xl border border-[#E5E7EB]">
+                  <div key={idx} className="flex items-center gap-3 bg-[#F5F4EE] p-3 rounded-xl border border-[#E5E7EB]">
                     <div className="flex flex-col flex-1">
                       <label className="text-[10px] uppercase text-[#4B5563] font-bold">Minimum Games</label>
                       <input
@@ -1277,9 +1277,9 @@ export default function AdminDashboard() {
               </button>
             </div>
 
-            <div className="overflow-x-auto bg-[#FFFFFF] border border-[#E5E7EB] rounded-2xl shadow-2xl">
+            <div className="overflow-x-auto bg-[#FCFBF6] border border-[#E5E7EB] rounded-2xl shadow-2xl">
               <table className="w-full text-left">
-                <thead className="bg-[#F9FAFB]/80 text-[#4B5563] text-[11px] uppercase tracking-wider border-b border-[#E5E7EB]">
+                <thead className="bg-[#F5F4EE]/80 text-[#4B5563] text-[11px] uppercase tracking-wider border-b border-[#E5E7EB]">
                   <tr>
                     <th className="p-4 font-bold">Cover</th>
                     <th className="p-4 font-bold w-1/4">Title & Status</th>
@@ -1290,7 +1290,7 @@ export default function AdminDashboard() {
                 </thead>
                 <tbody className="divide-y divide-[#E5E7EB]/60">
                   {existingBundles.map(game => (
-                    <tr key={game.title} className="hover:bg-[#F9FAFB]/40 transition-colors">
+                    <tr key={game.title} className="hover:bg-[#F5F4EE]/40 transition-colors">
                       <td className="p-4">
                         <div
                           className="w-12 h-16 bg-cover bg-center rounded-lg border border-[#E5E7EB] shadow-md"
@@ -1335,7 +1335,7 @@ export default function AdminDashboard() {
         )}
 
         {activeTab === 'proofs' && (
-          <div className="bg-[#FFFFFF] border border-[#E5E7EB] rounded-2xl p-6 sm:p-8 shadow-2xl mx-auto space-y-8">
+          <div className="bg-[#FCFBF6] border border-[#E5E7EB] rounded-2xl p-6 sm:p-8 shadow-2xl mx-auto space-y-8">
             <div className="text-center space-y-2">
               <div className="w-12 h-12 rounded-2xl bg-green-500/10 border border-green-500/30 flex items-center justify-center text-green-400 mx-auto">
                 <ShieldCheck className="w-6 h-6" />
@@ -1344,7 +1344,7 @@ export default function AdminDashboard() {
               <p className="text-[#4B5563] text-xs max-w-sm mx-auto">Upload and manage transaction screenshots for the verification feed.</p>
             </div>
 
-            <div className="bg-[#F9FAFB] border border-[#E5E7EB] p-6 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="bg-[#F5F4EE] border border-[#E5E7EB] p-6 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="space-y-1 text-center sm:text-left">
                 <span className="text-xs font-bold text-gray-900 uppercase tracking-wider block">Upload New Screenshot</span>
                 <p className="text-[11px] text-[#4B5563]">Supports PNG, JPG, WEBP formats.</p>
@@ -1394,7 +1394,7 @@ export default function AdminDashboard() {
               ) : (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                   {proofs.map((url, i) => (
-                    <div key={i} className="relative group rounded-xl overflow-hidden border border-[#E5E7EB] aspect-[3/4] bg-[#F9FAFB]">
+                    <div key={i} className="relative group rounded-xl overflow-hidden border border-[#E5E7EB] aspect-[3/4] bg-[#F5F4EE]">
                       <img src={url} alt="Proof" className="w-full h-full object-cover" />
                       <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 backdrop-blur-sm">
                          <a href={url} target="_blank" rel="noreferrer" className="p-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/40 cursor-pointer">
@@ -1413,7 +1413,7 @@ export default function AdminDashboard() {
         )}
 
         {activeTab === 'rents' && (
-          <div className="bg-[#FFFFFF] border border-[#E5E7EB] rounded-2xl p-6 shadow-2xl">
+          <div className="bg-[#FCFBF6] border border-[#E5E7EB] rounded-2xl p-6 shadow-2xl">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
               <h2 className="text-xl font-black text-gray-900 uppercase tracking-wider flex items-center gap-2">
                 <Database className="w-5 h-5 text-orange-400" /> Rent Tracking
@@ -1434,7 +1434,7 @@ export default function AdminDashboard() {
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-[#F9FAFB] text-[#4B5563] uppercase tracking-wider border-b border-[#E5E7EB]">
+                  <thead className="bg-[#F5F4EE] text-[#4B5563] uppercase tracking-wider border-b border-[#E5E7EB]">
                     <tr>
                       <th className="p-4 font-bold">Customer Info</th>
                       <th className="p-4 font-bold">Games</th>
@@ -1448,7 +1448,7 @@ export default function AdminDashboard() {
                     {rents.map((rent: any) => {
                       const isDone = rent.status === 'DONE';
                       return (
-                        <tr key={rent.id} className="hover:bg-[#F9FAFB]/50 transition-colors">
+                        <tr key={rent.id} className="hover:bg-[#F5F4EE]/50 transition-colors">
                           <td className="p-4 text-gray-900 font-bold">{rent.customerName} <br /><span className="text-[#4B5563] font-normal">{rent.mobileNumber}</span></td>
                           <td className="p-4 text-gray-900">
                             {rent.items?.map((item: any) => {
@@ -1534,7 +1534,7 @@ export default function AdminDashboard() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="bg-[#F9FAFB] border border-[#E5E7EB] rounded-2xl p-6 max-w-xl w-full max-h-[90vh] overflow-y-auto"
+                className="bg-[#F5F4EE] border border-[#E5E7EB] rounded-2xl p-6 max-w-xl w-full max-h-[90vh] overflow-y-auto"
               >
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-2xl font-black text-gray-900 uppercase">New Rent Record</h2>
@@ -1545,17 +1545,17 @@ export default function AdminDashboard() {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-bold text-[#4B5563] uppercase tracking-wider mb-2">Customer Name</label>
-                      <input type="text" required value={rentFormData.customerName} onChange={e => setRentFormData({...rentFormData, customerName: e.target.value})} className="w-full bg-[#FFFFFF] border border-[#E5E7EB] rounded-lg p-3 text-gray-900 focus:border-emerald-500 outline-none" />
+                      <input type="text" required value={rentFormData.customerName} onChange={e => setRentFormData({...rentFormData, customerName: e.target.value})} className="w-full bg-[#FCFBF6] border border-[#E5E7EB] rounded-lg p-3 text-gray-900 focus:border-emerald-500 outline-none" />
                     </div>
                     <div>
                       <label className="block text-xs font-bold text-[#4B5563] uppercase tracking-wider mb-2">Mobile Number</label>
-                      <input type="text" required value={rentFormData.mobileNumber} onChange={e => setRentFormData({...rentFormData, mobileNumber: e.target.value.replace(/[^0-9]/g, '')})} maxLength={10} className="w-full bg-[#FFFFFF] border border-[#E5E7EB] rounded-lg p-3 text-gray-900 focus:border-emerald-500 outline-none" />
+                      <input type="text" required value={rentFormData.mobileNumber} onChange={e => setRentFormData({...rentFormData, mobileNumber: e.target.value.replace(/[^0-9]/g, '')})} maxLength={10} className="w-full bg-[#FCFBF6] border border-[#E5E7EB] rounded-lg p-3 text-gray-900 focus:border-emerald-500 outline-none" />
                     </div>
                   </div>
 
                   <div>
                     <label className="block text-xs font-bold text-[#4B5563] uppercase tracking-wider mb-2">Total Amount (Rs)</label>
-                    <input type="number" required value={rentFormData.totalAmount} onChange={e => setRentFormData({...rentFormData, totalAmount: e.target.value})} className="w-full bg-[#FFFFFF] border border-[#E5E7EB] rounded-lg p-3 text-gray-900 focus:border-emerald-500 outline-none" />
+                    <input type="number" required value={rentFormData.totalAmount} onChange={e => setRentFormData({...rentFormData, totalAmount: e.target.value})} className="w-full bg-[#FCFBF6] border border-[#E5E7EB] rounded-lg p-3 text-gray-900 focus:border-emerald-500 outline-none" />
                   </div>
 
                   <div className="border-t border-[#E5E7EB] pt-4 mt-4">
@@ -1581,10 +1581,10 @@ export default function AdminDashboard() {
                               newItems[idx].title = e.target.value;
                               setRentFormData({...rentFormData, items: newItems});
                             }} 
-                            className="w-full bg-[#FFFFFF] border border-[#E5E7EB] rounded-lg p-3 text-gray-900 text-sm focus:border-emerald-500 outline-none" 
+                            className="w-full bg-[#FCFBF6] border border-[#E5E7EB] rounded-lg p-3 text-gray-900 text-sm focus:border-emerald-500 outline-none" 
                           />
                           {activeRentGameSearch === idx && item.title.length > 0 && (
-                            <div className="absolute top-full left-0 right-0 mt-1 bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg shadow-xl max-h-40 overflow-y-auto z-[200]">
+                            <div className="absolute top-full left-0 right-0 mt-1 bg-[#F5F4EE] border border-[#E5E7EB] rounded-lg shadow-xl max-h-40 overflow-y-auto z-[200]">
                               {catalog.filter(g => g.title.toLowerCase().includes(item.title.toLowerCase())).map(game => (
                                 <div 
                                   key={game.title} 
@@ -1610,12 +1610,12 @@ export default function AdminDashboard() {
                             const newItems = [...rentFormData.items];
                             newItems[idx].startDate = e.target.value;
                             setRentFormData({...rentFormData, items: newItems});
-                          }} className="w-1/2 bg-[#FFFFFF] border border-[#E5E7EB] rounded-lg p-3 text-gray-900 text-xs focus:border-emerald-500 outline-none" />
+                          }} className="w-1/2 bg-[#FCFBF6] border border-[#E5E7EB] rounded-lg p-3 text-gray-900 text-xs focus:border-emerald-500 outline-none" />
                           <input type="date" title="End Date" required value={item.endDate || ''} onChange={e => {
                             const newItems = [...rentFormData.items];
                             newItems[idx].endDate = e.target.value;
                             setRentFormData({...rentFormData, items: newItems});
-                          }} className="w-1/2 bg-[#FFFFFF] border border-[#E5E7EB] rounded-lg p-3 text-gray-900 text-xs focus:border-emerald-500 outline-none" />
+                          }} className="w-1/2 bg-[#FCFBF6] border border-[#E5E7EB] rounded-lg p-3 text-gray-900 text-xs focus:border-emerald-500 outline-none" />
                         </div>
                         {rentFormData.items.length > 1 && (
                           <button type="button" onClick={() => {
@@ -1641,8 +1641,8 @@ export default function AdminDashboard() {
         <AnimatePresence>
           {editingCollection && (
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setEditingCollection(null)} className="fixed inset-0 bg-[#F9FAFB]/90 backdrop-blur-sm cursor-pointer" />
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="bg-[#FFFFFF] border border-[#E5E7EB] rounded-2xl p-6 sm:p-8 shadow-2xl w-full max-w-xl relative z-10 my-8 space-y-5 max-h-[90vh] overflow-y-auto">
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setEditingCollection(null)} className="fixed inset-0 bg-[#F5F4EE]/90 backdrop-blur-sm cursor-pointer" />
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="bg-[#FCFBF6] border border-[#E5E7EB] rounded-2xl p-6 sm:p-8 shadow-2xl w-full max-w-xl relative z-10 my-8 space-y-5 max-h-[90vh] overflow-y-auto">
                 <div className="flex justify-between items-center mb-2">
                   <h2 className="text-xl font-black tracking-wider text-gray-900 uppercase">Edit Collection</h2>
                   <button onClick={() => setEditingCollection(null)} className="text-[#4B5563] hover:text-gray-900 p-2 cursor-pointer"><X className="w-5 h-5" /></button>
@@ -1655,7 +1655,7 @@ export default function AdminDashboard() {
                       type="text"
                       value={editingCollection.title}
                       onChange={(e) => setEditingCollection({ ...editingCollection, title: e.target.value })}
-                      className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]"
+                      className="w-full bg-[#F5F4EE] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]"
                     />
                   </div>
                   <div>
@@ -1663,7 +1663,7 @@ export default function AdminDashboard() {
                     <textarea
                       value={editingCollection.description || ''}
                       onChange={(e) => setEditingCollection({ ...editingCollection, description: e.target.value })}
-                      className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB] h-20 resize-none"
+                      className="w-full bg-[#F5F4EE] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB] h-20 resize-none"
                     />
                   </div>
                   <div>
@@ -1672,7 +1672,7 @@ export default function AdminDashboard() {
                       type="text"
                       value={editingCollection.customBannerUrl || ''}
                       onChange={(e) => setEditingCollection({ ...editingCollection, customBannerUrl: e.target.value })}
-                      className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]"
+                      className="w-full bg-[#F5F4EE] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]"
                       placeholder="https://..."
                     />
                   </div>
@@ -1686,10 +1686,10 @@ export default function AdminDashboard() {
                         placeholder="Search catalog to assign..."
                         value={collectionGameSearch}
                         onChange={(e) => setCollectionGameSearch(e.target.value)}
-                        className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg py-2 pl-9 pr-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB] shadow-inner"
+                        className="w-full bg-[#F5F4EE] border border-[#E5E7EB] rounded-lg py-2 pl-9 pr-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB] shadow-inner"
                       />
                     </div>
-                    <div className="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto p-3 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl shadow-inner">
+                    <div className="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto p-3 bg-[#F5F4EE] border border-[#E5E7EB] rounded-xl shadow-inner">
                       {catalog
                         .filter(g => g.title.toLowerCase().includes(collectionGameSearch.toLowerCase()))
                         .map(game => {
@@ -1707,7 +1707,7 @@ export default function AdminDashboard() {
                               }}
                               className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase transition-colors border cursor-pointer ${isAssigned
                                   ? 'bg-[#D1D5DB] text-gray-900 border-[#D1D5DB]'
-                                  : 'bg-[#FFFFFF] text-[#4B5563] border-[#E5E7EB] hover:border-[#D1D5DB]'
+                                  : 'bg-[#FCFBF6] text-[#4B5563] border-[#E5E7EB] hover:border-[#D1D5DB]'
                                 }`}
                             >
                               {game.title} {isAssigned ? ' ' : '+'}
@@ -1741,8 +1741,8 @@ export default function AdminDashboard() {
         <AnimatePresence>
           {showForm && (
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowForm(false)} className="fixed inset-0 bg-[#F9FAFB]/90 backdrop-blur-sm cursor-pointer" />
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="bg-[#FFFFFF] border border-[#E5E7EB] rounded-2xl p-6 sm:p-8 shadow-2xl w-full max-w-3xl relative z-10 my-8 max-h-[90vh] overflow-y-auto">
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowForm(false)} className="fixed inset-0 bg-[#F5F4EE]/90 backdrop-blur-sm cursor-pointer" />
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="bg-[#FCFBF6] border border-[#E5E7EB] rounded-2xl p-6 sm:p-8 shadow-2xl w-full max-w-3xl relative z-10 my-8 max-h-[90vh] overflow-y-auto">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-xl font-black tracking-wider text-gray-900 uppercase">{editingTitle ? 'Edit Game' : 'Add New Game'}</h2>
                   <button onClick={() => setShowForm(false)} className="text-[#4B5563] hover:text-gray-900 cursor-pointer"><X className="w-5 h-5" /></button>
@@ -1751,7 +1751,7 @@ export default function AdminDashboard() {
                 <form onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="space-y-3">
                     <label className="block text-[#4B5563] text-[11px] font-bold uppercase tracking-wide">Cover Preview</label>
-                    <div className="aspect-[3/4] rounded-xl border-2 border-dashed border-[#E5E7EB] overflow-hidden flex flex-col items-center justify-center bg-[#F9FAFB] relative shadow-inner">
+                    <div className="aspect-[3/4] rounded-xl border-2 border-dashed border-[#E5E7EB] overflow-hidden flex flex-col items-center justify-center bg-[#F5F4EE] relative shadow-inner">
                       {currentCoverPreview ? (
                         <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${currentCoverPreview}')` }} />
                       ) : (
@@ -1768,17 +1768,17 @@ export default function AdminDashboard() {
                         <div>
                           <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Game Title</label>
                           <div className="flex gap-2">
-                            <input type="text" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} className="flex-1 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]" required />
+                            <input type="text" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} className="flex-1 bg-[#F5F4EE] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]" required />
                             <button type="button" onClick={() => searchSteam(formData.title)} disabled={isSearchingSteam} className="bg-blue-600 hover:bg-blue-500 text-white rounded-xl px-4 py-3 flex items-center justify-center font-bold text-xs uppercase shrink-0 transition-colors disabled:opacity-50">
                               <Search className="w-3.5 h-3.5 mr-1.5" /> Steam
                             </button>
                           </div>
 
                           {steamResults.length > 0 && (
-                            <div className="mt-2 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl max-h-40 overflow-y-auto z-50 p-1 shadow-2xl relative">
+                            <div className="mt-2 bg-[#F5F4EE] border border-[#E5E7EB] rounded-xl max-h-40 overflow-y-auto z-50 p-1 shadow-2xl relative">
                               <button type="button" onClick={() => setSteamResults([])} className="absolute right-2 top-2 text-[#D1D5DB] hover:text-gray-900"><X className="w-3 h-3" /></button>
                               {steamResults.map(game => (
-                                <div key={game.steam_app_id} onClick={() => selectSteamGame(game.steam_app_id)} className="flex items-center gap-3 p-2 hover:bg-[#FFFFFF] cursor-pointer rounded-lg transition-colors mt-4 first:mt-0">
+                                <div key={game.steam_app_id} onClick={() => selectSteamGame(game.steam_app_id)} className="flex items-center gap-3 p-2 hover:bg-[#FCFBF6] cursor-pointer rounded-lg transition-colors mt-4 first:mt-0">
                                   <img src={game.cover_image_url} alt={game.title} className="w-8 h-10 object-cover rounded" />
                                   <span className="text-xs text-gray-900 font-bold">{game.title}</span>
                                 </div>
@@ -1789,7 +1789,7 @@ export default function AdminDashboard() {
 
                         <div className="mt-4">
                           <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Game Description (Optional for Non-Steam)</label>
-                          <textarea value={formData.description || ''} onChange={e => setFormData({ ...formData, description: e.target.value })} className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB] min-h-[120px]" placeholder="Enter description manually for games not on Steam (supports HTML formatting)"></textarea>
+                          <textarea value={formData.description || ''} onChange={e => setFormData({ ...formData, description: e.target.value })} className="w-full bg-[#F5F4EE] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB] min-h-[120px]" placeholder="Enter description manually for games not on Steam (supports HTML formatting)"></textarea>
                         </div>
                       </div>
                     
@@ -1798,7 +1798,7 @@ export default function AdminDashboard() {
                         <div>
                           <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Cover URL / Upload</label>
                       <div className="flex gap-2">
-                        <input type="text" value={formData.customCoverUrl || ''} onChange={e => setFormData({ ...formData, customCoverUrl: e.target.value })} className="flex-1 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]" placeholder="Image URL" />
+                        <input type="text" value={formData.customCoverUrl || ''} onChange={e => setFormData({ ...formData, customCoverUrl: e.target.value })} className="flex-1 bg-[#F5F4EE] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]" placeholder="Image URL" />
                         <label className="cursor-pointer bg-[#E5E7EB] hover:bg-[#D1D5DB] border border-[#D1D5DB] text-gray-900 rounded-xl px-4 py-3 flex items-center justify-center font-bold text-xs uppercase transition-colors shrink-0">
                           <Upload className="w-3.5 h-3.5 mr-1.5" /> Upload
                           <input type="file" accept="image/*" className="hidden" onChange={(e) => {
@@ -1827,13 +1827,13 @@ export default function AdminDashboard() {
                     <div className="mt-4">
                       <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Hero Horizontal Cover URL</label>
                       <div className="flex gap-2">
-                        <input type="text" value={formData.horizontalCoverUrl || ''} onChange={e => setFormData({ ...formData, horizontalCoverUrl: e.target.value })} className="flex-1 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]" placeholder="Horizontal Image URL (for Hero Banner)" />
+                        <input type="text" value={formData.horizontalCoverUrl || ''} onChange={e => setFormData({ ...formData, horizontalCoverUrl: e.target.value })} className="flex-1 bg-[#F5F4EE] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]" placeholder="Horizontal Image URL (for Hero Banner)" />
                       </div>
                     </div>
 
                     <div className="mt-4">
                       <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Game Description (Optional for Non-Steam)</label>
-                      <textarea value={formData.description || ''} onChange={e => setFormData({ ...formData, description: e.target.value })} className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB] min-h-[100px]" placeholder="Enter description manually for games not on Steam (supports HTML formatting)"></textarea>
+                      <textarea value={formData.description || ''} onChange={e => setFormData({ ...formData, description: e.target.value })} className="w-full bg-[#F5F4EE] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB] min-h-[100px]" placeholder="Enter description manually for games not on Steam (supports HTML formatting)"></textarea>
                     </div>
 
                     <div className="mt-4 mb-4">
@@ -1852,7 +1852,7 @@ export default function AdminDashboard() {
                       </div>
                       
                       {(!formData.screenshots || formData.screenshots.length === 0) && (
-                        <div className="text-xs text-[#D1D5DB] bg-[#F9FAFB] border border-dashed border-[#E5E7EB] rounded-xl p-4 text-center">
+                        <div className="text-xs text-[#D1D5DB] bg-[#F5F4EE] border border-dashed border-[#E5E7EB] rounded-xl p-4 text-center">
                           No gallery images. Click + Add Image to add URLs manually for non-Steam games.
                         </div>
                       )}
@@ -1869,7 +1869,7 @@ export default function AdminDashboard() {
                                   newScreenshots[idx] = e.target.value;
                                   setFormData({ ...formData, screenshots: newScreenshots });
                                 }}
-                                className="flex-1 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]"
+                                className="flex-1 bg-[#F5F4EE] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]"
                                 placeholder="https://image-url.jpg"
                               />
                               <button
@@ -1894,7 +1894,7 @@ export default function AdminDashboard() {
                       {/* UPGRADE: New section for Store Placements inside the Edit Game modal */}
                       <div>
                       <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Store Placements</label>
-                      <div className="flex items-center gap-3 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 h-[42px]">
+                      <div className="flex items-center gap-3 bg-[#F5F4EE] border border-[#E5E7EB] rounded-xl p-3 h-[42px]">
                         <label className="flex items-center gap-2 cursor-pointer text-gray-900 text-xs">
                           <input type="checkbox" checked={formData.showInHero || false} onChange={e => setFormData({ ...formData, showInHero: e.target.checked })} className="accent-[#D1D5DB] cursor-pointer" />
                           <span>Hero Carousel</span>
@@ -1908,11 +1908,11 @@ export default function AdminDashboard() {
                         <div className="grid grid-cols-2 gap-3">
                           <div>
                             <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Price (Rs)</label>
-                            <input type="text" value={formData.price} onChange={e => setFormData({ ...formData, price: e.target.value })} className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]" placeholder="199Rs" required />
+                            <input type="text" value={formData.price} onChange={e => setFormData({ ...formData, price: e.target.value })} className="w-full bg-[#F5F4EE] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]" placeholder="199Rs" required />
                           </div>
                           <div>
                             <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Sale Status</label>
-                            <label className="flex items-center gap-2 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 cursor-pointer text-gray-900 text-xs h-[42px]">
+                            <label className="flex items-center gap-2 bg-[#F5F4EE] border border-[#E5E7EB] rounded-xl p-3 cursor-pointer text-gray-900 text-xs h-[42px]">
                               <input type="checkbox" checked={formData.onSale || false} onChange={e => setFormData({ ...formData, onSale: e.target.checked })} className="accent-[#D1D5DB] cursor-pointer" />
                               <span>Mark On Sale</span>
                             </label>
@@ -1922,7 +1922,7 @@ export default function AdminDashboard() {
                         {formData.onSale && (
                           <div>
                             <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Original Price (Rs)</label>
-                            <input type="text" value={formData.originalPrice || ''} onChange={e => setFormData({ ...formData, originalPrice: e.target.value })} className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 text-red-400 text-xs focus:outline-none focus:border-[#D1D5DB]" placeholder="399Rs" />
+                            <input type="text" value={formData.originalPrice || ''} onChange={e => setFormData({ ...formData, originalPrice: e.target.value })} className="w-full bg-[#F5F4EE] border border-[#E5E7EB] rounded-xl p-3 text-red-400 text-xs focus:outline-none focus:border-[#D1D5DB]" placeholder="399Rs" />
                           </div>
                         )}
                       </>
@@ -1930,7 +1930,7 @@ export default function AdminDashboard() {
 
                     <div>
                       <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Rent Options</label>
-                      <label className="flex items-center gap-2 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 cursor-pointer text-gray-900 text-xs h-[42px] mb-3">
+                      <label className="flex items-center gap-2 bg-[#F5F4EE] border border-[#E5E7EB] rounded-xl p-3 cursor-pointer text-gray-900 text-xs h-[42px] mb-3">
                         <input type="checkbox" checked={formData.isRentable || false} onChange={e => setFormData({ ...formData, isRentable: e.target.checked })} className="accent-[#D1D5DB] cursor-pointer" />
                         <span>Enable Renting</span>
                       </label>
@@ -1940,7 +1940,7 @@ export default function AdminDashboard() {
                       <div className="grid grid-cols-1 gap-3 mb-4">
                         <div>
                           <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Rent Price Per Month (Rs)</label>
-                          <input type="text" value={formData.rentPrice || ''} onChange={e => setFormData({ ...formData, rentPrice: e.target.value })} className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]" placeholder="99Rs" />
+                          <input type="text" value={formData.rentPrice || ''} onChange={e => setFormData({ ...formData, rentPrice: e.target.value })} className="w-full bg-[#F5F4EE] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]" placeholder="99Rs" />
                         </div>
                       </div>
                     )}
@@ -1990,7 +1990,7 @@ export default function AdminDashboard() {
                                   newVariants.splice(index, 0, dragged);
                                   setFormData({ ...formData, variants: newVariants });
                                 }}
-                                className="flex gap-2 items-start bg-[#F9FAFB] border border-[#E5E7EB] p-3 rounded-xl cursor-move hover:border-[#D1D5DB] transition-colors"
+                                className="flex gap-2 items-start bg-[#F5F4EE] border border-[#E5E7EB] p-3 rounded-xl cursor-move hover:border-[#D1D5DB] transition-colors"
                               >
                                 <div className="pt-2 text-[#D1D5DB] shrink-0">
                                   <GripVertical className="w-5 h-5" />
@@ -2005,7 +2005,7 @@ export default function AdminDashboard() {
                                       setFormData({ ...formData, variants: newVariants });
                                     }}
                                     placeholder="Edition Name"
-                                    className="w-full bg-[#FFFFFF] border border-[#E5E7EB] rounded-lg p-2 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]"
+                                    className="w-full bg-[#FCFBF6] border border-[#E5E7EB] rounded-lg p-2 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]"
                                   />
                                   <div className="flex gap-2">
                                     <input
@@ -2017,7 +2017,7 @@ export default function AdminDashboard() {
                                         setFormData({ ...formData, variants: newVariants });
                                       }}
                                       placeholder="Price"
-                                      className="w-1/2 bg-[#FFFFFF] border border-[#E5E7EB] rounded-lg p-2 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]"
+                                      className="w-1/2 bg-[#FCFBF6] border border-[#E5E7EB] rounded-lg p-2 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]"
                                     />
                                     <input
                                       type="text"
@@ -2028,7 +2028,7 @@ export default function AdminDashboard() {
                                         setFormData({ ...formData, variants: newVariants });
                                       }}
                                       placeholder="Original Price"
-                                      className="w-1/2 bg-[#FFFFFF] border border-[#E5E7EB] rounded-lg p-2 text-red-400 text-xs focus:outline-none focus:border-[#D1D5DB]"
+                                      className="w-1/2 bg-[#FCFBF6] border border-[#E5E7EB] rounded-lg p-2 text-red-400 text-xs focus:outline-none focus:border-[#D1D5DB]"
                                     />
                                   </div>
                                 </div>
@@ -2058,8 +2058,8 @@ export default function AdminDashboard() {
                             type="button"
                             onClick={() => handleCategoryToggle(plat)}
                             className={`px-4 py-2 rounded-xl text-xs font-bold uppercase border transition-colors cursor-pointer ${formData.categories?.includes(plat)
-                                ? 'bg-white text-[#F9FAFB] border-white shadow-md'
-                                : 'bg-[#F9FAFB] text-[#4B5563] border-[#E5E7EB] hover:border-[#D1D5DB]'
+                                ? 'bg-white text-[#F5F4EE] border-white shadow-md'
+                                : 'bg-[#F5F4EE] text-[#4B5563] border-[#E5E7EB] hover:border-[#D1D5DB]'
                               }`}
                           >
                             {plat}
@@ -2077,13 +2077,13 @@ export default function AdminDashboard() {
                             onClick={() => handleCategoryToggle('DELUXE EDITION')}
                             className={`px-4 py-2 rounded-xl text-xs font-bold uppercase border transition-colors cursor-pointer ${formData.categories?.includes('DELUXE EDITION')
                                 ? 'bg-cyan-950/80 text-cyan-400 border-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.5)]'
-                                : 'bg-[#F9FAFB] text-[#4B5563] border-[#E5E7EB] hover:border-cyan-500/50 hover:text-cyan-400'
+                                : 'bg-[#F5F4EE] text-[#4B5563] border-[#E5E7EB] hover:border-cyan-500/50 hover:text-cyan-400'
                               }`}
                           >
                             Deluxe Edition
                           </button>
                           {formData.categories?.includes('DELUXE EDITION') && (
-                            <div className="flex items-center gap-2 bg-[#F9FAFB] border border-[#E5E7EB] px-2 py-1 rounded-xl h-full shadow-sm">
+                            <div className="flex items-center gap-2 bg-[#F5F4EE] border border-[#E5E7EB] px-2 py-1 rounded-xl h-full shadow-sm">
                               <label className="text-[9px] text-[#4B5563] font-bold uppercase tracking-wider">Color:</label>
                               <input 
                                 type="color" 
@@ -2112,7 +2112,7 @@ export default function AdminDashboard() {
                               }
                             }}
                             placeholder="Add custom tag (e.g. ULTIMATE EDITION)..."
-                            className="flex-1 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-2.5 text-sm text-gray-900 placeholder-[#D1D5DB] focus:outline-none focus:border-cyan-500 transition-colors"
+                            className="flex-1 bg-[#F5F4EE] border border-[#E5E7EB] rounded-xl p-2.5 text-sm text-gray-900 placeholder-[#D1D5DB] focus:outline-none focus:border-cyan-500 transition-colors"
                           />
                           <button
                             type="button"
@@ -2176,12 +2176,12 @@ export default function AdminDashboard() {
       </div>
 
       {showBulkAdd && (
-        <div className="fixed inset-0 bg-[#F9FAFB]/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-[#F5F4EE]/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
-            className="bg-[#FFFFFF] w-full max-w-xl rounded-3xl shadow-2xl border border-[#E5E7EB] overflow-hidden flex flex-col max-h-[90vh]"
+            className="bg-[#FCFBF6] w-full max-w-xl rounded-3xl shadow-2xl border border-[#E5E7EB] overflow-hidden flex flex-col max-h-[90vh]"
           >
-            <div className="p-6 border-b border-[#E5E7EB] flex justify-between items-center bg-[#F9FAFB]/50 sticky top-0 z-10">
+            <div className="p-6 border-b border-[#E5E7EB] flex justify-between items-center bg-[#F5F4EE]/50 sticky top-0 z-10">
               <h2 className="text-xl font-black text-gray-900 uppercase tracking-wider flex items-center gap-2">
                 <Database className="w-5 h-5 text-emerald-400" />
                 Bulk Add from Steam
@@ -2205,11 +2205,11 @@ export default function AdminDashboard() {
                   onChange={(e) => setBulkGamesList(e.target.value)}
                   disabled={!!bulkProgress}
                   placeholder="e.g.&#10;Grand Theft Auto V&#10;Red Dead Redemption 2&#10;God of War"
-                  className="w-full h-64 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-4 text-sm text-gray-900 placeholder-[#D1D5DB] focus:outline-none focus:border-emerald-500 transition-colors"
+                  className="w-full h-64 bg-[#F5F4EE] border border-[#E5E7EB] rounded-xl p-4 text-sm text-gray-900 placeholder-[#D1D5DB] focus:outline-none focus:border-emerald-500 transition-colors"
                 />
 
                 {bulkProgress && (
-                  <div className="bg-[#F9FAFB] border border-emerald-500/30 rounded-xl p-4 flex items-center gap-3">
+                  <div className="bg-[#F5F4EE] border border-emerald-500/30 rounded-xl p-4 flex items-center gap-3">
                     <RefreshCw className="w-5 h-5 text-emerald-400 animate-spin" />
                     <span className="text-sm font-bold text-emerald-400 uppercase tracking-wider">{bulkProgress}</span>
                   </div>
@@ -2217,7 +2217,7 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            <div className="p-6 border-t border-[#E5E7EB] flex justify-end gap-3 bg-[#F9FAFB]/50 sticky bottom-0">
+            <div className="p-6 border-t border-[#E5E7EB] flex justify-end gap-3 bg-[#F5F4EE]/50 sticky bottom-0">
               <button
                 type="button" onClick={() => setShowBulkAdd(false)} disabled={!!bulkProgress}
                 className="px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-xs border border-[#E5E7EB] text-[#4B5563] hover:text-gray-900 hover:bg-[#E5E7EB] transition-all cursor-pointer disabled:opacity-50"

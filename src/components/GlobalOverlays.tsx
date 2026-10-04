@@ -25,7 +25,7 @@ export default function GlobalOverlays() {
                 initial={{ opacity: 0, x: 50, scale: 0.9 }}
                 animate={{ opacity: 1, x: 0, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-                className="pointer-events-auto flex items-center gap-3 px-4 py-3.5 rounded-xl border shadow-[0_10px_40px_rgba(0,0,0,0.6)] backdrop-blur-2xl bg-[#F9FAFB]/90 min-w-[280px] max-w-sm"
+                className="pointer-events-auto flex items-center gap-3 px-4 py-3.5 rounded-xl border shadow-[0_10px_40px_rgba(0,0,0,0.6)] backdrop-blur-2xl bg-[#F5F4EE]/90 min-w-[280px] max-w-sm"
               >
                 <div className={`p-2 rounded-lg ${colors}`}>
                   <Icon className="w-5 h-5" />
@@ -35,7 +35,7 @@ export default function GlobalOverlays() {
                 </p>
                 <button 
                   onClick={() => removeToast(toast.id)} 
-                  className="text-[#4B5563] hover:text-gray-900 transition-colors bg-[#FFFFFF] hover:bg-[#E5E7EB] p-1 rounded-md cursor-pointer"
+                  className="text-[#4B5563] hover:text-gray-900 transition-colors bg-[#FCFBF6] hover:bg-[#E5E7EB] p-1 rounded-md cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -54,13 +54,13 @@ export default function GlobalOverlays() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setConfirmReq(null)}
-              className="fixed inset-0 bg-[#F9FAFB]/90 backdrop-blur-md cursor-pointer"
+              className="fixed inset-0 bg-[#F5F4EE]/90 backdrop-blur-md cursor-pointer"
             />
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-[#FFFFFF] border border-[#E5E7EB] rounded-2xl p-6 sm:p-8 shadow-2xl w-full max-w-sm relative z-10 text-center"
+              className="bg-[#FCFBF6] border border-[#E5E7EB] rounded-2xl p-6 sm:p-8 shadow-2xl w-full max-w-sm relative z-10 text-center"
             >
               <div className="w-16 h-16 rounded-2xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400 mx-auto mb-5 shadow-inner">
                 <AlertTriangle className="w-8 h-8" />
@@ -73,7 +73,7 @@ export default function GlobalOverlays() {
               <div className="flex gap-3">
                 <button
                   onClick={() => setConfirmReq(null)}
-                  className="flex-1 bg-[#F9FAFB] hover:bg-[#E5E7EB] text-[#4B5563] hover:text-gray-900 py-3.5 rounded-xl font-bold uppercase tracking-wider text-xs transition-colors border border-[#E5E7EB] cursor-pointer"
+                  className="flex-1 bg-[#F5F4EE] hover:bg-[#E5E7EB] text-[#4B5563] hover:text-gray-900 py-3.5 rounded-xl font-bold uppercase tracking-wider text-xs transition-colors border border-[#E5E7EB] cursor-pointer"
                 >
                   Cancel
                 </button>

@@ -29,7 +29,7 @@ export default function VideoModal() {
         onClick={() => setPlayingTrailerUrl(null)}
       >
         <button 
-          className="absolute top-4 right-4 text-[#4B5563] hover:text-gray-900 bg-[#FFFFFF] p-2 rounded-full transition-colors z-[110]"
+          className="absolute top-4 right-4 text-[#4B5563] hover:text-gray-900 bg-[#FCFBF6] p-2 rounded-full transition-colors z-[110]"
           onClick={() => setPlayingTrailerUrl(null)}
         >
           <X className="w-6 h-6" />

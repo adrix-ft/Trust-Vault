@@ -20,7 +20,7 @@ export default function FooterModal({ type, onClose }: FooterModalProps) {
                 Welcome to Trust Vault. By purchasing from us, you agree to the following terms and usage guidelines:
               </p>
 
-              <div className="bg-[#F9FAFB] p-4 rounded-xl border border-[#E5E7EB] space-y-2">
+              <div className="bg-[#F5F4EE] p-4 rounded-xl border border-[#E5E7EB] space-y-2">
                 <h4 className="text-gray-900 font-bold flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-amber-400" /> Platform License Durations
                 </h4>
@@ -54,7 +54,7 @@ export default function FooterModal({ type, onClose }: FooterModalProps) {
                 All game titles, logos, cover arts, trademarks, and associated imagery displayed on this website are the sole property of their respective copyright holders and publishers, including but not limited to:
               </p>
 
-              <div className="bg-[#F9FAFB] p-4 rounded-xl border border-[#E5E7EB] grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] text-[#1F2937]">
+              <div className="bg-[#F5F4EE] p-4 rounded-xl border border-[#E5E7EB] grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] text-[#1F2937]">
                 <div>• Sony Interactive Entertainment</div>
                 <div>• Rockstar Games</div>
                 <div>• Capcom Co., Ltd.</div>
@@ -130,10 +130,10 @@ export default function FooterModal({ type, onClose }: FooterModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
-      <div className="relative w-full max-w-2xl bg-[#FFFFFF] border border-[#E5E7EB] rounded-2xl shadow-2xl overflow-hidden text-gray-900 flex flex-col max-h-[85vh]">
+      <div className="relative w-full max-w-2xl bg-[#FCFBF6] border border-[#E5E7EB] rounded-2xl shadow-2xl overflow-hidden text-gray-900 flex flex-col max-h-[85vh]">
 
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 bg-[#F9FAFB] border-b border-[#E5E7EB]">
+        <div className="flex items-center justify-between px-6 py-4 bg-[#F5F4EE] border-b border-[#E5E7EB]">
           <div className="flex items-center gap-2.5">
             <div className="p-2 rounded-lg bg-[#E5E7EB]/50 border border-[#D1D5DB]/30 text-[#1F2937]">
               <IconComponent className="w-4 h-4" />
@@ -142,7 +142,7 @@ export default function FooterModal({ type, onClose }: FooterModalProps) {
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-full bg-[#FFFFFF] hover:bg-[#E5E7EB] text-[#4B5563] hover:text-gray-900 transition-colors cursor-pointer border border-[#E5E7EB]"
+            className="p-1.5 rounded-full bg-[#FCFBF6] hover:bg-[#E5E7EB] text-[#4B5563] hover:text-gray-900 transition-colors cursor-pointer border border-[#E5E7EB]"
           >
             <X className="w-4 h-4" />
           </button>
@@ -154,7 +154,7 @@ export default function FooterModal({ type, onClose }: FooterModalProps) {
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 bg-[#F9FAFB] border-t border-[#E5E7EB] flex justify-end">
+        <div className="px-6 py-4 bg-[#F5F4EE] border-t border-[#E5E7EB] flex justify-end">
           <button
             onClick={onClose}
             className="px-5 py-2 rounded-xl bg-gradient-to-r from-[#E5E7EB] to-[#D1D5DB] hover:from-[#D1D5DB] hover:to-[#596F80] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md cursor-pointer"

@@ -8,7 +8,7 @@ export default function ContactUs() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Direct WhatsApp Card */}
-        <div className="bg-[#FFFFFF] border border-[#E5E7EB] p-8 rounded-2xl flex flex-col justify-between shadow-xl">
+        <div className="bg-[#FCFBF6] border border-[#E5E7EB] p-8 rounded-2xl flex flex-col justify-between shadow-xl">
           <div className="space-y-4">
             <div className="w-12 h-12 rounded-xl bg-green-500/15 border border-green-500/30 flex items-center justify-center text-green-400">
               <MessageCircle className="w-6 h-6" />
@@ -36,7 +36,7 @@ export default function ContactUs() {
       </div>
 
       {/* Store Support Info Card */}
-      <div className="bg-[#FFFFFF] border border-[#E5E7EB] p-8 rounded-2xl flex flex-col sm:flex-row items-center justify-between shadow-xl gap-6">
+      <div className="bg-[#FCFBF6] border border-[#E5E7EB] p-8 rounded-2xl flex flex-col sm:flex-row items-center justify-between shadow-xl gap-6">
         <div className="space-y-2">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-[#E5E7EB] border border-[#D1D5DB]/50 flex items-center justify-center text-[#1F2937]">
@@ -47,7 +47,7 @@ export default function ContactUs() {
           <p className="text-sm text-[#4B5563]">Support Line: +91 88246 47379 • Fast response via WhatsApp</p>
         </div>
 
-        <div className="text-xs text-[#D1D5DB] font-bold uppercase tracking-wider bg-[#F9FAFB] px-4 py-3 rounded-xl border border-[#E5E7EB]">
+        <div className="text-xs text-[#D1D5DB] font-bold uppercase tracking-wider bg-[#F5F4EE] px-4 py-3 rounded-xl border border-[#E5E7EB]">
           Trust Vault Team
         </div>
       </div>

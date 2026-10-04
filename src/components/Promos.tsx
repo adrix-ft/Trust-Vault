@@ -39,11 +39,11 @@ export default function Promos() {
           <div 
             key={game.title}
             onClick={() => setActiveIndex(idx)}
-            className="flex-none snap-center w-[160px] sm:w-[200px] lg:w-auto lg:flex-1 bg-[#FFFFFF] rounded-xl lg:rounded-md relative overflow-hidden flex items-center justify-end px-4 lg:px-8 group cursor-pointer border transition-all duration-300 hover:scale-[1.03] lg:hover:-translate-y-1 h-[55px] lg:h-auto"
+            className="flex-none snap-center w-[160px] sm:w-[200px] lg:w-auto lg:flex-1 bg-[#FCFBF6] rounded-xl lg:rounded-md relative overflow-hidden flex items-center justify-end px-4 lg:px-8 group cursor-pointer border transition-all duration-300 hover:scale-[1.03] lg:hover:-translate-y-1 h-[55px] lg:h-auto"
             style={{ borderColor: idx === activeIndex ? '#1F2937' : '#E5E7EB' }}
           >
             <div className="absolute inset-0 bg-cover bg-center transition-all duration-500 saturate-[1.1] group-hover:scale-110" style={{ backgroundImage: `url('${game.customCoverUrl || getGameCoverUrl(game.title)}')` }}></div>
-            <div className="absolute inset-0 bg-gradient-to-l from-[#F9FAFB]/95 via-[#F9FAFB]/60 to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-l from-[#F5F4EE]/95 via-[#F5F4EE]/60 to-transparent pointer-events-none" />
             <span className="font-semibold text-[11px] lg:text-sm tracking-wider text-[#4B5563] group-hover:text-[#1F2937] relative z-10 uppercase drop-shadow-md text-right truncate w-full">
               {game.title}
             </span>
@@ -52,10 +52,10 @@ export default function Promos() {
       </div>
 
       {/* Main Promo Video Card */}
-      <div className="order-1 lg:order-2 h-[240px] sm:h-[300px] lg:h-full bg-[#FFFFFF] rounded-2xl lg:rounded-md relative overflow-hidden group flex flex-col items-center justify-center border border-[#E5E7EB] hover:border-[#D1D5DB] transition-all shadow-xl">
+      <div className="order-1 lg:order-2 h-[240px] sm:h-[300px] lg:h-full bg-[#FCFBF6] rounded-2xl lg:rounded-md relative overflow-hidden group flex flex-col items-center justify-center border border-[#E5E7EB] hover:border-[#D1D5DB] transition-all shadow-xl">
         <div className="absolute inset-0 bg-cover bg-center transition-all duration-500 ease-out saturate-[1.1]" style={{ backgroundImage: `url('${activePromo.customCoverUrl || getGameCoverUrl(activePromo.title)}')` }}></div>
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#F9FAFB]/95 via-[#F9FAFB]/40 to-transparent pointer-events-none" />
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#F9FAFB]/95 via-[#F9FAFB]/60 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#F5F4EE]/95 via-[#F5F4EE]/40 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#F5F4EE]/95 via-[#F5F4EE]/60 to-transparent pointer-events-none" />
         <PlatformTags platforms={activePromo.categories} tagColors={activePromo.tagColors} />
         
         <AnimatePresence mode="wait">
@@ -80,7 +80,7 @@ export default function Promos() {
               }}
               className="w-12 h-12 sm:w-14 sm:h-14 bg-[#1F2937] backdrop-blur rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(204,208,207,0.1)] group-hover:scale-110 transition-all cursor-pointer pointer-events-auto z-10"
             >
-              <Play className="w-4 h-4 sm:w-5 sm:h-5 text-[#F9FAFB] ml-1" fill="currentColor" />
+              <Play className="w-4 h-4 sm:w-5 sm:h-5 text-[#F5F4EE] ml-1" fill="currentColor" />
             </div>
             
             <div className="absolute bottom-4 sm:bottom-6 text-center w-full z-10 px-4 flex flex-col items-center drop-shadow-md">

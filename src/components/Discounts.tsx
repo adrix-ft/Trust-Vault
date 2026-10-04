@@ -22,7 +22,7 @@ export default function Discounts() {
         <SectionHeader title="SPECIAL OFFERS" />
         <div className="flex md:grid md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 overflow-x-auto md:overflow-visible hide-scrollbar snap-x snap-mandatory py-12 -my-12 md:py-0 md:my-0 px-4 -mx-4 md:px-0 md:mx-0">
           {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="relative min-w-[220px] md:min-w-0 shrink-0 snap-center col-span-1 h-[260px] md:h-[280px] rounded-xl overflow-hidden bg-[#FFFFFF] border border-[#E5E7EB] animate-pulse">
+            <div key={i} className="relative min-w-[220px] md:min-w-0 shrink-0 snap-center col-span-1 h-[260px] md:h-[280px] rounded-xl overflow-hidden bg-[#FCFBF6] border border-[#E5E7EB] animate-pulse">
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_1.5s_infinite]" />
               <div className="absolute inset-x-0 bottom-0 p-4 space-y-3">
                 <div className="h-4 bg-[#E5E7EB] rounded w-3/4"></div>
@@ -65,11 +65,11 @@ export default function Discounts() {
                 style={{ backgroundImage: `url('${coverUrl}')` }}
               />
 
-              <div className={`absolute inset-0 rounded-xl overflow-hidden border border-[#E5E7EB] group-hover:border-[#D1D5DB] transition-colors bg-gradient-to-b ${idx % 2 === 0 ? 'from-[#FFFFFF] to-[#F9FAFB]' : 'from-[#E5E7EB] to-[#F9FAFB]'}`}>
+              <div className={`absolute inset-0 rounded-xl overflow-hidden border border-[#E5E7EB] group-hover:border-[#D1D5DB] transition-colors bg-gradient-to-b ${idx % 2 === 0 ? 'from-[#FCFBF6] to-[#F5F4EE]' : 'from-[#E5E7EB] to-[#F5F4EE]'}`}>
                 <PlatformTags platforms={game.categories} tagColors={game.tagColors} />
 
                 <div className="absolute inset-0 bg-cover bg-center transition-all duration-500 ease-out saturate-[1.1] contrast-[1.05] group-hover:scale-110 z-0" style={{ backgroundImage: `url('${coverUrl}')` }}></div>
-                <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#F9FAFB]/95 via-[#F9FAFB]/60 to-transparent pointer-events-none transition-opacity duration-300 z-0" />
+                <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#F5F4EE]/95 via-[#F5F4EE]/60 to-transparent pointer-events-none transition-opacity duration-300 z-0" />
                 
                 <div className="absolute inset-x-0 bottom-0 z-20 flex flex-col justify-end bg-transparent p-4">
                   <div className="flex justify-between items-end mb-2">

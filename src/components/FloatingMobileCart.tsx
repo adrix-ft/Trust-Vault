@@ -19,14 +19,14 @@ export default function FloatingMobileCart() {
       >
         <div 
           onClick={() => setIsCartOpen(true)}
-          className="bg-[#FFFFFF]/95 backdrop-blur-2xl border border-[#D1D5DB]/60 rounded-2xl p-4 flex items-center justify-between shadow-[0_10px_40px_rgba(0,0,0,0.8)] cursor-pointer"
+          className="bg-[#FCFBF6]/95 backdrop-blur-2xl border border-[#D1D5DB]/60 rounded-2xl p-4 flex items-center justify-between shadow-[0_10px_40px_rgba(0,0,0,0.8)] cursor-pointer"
         >
           <div className="flex items-center gap-3">
             <div className="relative">
               <div className="w-10 h-10 rounded-full bg-[#E5E7EB] flex items-center justify-center text-gray-900 border border-[#D1D5DB]">
                 <ShoppingCart className="w-5 h-5" />
               </div>
-              <span className="absolute -top-1.5 -right-1.5 bg-green-500 text-[#F9FAFB] text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center shadow-md border border-[#F9FAFB]">
+              <span className="absolute -top-1.5 -right-1.5 bg-green-500 text-[#F5F4EE] text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center shadow-md border border-[#F5F4EE]">
                 {cart.length}
               </span>
             </div>

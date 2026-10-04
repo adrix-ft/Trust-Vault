@@ -44,7 +44,7 @@ function FloatingWhatsApp() {
           <motion.div 
             initial={{ opacity: 0, y: 10, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            className="bg-[#FFFFFF] text-[#1F2937] text-[11px] font-bold py-2.5 px-4 rounded-2xl shadow-xl border border-[#E5E7EB] pointer-events-auto"
+            className="bg-[#FCFBF6] text-[#1F2937] text-[11px] font-bold py-2.5 px-4 rounded-2xl shadow-xl border border-[#E5E7EB] pointer-events-auto"
           >
             Didn't find your game? <br/>
             <span className="text-gray-900">Ask us here!</span>
@@ -97,7 +97,7 @@ function AppContent() {
   // If Admin is logged in, show Dashboard but KEEP the Overlays so Toasts work!
   if (isAdmin) {
     return (
-      <Suspense fallback={<div className="h-screen bg-[#F9FAFB] flex items-center justify-center"><div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div></div>}>
+      <Suspense fallback={<div className="h-screen bg-[#F5F4EE] flex items-center justify-center"><div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div></div>}>
         <AdminDashboard />
         <GlobalOverlays />
       </Suspense>
@@ -106,10 +106,10 @@ function AppContent() {
 
   // Removed navLinks as we only have PC, PS, Proofs now
   return (
-    <div className="bg-[#F9FAFB] text-[#1F2937] min-h-screen font-sans selection:bg-[#E5E7EB] selection:text-[#1F2937] overflow-x-hidden relative">
+    <div className="bg-[#F5F4EE] text-[#1F2937] min-h-screen font-sans selection:bg-[#E5E7EB] selection:text-[#1F2937] overflow-x-hidden relative">
       {/* GLOBAL BLINK LOADING BAR */}
       {!catalogLoaded && (
-        <div className="fixed top-0 left-0 right-0 h-1 z-[999999] bg-[#F9FAFB] overflow-hidden">
+        <div className="fixed top-0 left-0 right-0 h-1 z-[999999] bg-[#F5F4EE] overflow-hidden">
           <div className="h-full bg-emerald-500 rounded-full animate-blink-bar" />
         </div>
       )}
@@ -117,7 +117,7 @@ function AppContent() {
       <Navbar />
       
       {/* Mobile-only Sticky Navigation */}
-      <div className="md:hidden w-full bg-[#F9FAFB]/95 backdrop-blur-2xl border-b border-[#E5E7EB]/60 sticky top-[64px] z-40 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+      <div className="md:hidden w-full bg-[#F5F4EE]/95 backdrop-blur-2xl border-b border-[#E5E7EB]/60 sticky top-[64px] z-40 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
         
         {/* Upper Row: Platform Filters & Proofs (Visible on all sizes) */}
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-start sm:justify-center overflow-x-auto hide-scrollbar">
@@ -195,11 +195,11 @@ function AppContent() {
         >
           <div 
             onClick={(e) => e.stopPropagation()} 
-            className="relative max-w-3xl w-full bg-[#FFFFFF] rounded-2xl border border-[#D1D5DB] shadow-[0_0_50px_rgba(0,0,0,0.9)] p-3 my-auto cursor-default"
+            className="relative max-w-3xl w-full bg-[#FCFBF6] rounded-2xl border border-[#D1D5DB] shadow-[0_0_50px_rgba(0,0,0,0.9)] p-3 my-auto cursor-default"
           >
             <button 
               onClick={() => setSelectedProofImage(null)}
-              className="absolute -top-4 -right-4 z-50 bg-[#F9FAFB] hover:bg-[#E5E7EB] text-gray-900 p-2.5 rounded-full border border-[#D1D5DB] shadow-2xl transition-colors cursor-pointer"
+              className="absolute -top-4 -right-4 z-50 bg-[#F5F4EE] hover:bg-[#E5E7EB] text-gray-900 p-2.5 rounded-full border border-[#D1D5DB] shadow-2xl transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>

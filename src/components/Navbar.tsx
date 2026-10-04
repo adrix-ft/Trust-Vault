@@ -79,7 +79,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="relative flex items-center justify-between px-4 sm:px-6 lg:px-12 xl:px-24 py-4 sm:py-5 bg-[#F9FAFB]/95 backdrop-blur-2xl border-b border-[#E5E7EB]/60 shadow-[0_4px_30px_rgba(0,0,0,0.4)] sticky top-0 z-50 gap-3 min-h-[64px]">
+    <nav className="relative flex items-center justify-between px-4 sm:px-6 lg:px-12 xl:px-24 py-4 sm:py-5 bg-[#F5F4EE]/95 backdrop-blur-2xl border-b border-[#E5E7EB]/60 shadow-[0_4px_30px_rgba(0,0,0,0.4)] sticky top-0 z-50 gap-3 min-h-[64px]">
 
       <div className={`flex items-center gap-4 sm:gap-8 md:gap-14 overflow-hidden transition-all duration-300 ease-in-out ${isSearchFocused ? 'hidden sm:flex flex-1' : 'flex-1'} ${isMobileSearchActive ? 'hidden sm:flex' : 'flex'}`}>
         <motion.div
@@ -124,7 +124,7 @@ export default function Navbar() {
                 }}
                 className={`group flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl font-bold text-[10px] sm:text-xs tracking-wider uppercase transition-all duration-300 border-2 border-transparent cursor-pointer shrink-0 whitespace-nowrap ${isActive
                   ? 'bg-gray-900 text-white animate-active-border-glow'
-                  : `bg-[#FFFFFF] text-[#4B5563] animate-border-glow ${isProofsHover}`
+                  : `bg-[#FCFBF6] text-[#4B5563] animate-border-glow ${isProofsHover}`
                   }`}
               >
                 <Icon className={filter.isCustom ? `text-[10px] sm:text-[11px] ${filter.iconClass || ''}` : `w-3.5 h-3.5 transition-colors ${filter.iconClass || ''} ${isActive && filter.id === 'Proofs' ? 'text-green-300' : ''}`} />
@@ -140,7 +140,7 @@ export default function Navbar() {
         {!isMobileSearchActive && (
           <button
             onClick={() => setIsMobileSearchActive(true)}
-            className="sm:hidden p-2 rounded-full text-[#4B5563] hover:text-gray-900 hover:bg-[#FFFFFF] transition-colors"
+            className="sm:hidden p-2 rounded-full text-[#4B5563] hover:text-gray-900 hover:bg-[#FCFBF6] transition-colors"
           >
             <Search className="w-5 h-5" />
           </button>
@@ -159,7 +159,7 @@ export default function Navbar() {
             onChange={(e) => setSearchQuery(e.target.value)}
             onFocus={() => setIsSearchFocused(true)}
             autoFocus={isMobileSearchActive}
-            className="bg-[#FFFFFF]/80 border border-[#E5E7EB] rounded-full py-2.5 pl-10 pr-9 text-xs font-medium text-gray-900 placeholder:text-[#D1D5DB] focus:outline-none focus:border-[#D1D5DB] focus:ring-2 focus:ring-[#D1D5DB]/20 transition-all w-full relative z-10 shadow-inner"
+            className="bg-[#FCFBF6]/80 border border-[#E5E7EB] rounded-full py-2.5 pl-10 pr-9 text-xs font-medium text-gray-900 placeholder:text-[#D1D5DB] focus:outline-none focus:border-[#D1D5DB] focus:ring-2 focus:ring-[#D1D5DB]/20 transition-all w-full relative z-10 shadow-inner"
           />
 
           <button
@@ -181,7 +181,7 @@ export default function Navbar() {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 8, scale: 0.98 }}
                 transition={{ duration: 0.2 }}
-                className="absolute top-full mt-3 left-0 w-full sm:w-[350px] lg:w-[400px] bg-[#FFFFFF]/95 backdrop-blur-3xl border border-[#E5E7EB] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.7)] overflow-hidden z-[100]"
+                className="absolute top-full mt-3 left-0 w-full sm:w-[350px] lg:w-[400px] bg-[#FCFBF6]/95 backdrop-blur-3xl border border-[#E5E7EB] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.7)] overflow-hidden z-[100]"
               >
                 <div className="max-h-[60vh] sm:max-h-[400px] overflow-y-auto scroll-smooth p-2 space-y-1">
 
@@ -209,9 +209,9 @@ export default function Navbar() {
                             setIsSearchFocused(false);
                             if (window.innerWidth < 640) setIsMobileSearchActive(false);
                           }}
-                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#F9FAFB] transition-all cursor-pointer group/item border border-transparent hover:border-[#E5E7EB]"
+                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#F5F4EE] transition-all cursor-pointer group/item border border-transparent hover:border-[#E5E7EB]"
                         >
-                          <div className="w-12 h-16 rounded-lg overflow-hidden flex-shrink-0 border border-[#E5E7EB] bg-[#F9FAFB] shadow-sm">
+                          <div className="w-12 h-16 rounded-lg overflow-hidden flex-shrink-0 border border-[#E5E7EB] bg-[#F5F4EE] shadow-sm">
                             <img
                               src={coverUrl}
                               alt={game.title}
@@ -233,7 +233,7 @@ export default function Navbar() {
                                   return (
                                     <span
                                       key={cat}
-                                      className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#F9FAFB] text-[#4B5563] border border-[#E5E7EB]"
+                                      className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#F5F4EE] text-[#4B5563] border border-[#E5E7EB]"
                                     >
                                       {cat}
                                     </span>
@@ -345,14 +345,14 @@ export default function Navbar() {
         <div className={`items-center gap-3 transition-all duration-300 flex ${isMobileSearchActive ? 'hidden' : ''}`}>
           <button
             onClick={() => setIsCartOpen(true)}
-            className="relative p-2.5 rounded-full bg-[#FFFFFF]/60 border border-[#E5E7EB]/60 text-[#4B5563] hover:text-gray-900 hover:border-[#D1D5DB] transition-all cursor-pointer shadow-sm group shrink-0"
+            className="relative p-2.5 rounded-full bg-[#FCFBF6]/60 border border-[#E5E7EB]/60 text-[#4B5563] hover:text-gray-900 hover:border-[#D1D5DB] transition-all cursor-pointer shadow-sm group shrink-0"
           >
             <ShoppingCart className="w-5 h-5 group-hover:scale-110 transition-transform" />
             {cartItemCount > 0 && (
               <motion.span
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                className="absolute -top-1.5 -right-1.5 bg-gradient-to-r from-[#D1D5DB] to-[#1F2937] text-[#F9FAFB] text-[10px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center shadow-md border border-[#F9FAFB]"
+                className="absolute -top-1.5 -right-1.5 bg-gradient-to-r from-[#D1D5DB] to-[#1F2937] text-[#F5F4EE] text-[10px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center shadow-md border border-[#F5F4EE]"
               >
                 {cartItemCount}
               </motion.span>

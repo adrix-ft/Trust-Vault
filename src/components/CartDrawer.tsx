@@ -129,20 +129,20 @@ export default function CartDrawer() {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'tween', duration: 0.3, ease: [0.25, 1, 0.5, 1] }}
-            className="fixed top-0 right-0 h-full w-full sm:w-[420px] bg-[#F9FAFB] border-l border-[#E5E7EB] z-[70] flex flex-col shadow-2xl"
+            className="fixed top-0 right-0 h-full w-full sm:w-[420px] bg-[#F5F4EE] border-l border-[#E5E7EB] z-[70] flex flex-col shadow-2xl"
           >
-            <div className="p-6 border-b border-[#E5E7EB] flex items-center justify-between bg-[#F9FAFB]">
+            <div className="p-6 border-b border-[#E5E7EB] flex items-center justify-between bg-[#F5F4EE]">
               <h2 className="text-xl font-black tracking-widest text-[#1F2937]">CART</h2>
               <button 
                 onClick={() => !isSubmitting && setIsCartOpen(false)} 
                 disabled={isSubmitting}
-                className="p-2 text-[#4B5563] hover:text-gray-900 bg-[#FFFFFF] rounded-full hover:bg-[#E5E7EB] transition-colors disabled:opacity-50"
+                className="p-2 text-[#4B5563] hover:text-gray-900 bg-[#FCFBF6] rounded-full hover:bg-[#E5E7EB] transition-colors disabled:opacity-50"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
             
-            <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-[#F9FAFB]">
+            <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-[#F5F4EE]">
               {cart.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-[#D1D5DB]">
                   <div className="text-6xl mb-4">🛒</div>
@@ -160,7 +160,7 @@ export default function CartDrawer() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95 }}
                         transition={{ duration: 0.2 }}
-                        className="bg-[#FFFFFF] border border-[#E5E7EB] rounded-lg p-4 flex items-start gap-4 shadow-sm relative overflow-hidden"
+                        className="bg-[#FCFBF6] border border-[#E5E7EB] rounded-lg p-4 flex items-start gap-4 shadow-sm relative overflow-hidden"
                       >
                         <div className="absolute inset-0 w-24 opacity-20 bg-cover bg-center mix-blend-overlay" style={{ backgroundImage: `url('${item.customCoverUrl || getGameCoverUrl(item.title)}')` }}></div>
                         
@@ -174,7 +174,7 @@ export default function CartDrawer() {
                           {platforms.length > 0 && (
                             <div className="flex gap-1 mt-1">
                               {platforms.map(plat => (
-                                <span key={plat} className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#F9FAFB] text-[#4B5563] border border-[#E5E7EB]">
+                                <span key={plat} className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#F5F4EE] text-[#4B5563] border border-[#E5E7EB]">
                                   {plat}
                                 </span>
                               ))}
@@ -195,7 +195,7 @@ export default function CartDrawer() {
                           <button 
                             onClick={() => !isSubmitting && removeFromCart(item.title)} 
                             disabled={isSubmitting}
-                            className="p-2 text-[#D1D5DB] hover:text-red-400 transition-colors bg-[#F9FAFB] rounded-full border border-[#E5E7EB] disabled:opacity-50 cursor-pointer"
+                            className="p-2 text-[#D1D5DB] hover:text-red-400 transition-colors bg-[#F5F4EE] rounded-full border border-[#E5E7EB] disabled:opacity-50 cursor-pointer"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -208,8 +208,8 @@ export default function CartDrawer() {
             </div>
             
             {cart.length > 0 && (
-              <div className="p-6 border-t border-[#E5E7EB] bg-[#F9FAFB] space-y-4">
-                <div className="space-y-3 bg-[#FFFFFF]/60 p-3.5 rounded-xl border border-[#E5E7EB]">
+              <div className="p-6 border-t border-[#E5E7EB] bg-[#F5F4EE] space-y-4">
+                <div className="space-y-3 bg-[#FCFBF6]/60 p-3.5 rounded-xl border border-[#E5E7EB]">
                   <p className="text-[11px] font-bold text-[#4B5563] uppercase tracking-wider">Customer Details</p>
                   
                   <div className="relative">
@@ -220,7 +220,7 @@ export default function CartDrawer() {
                       value={customerName}
                       disabled={isSubmitting}
                       onChange={(e) => setCustomerName(e.target.value)}
-                      className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg py-2 pl-9 pr-3 text-xs text-gray-900 placeholder:text-[#D1D5DB] focus:outline-none focus:border-[#D1D5DB] disabled:opacity-50"
+                      className="w-full bg-[#F5F4EE] border border-[#E5E7EB] rounded-lg py-2 pl-9 pr-3 text-xs text-gray-900 placeholder:text-[#D1D5DB] focus:outline-none focus:border-[#D1D5DB] disabled:opacity-50"
                     />
                   </div>
 
@@ -233,7 +233,7 @@ export default function CartDrawer() {
                       disabled={isSubmitting}
                       onChange={handlePhoneChange}
                       maxLength={10}
-                      className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg py-2 pl-9 pr-3 text-xs text-gray-900 placeholder:text-[#D1D5DB] focus:outline-none focus:border-[#D1D5DB] disabled:opacity-50"
+                      className="w-full bg-[#F5F4EE] border border-[#E5E7EB] rounded-lg py-2 pl-9 pr-3 text-xs text-gray-900 placeholder:text-[#D1D5DB] focus:outline-none focus:border-[#D1D5DB] disabled:opacity-50"
                     />
                   </div>
 
@@ -268,7 +268,7 @@ export default function CartDrawer() {
                   <button 
                     onClick={() => !isSubmitting && clearCart()}
                     disabled={isSubmitting}
-                    className="px-4 py-3 rounded-lg font-bold tracking-widest text-xs text-[#4B5563] bg-[#FFFFFF] hover:bg-[#E5E7EB] transition-colors border border-[#E5E7EB] uppercase disabled:opacity-50 cursor-pointer"
+                    className="px-4 py-3 rounded-lg font-bold tracking-widest text-xs text-[#4B5563] bg-[#FCFBF6] hover:bg-[#E5E7EB] transition-colors border border-[#E5E7EB] uppercase disabled:opacity-50 cursor-pointer"
                   >
                     Clear
                   </button>

@@ -38,10 +38,10 @@ export default function GameLibrary() {
             {(!catalogLoaded && displayedGames.length === 0) && Array.from({ length: 10 }).map((_, index) => (
               <div 
                 key={`skeleton-${index}`}
-                className="bg-[#FFFFFF] border border-[#E5E7EB] rounded-xl overflow-hidden flex flex-col relative"
+                className="bg-[#FCFBF6] border border-[#E5E7EB] rounded-xl overflow-hidden flex flex-col relative"
               >
                 <div className="absolute inset-0 z-20 -translate-x-full bg-gradient-to-r from-transparent via-white/5 to-transparent animate-sweep pointer-events-none" />
-                <div className="aspect-[3/4] w-full bg-[#F9FAFB]" />
+                <div className="aspect-[3/4] w-full bg-[#F5F4EE]" />
                 <div className="p-4 flex flex-col flex-1 justify-between gap-4">
                   <div>
                     <div className="h-4 bg-[#E5E7EB] rounded w-3/4 mb-2" />
@@ -69,7 +69,7 @@ export default function GameLibrary() {
           <div className="mt-10 flex justify-center">
             <button
               onClick={() => setVisibleCount(prev => prev + 30)}
-              className="flex items-center gap-2 px-6 py-3 rounded-full bg-[#FFFFFF] border border-[#E5E7EB] hover:border-[#D1D5DB] text-[#1F2937] hover:text-gray-900 text-xs font-bold tracking-wider uppercase transition-all shadow-lg hover:scale-105"
+              className="flex items-center gap-2 px-6 py-3 rounded-full bg-[#FCFBF6] border border-[#E5E7EB] hover:border-[#D1D5DB] text-[#1F2937] hover:text-gray-900 text-xs font-bold tracking-wider uppercase transition-all shadow-lg hover:scale-105"
             >
               <span>Show More Games</span>
               <ChevronDown className="w-4 h-4" />
@@ -95,8 +95,8 @@ const GameCard = memo(({ game, index, isSelected, setSelectedCategory, inCart, p
     >
       
       {/* Inner card container holds the borders and hides overflow */}
-      <div className={`flex flex-col h-full rounded-xl overflow-hidden border transition-all ${isSelected ? 'bg-[#F9FAFB] border-[#D1D5DB] shadow-lg scale-[1.02]' : 'bg-[#FFFFFF] border-[#E5E7EB] group-hover:border-[#D1D5DB] group-hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)]'}`}>
-        <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#F9FAFB]">
+      <div className={`flex flex-col h-full rounded-xl overflow-hidden border transition-all ${isSelected ? 'bg-[#F5F4EE] border-[#D1D5DB] shadow-lg scale-[1.02]' : 'bg-[#FCFBF6] border-[#E5E7EB] group-hover:border-[#D1D5DB] group-hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)]'}`}>
+        <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#F5F4EE]">
           <img 
             src={coverUrl}
             alt={game.title}
@@ -108,14 +108,14 @@ const GameCard = memo(({ game, index, isSelected, setSelectedCategory, inCart, p
           <PlatformTags platforms={game.categories} tagColors={game.tagColors} />
           {game.onSale && (
             /* UPGRADE: SHIMMER ON SALE BADGE */
-            <div className="absolute top-2 left-2 bg-green-500 text-[10px] font-black px-2 py-0.5 rounded text-[#F9FAFB] shadow uppercase tracking-wider z-10 overflow-hidden">
+            <div className="absolute top-2 left-2 bg-green-500 text-[10px] font-black px-2 py-0.5 rounded text-[#F5F4EE] shadow uppercase tracking-wider z-10 overflow-hidden">
               <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 to-transparent animate-shimmer pointer-events-none" />
               <span className="relative z-10">SALE</span>
             </div>
           )}
         </div>
         
-        <div className="p-4 flex flex-col flex-1 justify-between bg-[#FFFFFF] relative z-10">
+        <div className="p-4 flex flex-col flex-1 justify-between bg-[#FCFBF6] relative z-10">
           <div>
             <h3 className={`text-sm font-bold leading-tight transition-colors truncate uppercase ${isSelected ? 'text-gray-900' : 'text-[#1F2937] group-hover:text-gray-900'}`}>
               {game.title}

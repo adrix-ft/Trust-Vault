@@ -87,13 +87,13 @@ export default function CustomBundleBuilder() {
   return (
     <div className="w-full relative pb-32">
       {/* Header Banner */}
-      <div className="relative w-full min-h-[280px] sm:min-h-[300px] bg-gradient-to-br from-[#F9FAFB] via-[#FFFFFF] to-[#E5E7EB] overflow-hidden flex items-center justify-center border-b border-[#D1D5DB]/30 pt-24 pb-12 sm:pt-12 sm:pb-12">
+      <div className="relative w-full min-h-[280px] sm:min-h-[300px] bg-gradient-to-br from-[#F5F4EE] via-[#FCFBF6] to-[#E5E7EB] overflow-hidden flex items-center justify-center border-b border-[#D1D5DB]/30 pt-24 pb-12 sm:pt-12 sm:pb-12">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&q=80')] opacity-10 bg-cover bg-center mix-blend-overlay" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#F9FAFB] via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#F5F4EE] via-transparent to-transparent" />
         
         <div className="relative z-10 text-center space-y-4 px-4 max-w-2xl">
           <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-green-400 flex items-center justify-center shadow-[0_0_40px_rgba(16,185,129,0.3)] mb-6">
-            <Package className="w-8 h-8 text-[#F9FAFB]" />
+            <Package className="w-8 h-8 text-[#F5F4EE]" />
           </div>
           <h1 className="text-3xl sm:text-5xl font-black text-gray-900 uppercase tracking-wider drop-shadow-lg">
             Build Your Own Bundle
@@ -119,7 +119,7 @@ export default function CustomBundleBuilder() {
         {/* Controls: Search & Platform Toggle */}
         <div className="mb-8 flex flex-col-reverse md:flex-row gap-4 items-center justify-between max-w-3xl mx-auto">
           
-          <div className="flex bg-[#FFFFFF]/80 border border-[#E5E7EB] rounded-full p-1 shrink-0 w-full md:w-auto">
+          <div className="flex bg-[#FCFBF6]/80 border border-[#E5E7EB] rounded-full p-1 shrink-0 w-full md:w-auto">
             {['PS', 'PC', 'All'].map(platform => (
               <button
                 key={platform}
@@ -142,7 +142,7 @@ export default function CustomBundleBuilder() {
               placeholder="Search eligible games..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-[#FFFFFF]/80 border border-[#E5E7EB] rounded-full py-3 pl-12 pr-6 text-sm font-medium text-gray-900 placeholder:text-[#D1D5DB] focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 transition-all shadow-inner"
+              className="w-full bg-[#FCFBF6]/80 border border-[#E5E7EB] rounded-full py-3 pl-12 pr-6 text-sm font-medium text-gray-900 placeholder:text-[#D1D5DB] focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 transition-all shadow-inner"
             />
           </div>
 
@@ -164,7 +164,7 @@ export default function CustomBundleBuilder() {
                   isSelected ? 'ring-4 ring-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.3)]' : 'border border-[#E5E7EB] hover:border-[#D1D5DB] hover:shadow-2xl'
                 }`}
               >
-                <div className="aspect-[3/4] relative overflow-hidden bg-[#FFFFFF]">
+                <div className="aspect-[3/4] relative overflow-hidden bg-[#FCFBF6]">
                   <img 
                     src={game.customCoverUrl || getGameCoverUrl(game.title)} 
                     alt={game.title}
@@ -192,7 +192,7 @@ export default function CustomBundleBuilder() {
         </div>
 
         {eligibleGames.length === 0 && (
-          <div className="text-center py-20 bg-[#FFFFFF]/50 border border-[#E5E7EB] rounded-2xl">
+          <div className="text-center py-20 bg-[#FCFBF6]/50 border border-[#E5E7EB] rounded-2xl">
             <Info className="w-12 h-12 text-[#D1D5DB] mx-auto mb-4" />
             <h3 className="text-lg font-bold text-gray-900 uppercase tracking-wider mb-2">No Eligible Games</h3>
             <p className="text-[#4B5563] text-sm">There are currently no games available for custom bundles.</p>
@@ -207,7 +207,7 @@ export default function CustomBundleBuilder() {
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
-            className="fixed bottom-0 left-0 right-0 z-40 p-4 sm:p-6 bg-[#FFFFFF]/95 backdrop-blur-xl border-t border-[#D1D5DB]/50 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]"
+            className="fixed bottom-0 left-0 right-0 z-40 p-4 sm:p-6 bg-[#FCFBF6]/95 backdrop-blur-xl border-t border-[#D1D5DB]/50 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]"
           >
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="flex items-center gap-4 flex-1 w-full overflow-x-auto hide-scrollbar pb-2 md:pb-0">
@@ -229,7 +229,7 @@ export default function CustomBundleBuilder() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-6 shrink-0 bg-[#F9FAFB] px-6 py-3 rounded-2xl border border-[#E5E7EB]">
+              <div className="flex items-center gap-6 shrink-0 bg-[#F5F4EE] px-6 py-3 rounded-2xl border border-[#E5E7EB]">
                 <div className="flex flex-col items-end">
                   {discount > 0 && (
                     <span className="text-xs font-bold text-red-400 line-through decoration-red-400/50">

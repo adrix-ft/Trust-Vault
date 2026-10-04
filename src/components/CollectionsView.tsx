@@ -34,12 +34,12 @@ export default function CollectionsView() {
       <div className="flex flex-col gap-12">
         {loading ? (
           Array.from({ length: 2 }).map((_, i) => (
-            <div key={i} className="bg-[#FFFFFF] rounded-xl overflow-hidden border border-[#E5E7EB] shadow-lg flex flex-col md:flex-row group relative animate-pulse">
+            <div key={i} className="bg-[#FCFBF6] rounded-xl overflow-hidden border border-[#E5E7EB] shadow-lg flex flex-col md:flex-row group relative animate-pulse">
               <div className="w-full md:w-2/5 aspect-[16/9] md:aspect-auto bg-[#E5E7EB]" />
-              <div className="w-full md:w-3/5 p-4 sm:p-6 bg-[#F9FAFB]">
+              <div className="w-full md:w-3/5 p-4 sm:p-6 bg-[#F5F4EE]">
                 <div className="flex gap-4 overflow-x-hidden">
                   {Array.from({ length: 3 }).map((_, j) => (
-                    <div key={j} className="min-w-[140px] max-w-[140px] sm:min-w-[160px] sm:max-w-[160px] rounded-md overflow-hidden bg-[#FFFFFF] border border-[#E5E7EB] flex flex-col">
+                    <div key={j} className="min-w-[140px] max-w-[140px] sm:min-w-[160px] sm:max-w-[160px] rounded-md overflow-hidden bg-[#FCFBF6] border border-[#E5E7EB] flex flex-col">
                       <div className="aspect-[3/4] w-full bg-[#E5E7EB]" />
                       <div className="p-3">
                         <div className="h-3 bg-[#E5E7EB] rounded w-full mb-2" />
@@ -70,14 +70,14 @@ export default function CollectionsView() {
           if (collectionGames.length === 0) return null;
 
           return (
-            <div key={collection.id} className="bg-[#FFFFFF] rounded-xl overflow-hidden border border-[#E5E7EB] shadow-lg flex flex-col md:flex-row group relative">
+            <div key={collection.id} className="bg-[#FCFBF6] rounded-xl overflow-hidden border border-[#E5E7EB] shadow-lg flex flex-col md:flex-row group relative">
               {/* Collection Banner */}
-              <div className="w-full md:w-2/5 aspect-[16/9] md:aspect-auto relative overflow-hidden bg-[#F9FAFB]">
+              <div className="w-full md:w-2/5 aspect-[16/9] md:aspect-auto relative overflow-hidden bg-[#F5F4EE]">
                 <div 
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105 saturate-[1.1] opacity-70 group-hover:opacity-100 mix-blend-overlay"
                   style={{ backgroundImage: `url('${collection.customBannerUrl || `/assets/images/${collection.banner}`}')` }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-[#FFFFFF] via-[#FFFFFF]/60 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-[#FCFBF6] via-[#FCFBF6]/60 to-transparent" />
                 
                 <div className="absolute inset-0 p-6 sm:p-8 flex flex-col justify-end">
                   <h3 className="text-2xl sm:text-3xl font-black text-[#1F2937] uppercase tracking-wider mb-2 drop-shadow-md">
@@ -90,7 +90,7 @@ export default function CollectionsView() {
               </div>
 
               {/* Slider Section */}
-              <div className="w-full md:w-3/5 p-6 bg-[#F9FAFB]/40 flex flex-col justify-center relative">
+              <div className="w-full md:w-3/5 p-6 bg-[#F5F4EE]/40 flex flex-col justify-center relative">
                 
                 {/* Scroll Arrows on Top Right */}
                 {collectionGames.length > 3 && (
@@ -121,17 +121,17 @@ export default function CollectionsView() {
                   {collectionGames.map(game => (
                     <div 
                       key={game.title} 
-                      className="min-w-[160px] max-w-[160px] sm:min-w-[180px] sm:max-w-[180px] bg-[#FFFFFF] rounded-md overflow-hidden border border-[#E5E7EB] hover:border-[#D1D5DB] transition-all flex flex-col hover:-translate-y-1 hover:shadow-lg flex-shrink-0"
+                      className="min-w-[160px] max-w-[160px] sm:min-w-[180px] sm:max-w-[180px] bg-[#FCFBF6] rounded-md overflow-hidden border border-[#E5E7EB] hover:border-[#D1D5DB] transition-all flex flex-col hover:-translate-y-1 hover:shadow-lg flex-shrink-0"
                     >
                       <div className="aspect-[3/4] relative">
                         <div 
                           className="absolute inset-0 bg-cover bg-center"
                           style={{ backgroundImage: `url('${game.customCoverUrl || getGameCoverUrl(game.title)}')` }}
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#F9FAFB] via-transparent to-transparent opacity-80" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#F5F4EE] via-transparent to-transparent opacity-80" />
                         <PlatformTags platforms={game.categories} tagColors={game.tagColors} />
                         {game.onSale && (
-                          <div className="absolute top-1 left-1 bg-green-500 text-[8px] font-black px-1.5 py-0.5 rounded text-[#F9FAFB] shadow-[0_0_10px_rgba(34,197,94,0.3)] uppercase tracking-wider">
+                          <div className="absolute top-1 left-1 bg-green-500 text-[8px] font-black px-1.5 py-0.5 rounded text-[#F5F4EE] shadow-[0_0_10px_rgba(34,197,94,0.3)] uppercase tracking-wider">
                             SALE
                           </div>
                         )}

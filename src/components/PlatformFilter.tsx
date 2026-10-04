@@ -40,7 +40,7 @@ export default function PlatformFilter() {
             className={`group flex items-center justify-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl font-bold text-[10px] sm:text-xs tracking-wider uppercase transition-all duration-300 border shadow-sm cursor-pointer shrink-0 whitespace-nowrap ${
               isActive
                 ? 'bg-gray-900 text-white border-gray-900 shadow-md scale-105'
-                : `bg-[#FFFFFF] text-[#4B5563] border-[#E5E7EB] hover:bg-gray-50 ${isProofsHover}`
+                : `bg-[#FCFBF6] text-[#4B5563] border-[#E5E7EB] hover:bg-gray-50 ${isProofsHover}`
             }`}
           >
             <Icon className={filter.isCustom ? `text-[9px] sm:text-[10px] ${filter.iconClass || ''}` : `w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors ${filter.iconClass || ''} ${isActive && filter.id === 'Proofs' ? 'text-green-300' : ''}`} />

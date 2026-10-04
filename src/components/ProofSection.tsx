@@ -77,7 +77,7 @@ export default function ProofSection({ onSelectImage }: ProofSectionProps) {
                 <div 
                   key={`r1-${index}`} 
                   onClick={() => onSelectImage(url)}
-                  className="relative shrink-0 w-[300px] sm:w-[350px] md:w-[420px] aspect-video bg-[#F9FAFB] rounded-xl border border-[#E5E7EB] shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-[1.02] hover:shadow-xl"
+                  className="relative shrink-0 w-[300px] sm:w-[350px] md:w-[420px] aspect-video bg-[#F5F4EE] rounded-xl border border-[#E5E7EB] shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-[1.02] hover:shadow-xl"
                 >
                   <img src={url} alt={`Proof Row 1 - ${index + 1}`} className="w-full h-full object-cover" />
                 </div>
@@ -88,7 +88,7 @@ export default function ProofSection({ onSelectImage }: ProofSectionProps) {
                 <div 
                   key={`r1-dup-${index}`} 
                   onClick={() => onSelectImage(url)}
-                  className="relative shrink-0 w-[300px] sm:w-[350px] md:w-[420px] aspect-video bg-[#F9FAFB] rounded-xl border border-[#E5E7EB] shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-[1.02] hover:shadow-xl"
+                  className="relative shrink-0 w-[300px] sm:w-[350px] md:w-[420px] aspect-video bg-[#F5F4EE] rounded-xl border border-[#E5E7EB] shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-[1.02] hover:shadow-xl"
                 >
                   <img src={url} alt={`Proof Row 1 Dup - ${index + 1}`} className="w-full h-full object-cover" />
                 </div>
@@ -104,7 +104,7 @@ export default function ProofSection({ onSelectImage }: ProofSectionProps) {
                 <div 
                   key={`r2-${index}`} 
                   onClick={() => onSelectImage(url)}
-                  className="relative shrink-0 w-[300px] sm:w-[350px] md:w-[420px] aspect-video bg-[#F9FAFB] rounded-xl border border-[#E5E7EB] shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-[1.02] hover:shadow-xl"
+                  className="relative shrink-0 w-[300px] sm:w-[350px] md:w-[420px] aspect-video bg-[#F5F4EE] rounded-xl border border-[#E5E7EB] shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-[1.02] hover:shadow-xl"
                 >
                   <img src={url} alt={`Proof Row 2 - ${index + 1}`} className="w-full h-full object-cover" />
                 </div>
@@ -115,7 +115,7 @@ export default function ProofSection({ onSelectImage }: ProofSectionProps) {
                 <div 
                   key={`r2-dup-${index}`} 
                   onClick={() => onSelectImage(url)}
-                  className="relative shrink-0 w-[300px] sm:w-[350px] md:w-[420px] aspect-video bg-[#F9FAFB] rounded-xl border border-[#E5E7EB] shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-[1.02] hover:shadow-xl"
+                  className="relative shrink-0 w-[300px] sm:w-[350px] md:w-[420px] aspect-video bg-[#F5F4EE] rounded-xl border border-[#E5E7EB] shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-[1.02] hover:shadow-xl"
                 >
                   <img src={url} alt={`Proof Row 2 Dup - ${index + 1}`} className="w-full h-full object-cover" />
                 </div>
@@ -130,7 +130,7 @@ export default function ProofSection({ onSelectImage }: ProofSectionProps) {
                 <div 
                   key={`r3-${index}`} 
                   onClick={() => onSelectImage(url)}
-                  className="relative shrink-0 w-[300px] sm:w-[350px] md:w-[420px] aspect-video bg-[#F9FAFB] rounded-xl border border-[#E5E7EB] shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-[1.02] hover:shadow-xl"
+                  className="relative shrink-0 w-[300px] sm:w-[350px] md:w-[420px] aspect-video bg-[#F5F4EE] rounded-xl border border-[#E5E7EB] shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-[1.02] hover:shadow-xl"
                 >
                   <img src={url} alt={`Proof Row 3 - ${index + 1}`} className="w-full h-full object-cover" />
                 </div>
@@ -141,7 +141,7 @@ export default function ProofSection({ onSelectImage }: ProofSectionProps) {
                 <div 
                   key={`r3-dup-${index}`} 
                   onClick={() => onSelectImage(url)}
-                  className="relative shrink-0 w-[300px] sm:w-[350px] md:w-[420px] aspect-video bg-[#F9FAFB] rounded-xl border border-[#E5E7EB] shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-[1.02] hover:shadow-xl"
+                  className="relative shrink-0 w-[300px] sm:w-[350px] md:w-[420px] aspect-video bg-[#F5F4EE] rounded-xl border border-[#E5E7EB] shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-[1.02] hover:shadow-xl"
                 >
                   <img src={url} alt={`Proof Row 3 Dup - ${index + 1}`} className="w-full h-full object-cover" />
                 </div>

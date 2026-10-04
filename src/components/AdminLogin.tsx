@@ -45,14 +45,14 @@ export default function AdminLogin() {
           initial={{ opacity: 0 }} 
           animate={{ opacity: 1 }} 
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-[#F9FAFB]/90 backdrop-blur-sm"
+          className="fixed inset-0 bg-[#F5F4EE]/90 backdrop-blur-sm"
           onClick={() => setShowAdminLogin(false)}
         />
         <motion.div 
           initial={{ opacity: 0, scale: 0.95, y: 20 }} 
           animate={{ opacity: 1, scale: 1, y: 0 }} 
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="bg-[#FFFFFF] border border-[#E5E7EB] rounded-xl p-8 shadow-[0_0_50px_rgba(6,20,27,0.8)] w-full max-w-md relative z-10"
+          className="bg-[#FCFBF6] border border-[#E5E7EB] rounded-xl p-8 shadow-[0_0_50px_rgba(6,20,27,0.8)] w-full max-w-md relative z-10"
         >
           <button 
             onClick={() => setShowAdminLogin(false)} 
@@ -78,7 +78,7 @@ export default function AdminLogin() {
                 type="text" 
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded p-3 text-[#1F2937] focus:outline-none focus:border-[#D1D5DB] transition-colors"
+                className="w-full bg-[#F5F4EE] border border-[#E5E7EB] rounded p-3 text-[#1F2937] focus:outline-none focus:border-[#D1D5DB] transition-colors"
                 placeholder="Enter username"
                 required
               />
@@ -89,7 +89,7 @@ export default function AdminLogin() {
                 type="password" 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded p-3 text-[#1F2937] focus:outline-none focus:border-[#D1D5DB] transition-colors"
+                className="w-full bg-[#F5F4EE] border border-[#E5E7EB] rounded p-3 text-[#1F2937] focus:outline-none focus:border-[#D1D5DB] transition-colors"
                 placeholder="••••••••"
                 required
               />

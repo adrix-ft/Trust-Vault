@@ -12,7 +12,7 @@
     height: 8px;
   }
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: #FFFFFF;
+    background: #FCFBF6;
     border-radius: 8px;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {

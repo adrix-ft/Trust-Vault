@@ -42,13 +42,13 @@ export default function GameBundles() {
           <div className="flex items-center gap-2 mb-6">
             <button
               onClick={() => handleScroll('left')}
-              className="p-2 rounded-xl bg-[#FFFFFF] border border-[#E5E7EB] hover:border-[#D1D5DB] text-[#4B5563] hover:text-gray-900 transition-all shadow-md cursor-pointer"
+              className="p-2 rounded-xl bg-[#FCFBF6] border border-[#E5E7EB] hover:border-[#D1D5DB] text-[#4B5563] hover:text-gray-900 transition-all shadow-md cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button
               onClick={() => handleScroll('right')}
-              className="p-2 rounded-xl bg-[#FFFFFF] border border-[#E5E7EB] hover:border-[#D1D5DB] text-[#4B5563] hover:text-gray-900 transition-all shadow-md cursor-pointer"
+              className="p-2 rounded-xl bg-[#FCFBF6] border border-[#E5E7EB] hover:border-[#D1D5DB] text-[#4B5563] hover:text-gray-900 transition-all shadow-md cursor-pointer"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -66,7 +66,7 @@ export default function GameBundles() {
       >
         {loading ? (
           Array.from({ length: 2 }).map((_, i) => (
-            <div key={i} className="min-w-full md:min-w-[calc(50%-12px)] flex flex-col md:flex-row bg-[#FFFFFF] border border-[#E5E7EB] rounded-3xl overflow-hidden shadow-2xl animate-pulse snap-center">
+            <div key={i} className="min-w-full md:min-w-[calc(50%-12px)] flex flex-col md:flex-row bg-[#FCFBF6] border border-[#E5E7EB] rounded-3xl overflow-hidden shadow-2xl animate-pulse snap-center">
               <div className="w-full md:w-[45%] h-64 md:h-auto bg-[#E5E7EB]" />
               <div className="flex-1 p-6 md:p-8 flex flex-col justify-center">
                 <div className="h-6 bg-[#E5E7EB] rounded w-3/4 mb-4" />
@@ -100,7 +100,7 @@ export default function GameBundles() {
                 style={{ backgroundImage: `url('${glowImage}')` }}
               />
 
-              <div className="bg-gradient-to-br from-[#FFFFFF] to-[#F9FAFB] rounded-2xl border border-[#E5E7EB] group-hover:border-[#D1D5DB] p-5 md:p-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 shadow-xl group-hover:shadow-2xl h-full transition-colors relative z-10 overflow-hidden">
+              <div className="bg-gradient-to-br from-[#FCFBF6] to-[#F5F4EE] rounded-2xl border border-[#E5E7EB] group-hover:border-[#D1D5DB] p-5 md:p-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 shadow-xl group-hover:shadow-2xl h-full transition-colors relative z-10 overflow-hidden">
                 <PlatformTags platforms={bundle.categories} tagColors={bundle.tagColors} />
                 
                 {/* Left Side Visual Fan */}
@@ -139,7 +139,7 @@ export default function GameBundles() {
 
                 {/* Right Side Content */}
                 <div className="flex-1 flex flex-col justify-center text-center sm:text-left w-full min-w-0">
-                  <div className="relative overflow-hidden inline-block bg-gradient-to-r from-amber-500 to-orange-500 text-[#F9FAFB] text-[9px] font-black py-1 px-3 rounded-full uppercase tracking-widest mb-2.5 self-center sm:self-start shadow-md shrink-0">
+                  <div className="relative overflow-hidden inline-block bg-gradient-to-r from-amber-500 to-orange-500 text-[#F5F4EE] text-[9px] font-black py-1 px-3 rounded-full uppercase tracking-widest mb-2.5 self-center sm:self-start shadow-md shrink-0">
                     <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 to-transparent animate-shimmer pointer-events-none" />
                     <span className="relative z-10">Bundle Deal</span>
                   </div>
@@ -148,7 +148,7 @@ export default function GameBundles() {
                     {bundle.title}
                   </h3>
                   
-                  <div className="text-xs font-semibold text-[#1F2937] mb-3 space-y-1 bg-[#F9FAFB]/50 p-2.5 rounded-xl border border-[#E5E7EB] max-h-[85px] overflow-y-auto hide-scrollbar">
+                  <div className="text-xs font-semibold text-[#1F2937] mb-3 space-y-1 bg-[#F5F4EE]/50 p-2.5 rounded-xl border border-[#E5E7EB] max-h-[85px] overflow-y-auto hide-scrollbar">
                     <span className="text-[#D1D5DB] uppercase tracking-wider text-[9px] block mb-0.5">Items Included:</span>
                     {includedGames.length > 0 ? (
                       includedGames.map((g, i) => (

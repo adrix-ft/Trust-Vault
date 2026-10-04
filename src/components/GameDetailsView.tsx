@@ -72,23 +72,23 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
       <div className="relative w-full max-w-7xl mx-auto pb-24 animate-pulse">
         {/* Back Button Skeleton */}
         <div className="absolute top-4 left-4 z-50">
-          <div className="w-32 h-10 bg-[#FFFFFF] rounded-full border border-[#E5E7EB]"></div>
+          <div className="w-32 h-10 bg-[#FCFBF6] rounded-full border border-[#E5E7EB]"></div>
         </div>
         {/* Hero Banner Skeleton */}
-        <div className="relative w-full h-[50vh] min-h-[400px] md:h-[60vh] rounded-b-[3rem] overflow-hidden shadow-2xl bg-[#F9FAFB]">
+        <div className="relative w-full h-[50vh] min-h-[400px] md:h-[60vh] rounded-b-[3rem] overflow-hidden shadow-2xl bg-[#F5F4EE]">
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_1.5s_infinite]" />
           <div className="absolute bottom-0 left-0 w-full p-6 md:p-12 lg:p-16 flex flex-col items-start z-10 space-y-4">
              <div className="w-24 h-6 bg-[#E5E7EB] rounded-md"></div>
-             <div className="w-2/3 md:w-1/2 h-12 md:h-16 bg-[#FFFFFF] rounded-xl border border-[#E5E7EB]"></div>
+             <div className="w-2/3 md:w-1/2 h-12 md:h-16 bg-[#FCFBF6] rounded-xl border border-[#E5E7EB]"></div>
              <div className="w-1/3 h-6 bg-[#E5E7EB] rounded-md"></div>
           </div>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 p-4 sm:p-6 lg:p-8 -mt-16 md:-mt-24 relative z-20">
           <div className="lg:col-span-2 space-y-6">
-             <div className="h-[200px] bg-[#FFFFFF] rounded-3xl border border-[#E5E7EB]"></div>
+             <div className="h-[200px] bg-[#FCFBF6] rounded-3xl border border-[#E5E7EB]"></div>
           </div>
           <div className="lg:col-span-1 space-y-6">
-             <div className="h-[400px] bg-[#FFFFFF] rounded-3xl border border-[#E5E7EB]"></div>
+             <div className="h-[400px] bg-[#FCFBF6] rounded-3xl border border-[#E5E7EB]"></div>
           </div>
         </div>
       </div>
@@ -133,7 +133,7 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
       <div className="absolute top-4 left-4 z-50">
         <button 
           onClick={() => setSelectedCategory('Store')}
-          className="flex items-center gap-2 bg-[#F9FAFB]/80 backdrop-blur-md border border-[#E5E7EB] text-[#1F2937] hover:text-gray-900 px-4 py-2 rounded-full font-bold text-xs uppercase tracking-wider transition-all hover:bg-[#E5E7EB] shadow-lg"
+          className="flex items-center gap-2 bg-[#F5F4EE]/80 backdrop-blur-md border border-[#E5E7EB] text-[#1F2937] hover:text-gray-900 px-4 py-2 rounded-full font-bold text-xs uppercase tracking-wider transition-all hover:bg-[#E5E7EB] shadow-lg"
         >
           <ArrowLeft className="w-4 h-4" /> Back to Store
         </button>
@@ -223,7 +223,7 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-[#FFFFFF] border border-[#E5E7EB] p-6 sm:p-8 rounded-3xl shadow-xl"
+            className="bg-[#FCFBF6] border border-[#E5E7EB] p-6 sm:p-8 rounded-3xl shadow-xl"
           >
             <h2 className="text-xl font-black text-gray-900 uppercase tracking-wider mb-4 border-b border-[#E5E7EB] pb-4 flex items-center gap-2">
               About This Game
@@ -245,12 +245,12 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-gradient-to-b from-[#FFFFFF] to-[#F9FAFB] border border-[#E5E7EB] p-6 sm:p-8 rounded-3xl shadow-[0_0_40px_rgba(0,0,0,0.5)] sticky top-[100px]"
+            className="bg-gradient-to-b from-[#FCFBF6] to-[#F5F4EE] border border-[#E5E7EB] p-6 sm:p-8 rounded-3xl shadow-[0_0_40px_rgba(0,0,0,0.5)] sticky top-[100px]"
           >
 
             {/* Platform Toggle */}
             {isAvailablePC && isAvailablePS && (
-              <div className="mb-6 flex p-1 bg-[#F9FAFB] rounded-xl border border-[#E5E7EB]">
+              <div className="mb-6 flex p-1 bg-[#F5F4EE] rounded-xl border border-[#E5E7EB]">
                 <button
                   onClick={() => { setActivePlatform('PS'); setSelectedVariantIndex(game.variants && game.variants.length > 0 ? 0 : -1); }}
                   className={`flex-1 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all cursor-pointer ${
@@ -282,7 +282,7 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
                     className={`w-full flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer ${
                       selectedVariantIndex === idx 
                         ? 'bg-[#E5E7EB] border-[#D1D5DB] shadow-md' 
-                        : 'bg-[#FFFFFF] border-[#E5E7EB] hover:border-[#D1D5DB]'
+                        : 'bg-[#FCFBF6] border-[#E5E7EB] hover:border-[#D1D5DB]'
                     }`}
                   >
                     <div className="flex items-center gap-3">
@@ -376,7 +376,7 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
                   className={`w-full py-4 px-6 rounded-2xl font-black text-sm uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg ${
                     inCartRent 
                       ? 'bg-[#1A2C38] text-[#D1D5DB] border border-[#E5E7EB] cursor-default'
-                      : 'bg-[#FFFFFF] hover:bg-[#1A2C38] text-blue-300 border border-blue-500/30 hover:border-blue-500/80 hover:scale-[1.02] active:scale-95 cursor-pointer'
+                      : 'bg-[#FCFBF6] hover:bg-[#1A2C38] text-blue-300 border border-blue-500/30 hover:border-blue-500/80 hover:scale-[1.02] active:scale-95 cursor-pointer'
                   }`}
                 >
                   {inCartRent ? <Check className="w-5 h-5" /> : <Clock className="w-5 h-5" />}
@@ -395,7 +395,7 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.35 }}
-              className="bg-[#FFFFFF] border border-[#E5E7EB] p-6 sm:p-8 rounded-3xl shadow-xl"
+              className="bg-[#FCFBF6] border border-[#E5E7EB] p-6 sm:p-8 rounded-3xl shadow-xl"
             >
               <h2 className="text-sm font-black text-[#4B5563] uppercase tracking-widest mb-4 border-b border-[#E5E7EB] pb-4 flex items-center gap-2">
                 System Requirements
@@ -418,11 +418,11 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
             transition={{ delay: 0.4 }}
             className="grid grid-cols-2 gap-4"
           >
-            <div className="bg-[#FFFFFF] border border-[#E5E7EB] rounded-2xl p-4 flex flex-col items-center justify-center text-center gap-2 hover:bg-[#1A2C38] hover:border-[#D1D5DB] transition-colors shadow-lg">
+            <div className="bg-[#FCFBF6] border border-[#E5E7EB] rounded-2xl p-4 flex flex-col items-center justify-center text-center gap-2 hover:bg-[#1A2C38] hover:border-[#D1D5DB] transition-colors shadow-lg">
               <ShieldCheck className="w-8 h-8 text-green-400" />
               <span className="text-[10px] font-black uppercase text-[#1F2937] tracking-wider">Secure Delivery</span>
             </div>
-            <div className="bg-[#FFFFFF] border border-[#E5E7EB] rounded-2xl p-4 flex flex-col items-center justify-center text-center gap-2 hover:bg-[#1A2C38] hover:border-[#D1D5DB] transition-colors shadow-lg">
+            <div className="bg-[#FCFBF6] border border-[#E5E7EB] rounded-2xl p-4 flex flex-col items-center justify-center text-center gap-2 hover:bg-[#1A2C38] hover:border-[#D1D5DB] transition-colors shadow-lg">
               <Star className="w-8 h-8 text-amber-400" />
               <span className="text-[10px] font-black uppercase text-[#1F2937] tracking-wider">Top Rated</span>
             </div>
@@ -487,9 +487,9 @@ const VariantInfoModal = ({ variant, onClose }: { variant: string, onClose: () =
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-[#F9FAFB]/80 backdrop-blur-sm cursor-pointer" onClick={onClose} />
-      <motion.div initial={{ opacity: 0, y: 20, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 20, scale: 0.95 }} className="bg-[#FFFFFF] border border-[#E5E7EB] rounded-3xl p-6 sm:p-8 shadow-2xl w-full max-w-md relative z-10 max-h-[90vh] overflow-y-auto">
-        <button onClick={onClose} className="absolute top-4 right-4 text-[#4B5563] hover:text-gray-900 bg-[#F9FAFB] rounded-full p-1 border border-[#E5E7EB] transition-colors"><X className="w-5 h-5" /></button>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-[#F5F4EE]/80 backdrop-blur-sm cursor-pointer" onClick={onClose} />
+      <motion.div initial={{ opacity: 0, y: 20, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 20, scale: 0.95 }} className="bg-[#FCFBF6] border border-[#E5E7EB] rounded-3xl p-6 sm:p-8 shadow-2xl w-full max-w-md relative z-10 max-h-[90vh] overflow-y-auto">
+        <button onClick={onClose} className="absolute top-4 right-4 text-[#4B5563] hover:text-gray-900 bg-[#F5F4EE] rounded-full p-1 border border-[#E5E7EB] transition-colors"><X className="w-5 h-5" /></button>
         <h3 className="text-lg font-black text-gray-900 uppercase tracking-wider mb-4 border-b border-[#E5E7EB] pb-4 pr-6 leading-tight">{details.title}</h3>
         <ul className="space-y-3 mb-6">
           {details.points.map((pt, i) => (
@@ -499,7 +499,7 @@ const VariantInfoModal = ({ variant, onClose }: { variant: string, onClose: () =
             </li>
           ))}
         </ul>
-        <div className="bg-[#F9FAFB] p-5 rounded-2xl border border-[#E5E7EB]/80 shadow-inner">
+        <div className="bg-[#F5F4EE] p-5 rounded-2xl border border-[#E5E7EB]/80 shadow-inner">
           <p className="text-[11px] font-black text-red-400/90 uppercase tracking-widest flex items-center gap-1.5 mb-3 border-b border-[#E5E7EB]/50 pb-2">
             📌 Important
           </p>

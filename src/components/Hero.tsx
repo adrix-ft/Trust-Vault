@@ -64,13 +64,13 @@ export default function Hero() {
   if (!catalogLoaded && heroGames.length === 0) {
     return (
       <div className="w-full mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 pt-6 md:pt-8 pb-4">
-        <div className="flex flex-col lg:flex-row gap-0 bg-[#FFFFFF] rounded-2xl overflow-hidden border border-[#E5E7EB] shadow-2xl w-full animate-pulse h-[350px] lg:h-[400px]">
+        <div className="flex flex-col lg:flex-row gap-0 bg-[#FCFBF6] rounded-2xl overflow-hidden border border-[#E5E7EB] shadow-2xl w-full animate-pulse h-[350px] lg:h-[400px]">
            {/* Left Image Skeleton */}
-           <div className="w-full lg:w-2/3 h-full bg-[#F9FAFB] relative overflow-hidden hidden lg:block">
+           <div className="w-full lg:w-2/3 h-full bg-[#F5F4EE] relative overflow-hidden hidden lg:block">
              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_1.5s_infinite]" />
            </div>
            {/* Right Content Skeleton */}
-           <div className="w-full lg:w-1/3 bg-[#FFFFFF] p-6 lg:p-8 flex flex-col justify-center gap-4 relative">
+           <div className="w-full lg:w-1/3 bg-[#FCFBF6] p-6 lg:p-8 flex flex-col justify-center gap-4 relative">
              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_1.5s_infinite]" />
              <div className="h-4 bg-[#E5E7EB] rounded-md w-1/4"></div>
              <div className="h-8 bg-[#E5E7EB] rounded-md w-3/4"></div>
@@ -101,10 +101,10 @@ export default function Hero() {
   return (
     <div className="w-full mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 pt-6 md:pt-8 pb-4">
       
-      <div className="flex flex-col lg:flex-row gap-0 bg-[#FFFFFF] rounded-2xl overflow-hidden border border-[#E5E7EB] shadow-2xl w-full">
+      <div className="flex flex-col lg:flex-row gap-0 bg-[#FCFBF6] rounded-2xl overflow-hidden border border-[#E5E7EB] shadow-2xl w-full">
         
         {/* Left: 16:9 Banner */}
-        <div className="w-full lg:w-2/3 aspect-video relative group overflow-hidden bg-[#F9FAFB]">
+        <div className="w-full lg:w-2/3 aspect-video relative group overflow-hidden bg-[#F5F4EE]">
           <AnimatePresence mode="popLayout">
             <motion.div
               key={activeGame.title}
@@ -130,21 +130,21 @@ export default function Hero() {
           
           <button 
             onClick={() => setActiveIndex((prev) => (prev - 1 + heroGames.length) % heroGames.length)}
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#F9FAFB]/70 border border-[#D1D5DB]/50 flex items-center justify-center text-gray-900 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#D1D5DB] cursor-pointer"
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#F5F4EE]/70 border border-[#D1D5DB]/50 flex items-center justify-center text-gray-900 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#D1D5DB] cursor-pointer"
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
           
           <button 
             onClick={() => setActiveIndex((prev) => (prev + 1) % heroGames.length)}
-            className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#F9FAFB]/70 border border-[#D1D5DB]/50 flex items-center justify-center text-gray-900 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#D1D5DB] cursor-pointer"
+            className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#F5F4EE]/70 border border-[#D1D5DB]/50 flex items-center justify-center text-gray-900 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#D1D5DB] cursor-pointer"
           >
             <ChevronRight className="w-6 h-6" />
           </button>
         </div>
 
         {/* Right: Game Details */}
-        <div className="w-full lg:w-1/3 p-5 sm:p-6 lg:p-8 flex flex-col justify-between relative bg-[#FFFFFF] overflow-hidden">
+        <div className="w-full lg:w-1/3 p-5 sm:p-6 lg:p-8 flex flex-col justify-between relative bg-[#FCFBF6] overflow-hidden">
           <AnimatePresence mode="popLayout">
             <motion.div
               key={activeGame.title}

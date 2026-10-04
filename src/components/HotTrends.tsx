@@ -35,11 +35,11 @@ export default function HotTrends() {
             <div 
               key={t.title} 
               onClick={() => setActiveCard(isSelected ? null : t.title)}
-              className={`col-span-1 h-[320px] bg-gradient-to-b ${idx % 2 === 0 ? 'from-[#FFFFFF] to-[#F9FAFB]' : 'from-[#E5E7EB] to-[#F9FAFB]'} rounded-md relative group overflow-hidden cursor-pointer flex flex-col justify-end p-4 border border-[#E5E7EB] hover:border-[#D1D5DB] transition-all duration-300 hover:scale-[1.03] hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5),0_0_20px_rgba(74,92,106,0.3)] hover:z-20`}
+              className={`col-span-1 h-[320px] bg-gradient-to-b ${idx % 2 === 0 ? 'from-[#FCFBF6] to-[#F5F4EE]' : 'from-[#E5E7EB] to-[#F5F4EE]'} rounded-md relative group overflow-hidden cursor-pointer flex flex-col justify-end p-4 border border-[#E5E7EB] hover:border-[#D1D5DB] transition-all duration-300 hover:scale-[1.03] hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5),0_0_20px_rgba(74,92,106,0.3)] hover:z-20`}
             >
               
               <div className="absolute top-0 left-0 w-28 h-28 overflow-hidden pointer-events-none z-30">
-                <div className="absolute transform -rotate-45 -left-8 top-4 bg-gradient-to-r from-emerald-500 to-green-400 text-[#F9FAFB] text-[9px] font-black py-0.5 w-32 text-center shadow-md uppercase tracking-widest">
+                <div className="absolute transform -rotate-45 -left-8 top-4 bg-gradient-to-r from-emerald-500 to-green-400 text-[#F5F4EE] text-[9px] font-black py-0.5 w-32 text-center shadow-md uppercase tracking-widest">
                   TREND
                 </div>
               </div>
@@ -47,7 +47,7 @@ export default function HotTrends() {
 
               <div className="absolute inset-0 bg-cover bg-center transition-all duration-500 ease-out saturate-[1.2] contrast-[1.1] brightness-100 group-hover:scale-110 group-hover:saturate-[1.3] group-hover:brightness-110 z-0" style={{ backgroundImage: `url('${t.customCoverUrl || getGameCoverUrl(t.title)}')` }}></div>
               
-              <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#F9FAFB]/95 via-[#F9FAFB]/60 to-transparent pointer-events-none transition-opacity duration-300 z-10" />
+              <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#F5F4EE]/95 via-[#F5F4EE]/60 to-transparent pointer-events-none transition-opacity duration-300 z-10" />
               
               <div className="relative z-20 flex flex-col justify-end bg-transparent -mx-4 -mb-4 p-4 pt-3">
                 <div className="flex justify-between items-end mb-2">
