@@ -148,7 +148,7 @@ function AppContent() {
             )}
 
             {selectedCategory === 'Proofs' && (
-              <main className="w-full mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 py-12 relative z-10">
+              <main className="w-full relative z-10">
                 <ProofSection onSelectImage={setSelectedProofImage} />
               </main>
             )}
