@@ -69,7 +69,7 @@ export default function GameLibrary() {
           <div className="mt-10 flex justify-center">
             <button
               onClick={() => setVisibleCount(prev => prev + 30)}
-              className="flex items-center gap-2 px-6 py-3 rounded-full bg-[#FCFBF6] border border-[#E5E7EB] hover:border-[#D1D5DB] text-[#1F2937] hover:text-gray-900 text-xs font-bold tracking-wider uppercase transition-all shadow-lg hover:scale-105"
+              className="flex items-center gap-2 px-6 py-3 rounded-full bg-gray-900 border border-transparent hover:bg-gray-800 text-white text-xs font-bold tracking-wider uppercase transition-all shadow-lg hover:shadow-xl hover:scale-105"
             >
               <span>Show More Games</span>
               <ChevronDown className="w-4 h-4" />
@@ -151,8 +151,8 @@ const GameCard = memo(({ game, index, isSelected, setSelectedCategory, inCart, p
               }}
               className={`relative overflow-hidden flex-1 py-2 px-2 rounded-lg font-bold text-[10px] uppercase tracking-wider transition-all border ${
                 inCart 
-                  ? 'bg-gray-100 text-gray-500 border-gray-200 shadow-inner' 
-                  : 'bg-white hover:bg-gray-50 text-gray-900 border-gray-200 hover:border-gray-300 shadow-sm hover:shadow'
+                  ? 'bg-gray-200 text-gray-500 border-transparent shadow-inner' 
+                  : 'bg-gray-900 hover:bg-gray-800 text-white border-transparent shadow-md hover:shadow-lg'
               }`}
             >
               {!inCart && (

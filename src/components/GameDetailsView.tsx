@@ -337,8 +337,8 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
                 disabled={inCartPermanent}
                 className={`w-full py-4 px-6 rounded-2xl font-black text-sm uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg ${
                   inCartPermanent 
-                    ? 'bg-[#E5E7EB] text-[#4B5563] border border-[#D1D5DB] cursor-default'
-                    : 'bg-gradient-to-r from-[#D1D5DB] to-[#596F80] hover:from-[#596F80] hover:to-[#D1D5DB] text-white border border-[#596F80] hover:scale-[1.02] active:scale-95 cursor-pointer'
+                    ? 'bg-gray-200 text-gray-500 border border-transparent cursor-default shadow-inner'
+                    : 'bg-gray-900 hover:bg-gray-800 text-white border border-transparent hover:scale-[1.02] active:scale-95 cursor-pointer'
                 }`}
               >
                 {inCartPermanent ? <Check className="w-5 h-5" /> : <ShoppingCart className="w-5 h-5" />}
@@ -375,8 +375,8 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
                   disabled={inCartRent}
                   className={`w-full py-4 px-6 rounded-2xl font-black text-sm uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg ${
                     inCartRent 
-                      ? 'bg-[#1A2C38] text-[#D1D5DB] border border-[#E5E7EB] cursor-default'
-                      : 'bg-[#FCFBF6] hover:bg-[#1A2C38] text-blue-300 border border-blue-500/30 hover:border-blue-500/80 hover:scale-[1.02] active:scale-95 cursor-pointer'
+                      ? 'bg-gray-200 text-gray-500 border border-transparent cursor-default shadow-inner'
+                      : 'bg-white hover:bg-gray-50 text-gray-900 border-2 border-gray-900 hover:scale-[1.02] active:scale-95 cursor-pointer'
                   }`}
                 >
                   {inCartRent ? <Check className="w-5 h-5" /> : <Clock className="w-5 h-5" />}
