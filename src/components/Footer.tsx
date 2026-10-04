@@ -79,7 +79,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left text-[11px]">
-          <div className="text-[#D1D5DB]">
+          <div className="text-[#4B5563] font-medium">
             &copy; {new Date().getFullYear()} Trust Vault. All Rights Reserved.
           </div>
 
