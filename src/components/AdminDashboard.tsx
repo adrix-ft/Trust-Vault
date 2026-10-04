@@ -2166,10 +2166,24 @@ export default function AdminDashboard() {
                               <label className="text-[9px] text-[#4B5563] font-bold uppercase tracking-wider">Color:</label>
                               <input 
                                 type="color" 
-                                value={formData.tagColors?.['DELUXE EDITION'] || '#22d3ee'} 
+                                value={formData.tagColors?.['DELUXE EDITION'] || globalTagColors?.['DELUXE EDITION'] || '#22d3ee'} 
                                 onChange={(e) => handleTagColorChange('DELUXE EDITION', e.target.value)}
                                 className="w-5 h-5 rounded cursor-pointer bg-transparent border-0 p-0"
                               />
+                              {formData.tagColors?.['DELUXE EDITION'] && (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const newTagColors = { ...formData.tagColors };
+                                    delete newTagColors['DELUXE EDITION'];
+                                    setFormData({ ...formData, tagColors: newTagColors });
+                                  }}
+                                  className="text-red-400 hover:text-red-500 hover:bg-red-500/10 p-1 rounded-full transition-colors"
+                                  title="Reset to Global Color"
+                                >
+                                  <RefreshCw className="w-3 h-3" />
+                                </button>
+                              )}
                             </div>
                           )}
                         </div>
@@ -2217,11 +2231,25 @@ export default function AdminDashboard() {
                                 <span>{tag}</span>
                                 <input 
                                   type="color" 
-                                  value={formData.tagColors?.[tag] || '#22d3ee'} 
+                                  value={formData.tagColors?.[tag] || globalTagColors?.[tag] || '#22d3ee'} 
                                   onChange={(e) => handleTagColorChange(tag, e.target.value)}
                                   className="w-4 h-4 ml-1 rounded cursor-pointer bg-transparent border-0 p-0"
                                   title="Choose Tag Color"
                                 />
+                                {formData.tagColors?.[tag] && (
+                                  <button 
+                                    type="button" 
+                                    onClick={() => {
+                                      const newTagColors = { ...formData.tagColors };
+                                      delete newTagColors[tag];
+                                      setFormData({ ...formData, tagColors: newTagColors });
+                                    }}
+                                    className="text-red-400 hover:text-red-500 hover:bg-red-500/20 rounded-full p-0.5 transition-colors ml-0.5"
+                                    title="Reset to Global Color"
+                                  >
+                                    <RefreshCw className="w-3 h-3" />
+                                  </button>
+                                )}
                                 <button type="button" onClick={() => handleCategoryToggle(tag)} className="text-cyan-400 hover:text-gray-900 hover:bg-cyan-500/50 rounded-full p-0.5 transition-colors ml-0.5">
                                   <X className="w-3 h-3" />
                                 </button>
