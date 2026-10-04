@@ -69,7 +69,7 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
 
   if (!catalogLoaded && !game) {
     return (
-      <div className="relative w-full max-w-7xl mx-auto pb-24 animate-pulse">
+      <div className="relative w-full pb-24 animate-pulse">
         {/* Back Button Skeleton */}
         <div className="absolute top-4 left-4 z-50">
           <div className="w-32 h-10 bg-[#FCFBF6] rounded-full border border-[#E5E7EB]"></div>
@@ -128,7 +128,7 @@ export default function GameDetailsView({ gameTitle }: GameDetailsViewProps) {
   const rentGameToAdd = { ...game, rentPeriod: `${rentMonths} Month${rentMonths > 1 ? 's' : ''}`, rentPrice: calculatedRentPrice };
 
   return (
-    <div className="relative w-full max-w-7xl mx-auto pb-24">
+    <div className="relative w-full pb-24">
       {/* Back Button */}
       <div className="absolute top-4 left-4 z-50">
         <button 
