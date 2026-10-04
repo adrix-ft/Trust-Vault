@@ -39,12 +39,12 @@ export default function Promos() {
           <div 
             key={game.title}
             onClick={() => setActiveIndex(idx)}
-            className="flex-none snap-center w-[160px] sm:w-[200px] lg:w-auto lg:flex-1 bg-[#11212D] rounded-xl lg:rounded-md relative overflow-hidden flex items-center justify-end px-4 lg:px-8 group cursor-pointer border transition-all duration-300 hover:scale-[1.03] lg:hover:-translate-y-1 h-[55px] lg:h-auto"
-            style={{ borderColor: idx === activeIndex ? '#CCD0CF' : '#253745' }}
+            className="flex-none snap-center w-[160px] sm:w-[200px] lg:w-auto lg:flex-1 bg-[#FFFFFF] rounded-xl lg:rounded-md relative overflow-hidden flex items-center justify-end px-4 lg:px-8 group cursor-pointer border transition-all duration-300 hover:scale-[1.03] lg:hover:-translate-y-1 h-[55px] lg:h-auto"
+            style={{ borderColor: idx === activeIndex ? '#1F2937' : '#E5E7EB' }}
           >
             <div className="absolute inset-0 bg-cover bg-center transition-all duration-500 saturate-[1.1] group-hover:scale-110" style={{ backgroundImage: `url('${game.customCoverUrl || getGameCoverUrl(game.title)}')` }}></div>
-            <div className="absolute inset-0 bg-gradient-to-l from-[#06141B]/95 via-[#06141B]/60 to-transparent pointer-events-none" />
-            <span className="font-semibold text-[11px] lg:text-sm tracking-wider text-[#9BA8AB] group-hover:text-[#CCD0CF] relative z-10 uppercase drop-shadow-md text-right truncate w-full">
+            <div className="absolute inset-0 bg-gradient-to-l from-[#F9FAFB]/95 via-[#F9FAFB]/60 to-transparent pointer-events-none" />
+            <span className="font-semibold text-[11px] lg:text-sm tracking-wider text-[#4B5563] group-hover:text-[#1F2937] relative z-10 uppercase drop-shadow-md text-right truncate w-full">
               {game.title}
             </span>
           </div>
@@ -52,10 +52,10 @@ export default function Promos() {
       </div>
 
       {/* Main Promo Video Card */}
-      <div className="order-1 lg:order-2 h-[240px] sm:h-[300px] lg:h-full bg-[#11212D] rounded-2xl lg:rounded-md relative overflow-hidden group flex flex-col items-center justify-center border border-[#253745] hover:border-[#4A5C6A] transition-all shadow-xl">
+      <div className="order-1 lg:order-2 h-[240px] sm:h-[300px] lg:h-full bg-[#FFFFFF] rounded-2xl lg:rounded-md relative overflow-hidden group flex flex-col items-center justify-center border border-[#E5E7EB] hover:border-[#D1D5DB] transition-all shadow-xl">
         <div className="absolute inset-0 bg-cover bg-center transition-all duration-500 ease-out saturate-[1.1]" style={{ backgroundImage: `url('${activePromo.customCoverUrl || getGameCoverUrl(activePromo.title)}')` }}></div>
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#06141B]/95 via-[#06141B]/40 to-transparent pointer-events-none" />
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#06141B]/95 via-[#06141B]/60 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#F9FAFB]/95 via-[#F9FAFB]/40 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#F9FAFB]/95 via-[#F9FAFB]/60 to-transparent pointer-events-none" />
         <PlatformTags platforms={activePromo.categories} tagColors={activePromo.tagColors} />
         
         <AnimatePresence mode="wait">
@@ -68,8 +68,8 @@ export default function Promos() {
             className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-20"
           >
             <div className="absolute top-4 sm:top-6 left-1/2 -translate-x-1/2 text-center w-full drop-shadow-md">
-               <div className="text-[10px] sm:text-xs text-[#9BA8AB] mb-1 uppercase tracking-widest">Featured Game</div>
-               <div className="text-lg sm:text-xl inline-block font-black tracking-widest uppercase border-b border-[#4A5C6A] pb-1 text-[#CCD0CF] truncate w-[90%] sm:w-64 px-4">{activePromo.title}</div>
+               <div className="text-[10px] sm:text-xs text-[#4B5563] mb-1 uppercase tracking-widest">Featured Game</div>
+               <div className="text-lg sm:text-xl inline-block font-black tracking-widest uppercase border-b border-[#D1D5DB] pb-1 text-[#1F2937] truncate w-[90%] sm:w-64 px-4">{activePromo.title}</div>
             </div>
             
             <div 
@@ -78,16 +78,16 @@ export default function Promos() {
                 if (activePromo.trailer) setPlayingTrailerUrl(activePromo.trailer);
                 else alert('Trailer coming soon for ' + activePromo.title);
               }}
-              className="w-12 h-12 sm:w-14 sm:h-14 bg-[#CCD0CF] backdrop-blur rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(204,208,207,0.1)] group-hover:scale-110 transition-all cursor-pointer pointer-events-auto z-10"
+              className="w-12 h-12 sm:w-14 sm:h-14 bg-[#1F2937] backdrop-blur rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(204,208,207,0.1)] group-hover:scale-110 transition-all cursor-pointer pointer-events-auto z-10"
             >
-              <Play className="w-4 h-4 sm:w-5 sm:h-5 text-[#06141B] ml-1" fill="currentColor" />
+              <Play className="w-4 h-4 sm:w-5 sm:h-5 text-[#F9FAFB] ml-1" fill="currentColor" />
             </div>
             
             <div className="absolute bottom-4 sm:bottom-6 text-center w-full z-10 px-4 flex flex-col items-center drop-shadow-md">
-              <div className="text-[11px] sm:text-xs text-[#9BA8AB] mb-2 sm:mb-3 font-semibold tracking-widest">{activePromo.price}</div>
+              <div className="text-[11px] sm:text-xs text-[#4B5563] mb-2 sm:mb-3 font-semibold tracking-widest">{activePromo.price}</div>
               <button 
                 onClick={(e) => { e.stopPropagation(); addToCart(activePromo); }}
-                className="flex items-center gap-2 px-5 py-2 sm:py-2.5 rounded-full bg-[#253745]/80 hover:bg-[#4A5C6A] border border-[#4A5C6A] text-[#CCD0CF] hover:text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all pointer-events-auto shadow-lg backdrop-blur-sm"
+                className="flex items-center gap-2 px-5 py-2 sm:py-2.5 rounded-full bg-[#E5E7EB]/80 hover:bg-[#D1D5DB] border border-[#D1D5DB] text-[#1F2937] hover:text-gray-900 text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all pointer-events-auto shadow-lg backdrop-blur-sm"
               >
                 <ShoppingCart className="w-3.5 h-3.5" />
                 BUY NOW

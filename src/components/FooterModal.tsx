@@ -15,18 +15,18 @@ export default function FooterModal({ type, onClose }: FooterModalProps) {
           title: 'Terms & Conditions',
           icon: FileText,
           content: (
-            <div className="space-y-4 text-xs sm:text-sm text-[#9BA8AB] leading-relaxed">
-              <p className="text-white font-semibold">
+            <div className="space-y-4 text-xs sm:text-sm text-[#4B5563] leading-relaxed">
+              <p className="text-gray-900 font-semibold">
                 Welcome to Trust Vault. By purchasing from us, you agree to the following terms and usage guidelines:
               </p>
 
-              <div className="bg-[#06141B] p-4 rounded-xl border border-[#253745] space-y-2">
-                <h4 className="text-white font-bold flex items-center gap-2">
+              <div className="bg-[#F9FAFB] p-4 rounded-xl border border-[#E5E7EB] space-y-2">
+                <h4 className="text-gray-900 font-bold flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-amber-400" /> Platform License Durations
                 </h4>
                 <ul className="list-disc pl-5 space-y-1 text-xs">
-                  <li><strong className="text-white">PC Games:</strong> Provided with permanent access terms as specified per individual listing.</li>
-                  <li><strong className="text-white">PlayStation Games:</strong> Provided in multiple variants including Permanent, Primary Online, Primary Offline, and 1-Month Secondary Access. Please read the specific variant details on the game page before purchasing.</li>
+                  <li><strong className="text-gray-900">PC Games:</strong> Provided with permanent access terms as specified per individual listing.</li>
+                  <li><strong className="text-gray-900">PlayStation Games:</strong> Provided in multiple variants including Permanent, Primary Online, Primary Offline, and 1-Month Secondary Access. Please read the specific variant details on the game page before purchasing.</li>
                 </ul>
               </div>
 
@@ -42,7 +42,7 @@ export default function FooterModal({ type, onClose }: FooterModalProps) {
           title: 'Legal & Copyright Notice',
           icon: Copyright,
           content: (
-            <div className="space-y-4 text-xs sm:text-sm text-[#9BA8AB] leading-relaxed">
+            <div className="space-y-4 text-xs sm:text-sm text-[#4B5563] leading-relaxed">
               <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-amber-300 text-xs flex items-start gap-2.5">
                 <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
                 <span>
@@ -54,7 +54,7 @@ export default function FooterModal({ type, onClose }: FooterModalProps) {
                 All game titles, logos, cover arts, trademarks, and associated imagery displayed on this website are the sole property of their respective copyright holders and publishers, including but not limited to:
               </p>
 
-              <div className="bg-[#06141B] p-4 rounded-xl border border-[#253745] grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] text-[#CCD0CF]">
+              <div className="bg-[#F9FAFB] p-4 rounded-xl border border-[#E5E7EB] grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] text-[#1F2937]">
                 <div>• Sony Interactive Entertainment</div>
                 <div>• Rockstar Games</div>
                 <div>• Capcom Co., Ltd.</div>
@@ -77,7 +77,7 @@ export default function FooterModal({ type, onClose }: FooterModalProps) {
           title: 'Privacy Policy',
           icon: ShieldCheck,
           content: (
-            <div className="space-y-4 text-xs sm:text-sm text-[#9BA8AB] leading-relaxed">
+            <div className="space-y-4 text-xs sm:text-sm text-[#4B5563] leading-relaxed">
               <p>
                 Your privacy is vital to us. Trust Vault collects only necessary transaction details (such as contact handles and payment confirmations) required to deliver your game accounts or keys securely via WhatsApp or direct communication channels.
               </p>
@@ -93,7 +93,7 @@ export default function FooterModal({ type, onClose }: FooterModalProps) {
           title: 'Discount & Pricing Policy',
           icon: Info,
           content: (
-            <div className="space-y-4 text-xs sm:text-sm text-[#9BA8AB] leading-relaxed">
+            <div className="space-y-4 text-xs sm:text-sm text-[#4B5563] leading-relaxed">
               <p>
                 Prices and promotional discounts on Trust Vault are subject to change based on regional availability, publisher updates, and special seasonal events.
               </p>
@@ -109,8 +109,8 @@ export default function FooterModal({ type, onClose }: FooterModalProps) {
           title: 'About Trust Vault',
           icon: Info,
           content: (
-            <div className="space-y-4 text-xs sm:text-sm text-[#9BA8AB] leading-relaxed">
-              <p className="text-white font-semibold">
+            <div className="space-y-4 text-xs sm:text-sm text-[#4B5563] leading-relaxed">
+              <p className="text-gray-900 font-semibold">
                 Your trusted gateway to affordable, high-speed, next-gen gaming.
               </p>
               <p>
@@ -130,19 +130,19 @@ export default function FooterModal({ type, onClose }: FooterModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
-      <div className="relative w-full max-w-2xl bg-[#11212D] border border-[#253745] rounded-2xl shadow-2xl overflow-hidden text-white flex flex-col max-h-[85vh]">
+      <div className="relative w-full max-w-2xl bg-[#FFFFFF] border border-[#E5E7EB] rounded-2xl shadow-2xl overflow-hidden text-gray-900 flex flex-col max-h-[85vh]">
 
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 bg-[#06141B] border-b border-[#253745]">
+        <div className="flex items-center justify-between px-6 py-4 bg-[#F9FAFB] border-b border-[#E5E7EB]">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-lg bg-[#253745]/50 border border-[#4A5C6A]/30 text-[#CCD0CF]">
+            <div className="p-2 rounded-lg bg-[#E5E7EB]/50 border border-[#D1D5DB]/30 text-[#1F2937]">
               <IconComponent className="w-4 h-4" />
             </div>
             <h3 className="text-base font-black tracking-wider uppercase">{currentModal.title}</h3>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-full bg-[#11212D] hover:bg-[#253745] text-[#9BA8AB] hover:text-white transition-colors cursor-pointer border border-[#253745]"
+            className="p-1.5 rounded-full bg-[#FFFFFF] hover:bg-[#E5E7EB] text-[#4B5563] hover:text-gray-900 transition-colors cursor-pointer border border-[#E5E7EB]"
           >
             <X className="w-4 h-4" />
           </button>
@@ -154,10 +154,10 @@ export default function FooterModal({ type, onClose }: FooterModalProps) {
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 bg-[#06141B] border-t border-[#253745] flex justify-end">
+        <div className="px-6 py-4 bg-[#F9FAFB] border-t border-[#E5E7EB] flex justify-end">
           <button
             onClick={onClose}
-            className="px-5 py-2 rounded-xl bg-gradient-to-r from-[#253745] to-[#4A5C6A] hover:from-[#4A5C6A] hover:to-[#596F80] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md cursor-pointer"
+            className="px-5 py-2 rounded-xl bg-gradient-to-r from-[#E5E7EB] to-[#D1D5DB] hover:from-[#D1D5DB] hover:to-[#596F80] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md cursor-pointer"
           >
             Close
           </button>

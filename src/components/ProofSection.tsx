@@ -42,70 +42,113 @@ export default function ProofSection({ onSelectImage }: ProofSectionProps) {
   }, []);
 
   return (
-    <div className="space-y-8 py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-[100vw] overflow-hidden bg-white">
       {/* Section Header */}
-      <div className="flex flex-col items-center text-center space-y-3">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#253745]/50 border border-[#4A5C6A]/30 text-[#CCD0CF] text-xs font-bold uppercase tracking-wider">
-          <ShieldCheck className="w-4 h-4 text-green-400" />
-          <span>Verified Trust & Safety</span>
-        </div>
-        <h2 className="text-3xl md:text-4xl font-black text-white uppercase tracking-wider">
-          Customer Proofs & Deals
+      <div className="flex flex-col items-center text-center space-y-3 mb-10">
+        <h2 className="text-3xl md:text-4xl font-black text-gray-900 uppercase tracking-wider">
+          Customer Screenshots
         </h2>
-        <p className="text-[#9BA8AB] text-sm max-w-lg">
-          Check out screenshots of our previous successful deliveries and happy gamers. Your satisfaction and trust come first!
+        <p className="text-gray-600 text-sm max-w-lg">
+          Real WhatsApp screenshots from our customers.
         </p>
       </div>
 
       {/* Loading / Proofs Grid */}
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="bg-[#11212D] rounded-xl overflow-hidden border border-[#253745] shadow-lg animate-pulse flex flex-col">
-              <div className="aspect-[4/3] bg-[#253745]" />
-              <div className="p-3 bg-[#06141B]/60 flex items-center justify-between border-t border-[#253745]">
-                <div className="h-3 w-20 bg-[#253745] rounded" />
-                <div className="h-3 w-10 bg-[#253745] rounded" />
-              </div>
-            </div>
-          ))}
+        <div className="flex justify-center items-center h-64">
+          <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
       ) : proofs.length === 0 ? (
-        <div className="text-center py-16 bg-[#11212D]/40 rounded-2xl border border-[#253745] shadow-xl">
-          <p className="text-[#CCD0CF] text-xs uppercase font-bold tracking-wider mb-2">
+        <div className="text-center py-16 bg-gray-50 rounded-2xl border border-gray-200 shadow-sm max-w-4xl mx-auto">
+          <p className="text-gray-700 text-xs uppercase font-bold tracking-wider mb-2">
             No proof screenshots uploaded yet.
           </p>
-          <p className="text-[#9BA8AB] text-[11px]">
+          <p className="text-gray-500 text-[11px]">
             Upload your deal screenshots into your 'proof' bucket on your second Supabase account.
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {proofs.map((url, index) => (
-            <div 
-              key={index} 
-              onClick={() => onSelectImage(url)}
-              className="bg-[#11212D] rounded-xl overflow-hidden border border-[#253745] hover:border-[#4A5C6A] transition-all cursor-pointer group shadow-lg flex flex-col"
-            >
-              <div className="aspect-[4/3] relative overflow-hidden bg-[#06141B]">
-                <img 
-                  src={url} 
-                  alt={`Proof ${index + 1}`}
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#06141B] via-transparent to-transparent opacity-60" />
-                <div className="absolute top-2 right-2 bg-[#06141B]/80 backdrop-blur-md p-1.5 rounded-lg text-[#CCD0CF] opacity-0 group-hover:opacity-100 transition-opacity border border-[#253745]">
-                  <ExternalLink className="w-3.5 h-3.5" />
+        <div className="relative flex flex-col gap-6 overflow-hidden w-full py-4 max-w-[100vw] -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+          
+          {/* Row 1: Moves Left */}
+          <div className="flex gap-6 w-full group">
+            <div className="flex animate-marquee gap-6 whitespace-nowrap min-w-full shrink-0 items-center justify-around px-3">
+              {[...proofs].map((url, index) => (
+                <div 
+                  key={`r1-${index}`} 
+                  onClick={() => onSelectImage(url)}
+                  className="relative shrink-0 w-[300px] sm:w-[350px] md:w-[420px] aspect-video bg-[#F9FAFB] rounded-xl border border-[#E5E7EB] shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-[1.02] hover:shadow-xl"
+                >
+                  <img src={url} alt={`Proof Row 1 - ${index + 1}`} className="w-full h-full object-cover" />
                 </div>
-              </div>
-              <div className="p-3 bg-[#06141B]/60 flex items-center justify-between border-t border-[#253745]">
-                <span className="text-[11px] font-bold text-[#CCD0CF] uppercase tracking-wider">
-                  Verified Deal #{index + 1}
-                </span>
-                <span className="text-[10px] text-green-400 font-black uppercase">Secure</span>
-              </div>
+              ))}
             </div>
-          ))}
+            <div className="flex animate-marquee gap-6 whitespace-nowrap min-w-full shrink-0 items-center justify-around px-3" aria-hidden="true">
+              {[...proofs].map((url, index) => (
+                <div 
+                  key={`r1-dup-${index}`} 
+                  onClick={() => onSelectImage(url)}
+                  className="relative shrink-0 w-[300px] sm:w-[350px] md:w-[420px] aspect-video bg-[#F9FAFB] rounded-xl border border-[#E5E7EB] shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-[1.02] hover:shadow-xl"
+                >
+                  <img src={url} alt={`Proof Row 1 Dup - ${index + 1}`} className="w-full h-full object-cover" />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Row 2: Moves Right */}
+          <div className="flex gap-6 w-full group">
+            <div className="flex animate-marquee-reverse gap-6 whitespace-nowrap min-w-full shrink-0 items-center justify-around px-3">
+              {/* Offset array so it looks different vertically */}
+              {[...proofs].reverse().map((url, index) => (
+                <div 
+                  key={`r2-${index}`} 
+                  onClick={() => onSelectImage(url)}
+                  className="relative shrink-0 w-[300px] sm:w-[350px] md:w-[420px] aspect-video bg-[#F9FAFB] rounded-xl border border-[#E5E7EB] shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-[1.02] hover:shadow-xl"
+                >
+                  <img src={url} alt={`Proof Row 2 - ${index + 1}`} className="w-full h-full object-cover" />
+                </div>
+              ))}
+            </div>
+            <div className="flex animate-marquee-reverse gap-6 whitespace-nowrap min-w-full shrink-0 items-center justify-around px-3" aria-hidden="true">
+              {[...proofs].reverse().map((url, index) => (
+                <div 
+                  key={`r2-dup-${index}`} 
+                  onClick={() => onSelectImage(url)}
+                  className="relative shrink-0 w-[300px] sm:w-[350px] md:w-[420px] aspect-video bg-[#F9FAFB] rounded-xl border border-[#E5E7EB] shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-[1.02] hover:shadow-xl"
+                >
+                  <img src={url} alt={`Proof Row 2 Dup - ${index + 1}`} className="w-full h-full object-cover" />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Row 3: Moves Left */}
+          <div className="flex gap-6 w-full group">
+            <div className="flex animate-marquee gap-6 whitespace-nowrap min-w-full shrink-0 items-center justify-around px-3">
+              {[...proofs.slice(Math.floor(proofs.length / 2)), ...proofs.slice(0, Math.floor(proofs.length / 2))].map((url, index) => (
+                <div 
+                  key={`r3-${index}`} 
+                  onClick={() => onSelectImage(url)}
+                  className="relative shrink-0 w-[300px] sm:w-[350px] md:w-[420px] aspect-video bg-[#F9FAFB] rounded-xl border border-[#E5E7EB] shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-[1.02] hover:shadow-xl"
+                >
+                  <img src={url} alt={`Proof Row 3 - ${index + 1}`} className="w-full h-full object-cover" />
+                </div>
+              ))}
+            </div>
+            <div className="flex animate-marquee gap-6 whitespace-nowrap min-w-full shrink-0 items-center justify-around px-3" aria-hidden="true">
+              {[...proofs.slice(Math.floor(proofs.length / 2)), ...proofs.slice(0, Math.floor(proofs.length / 2))].map((url, index) => (
+                <div 
+                  key={`r3-dup-${index}`} 
+                  onClick={() => onSelectImage(url)}
+                  className="relative shrink-0 w-[300px] sm:w-[350px] md:w-[420px] aspect-video bg-[#F9FAFB] rounded-xl border border-[#E5E7EB] shadow-md overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-[1.02] hover:shadow-xl"
+                >
+                  <img src={url} alt={`Proof Row 3 Dup - ${index + 1}`} className="w-full h-full object-cover" />
+                </div>
+              ))}
+            </div>
+          </div>
+
         </div>
       )}
     </div>

@@ -45,23 +45,23 @@ export default function AdminLogin() {
           initial={{ opacity: 0 }} 
           animate={{ opacity: 1 }} 
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-[#06141B]/90 backdrop-blur-sm"
+          className="fixed inset-0 bg-[#F9FAFB]/90 backdrop-blur-sm"
           onClick={() => setShowAdminLogin(false)}
         />
         <motion.div 
           initial={{ opacity: 0, scale: 0.95, y: 20 }} 
           animate={{ opacity: 1, scale: 1, y: 0 }} 
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="bg-[#11212D] border border-[#253745] rounded-xl p-8 shadow-[0_0_50px_rgba(6,20,27,0.8)] w-full max-w-md relative z-10"
+          className="bg-[#FFFFFF] border border-[#E5E7EB] rounded-xl p-8 shadow-[0_0_50px_rgba(6,20,27,0.8)] w-full max-w-md relative z-10"
         >
           <button 
             onClick={() => setShowAdminLogin(false)} 
-            className="absolute top-4 right-4 text-[#9BA8AB] hover:text-white transition-colors"
+            className="absolute top-4 right-4 text-[#4B5563] hover:text-gray-900 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
           
-          <h2 className="text-2xl font-black tracking-wider text-[#CCD0CF] uppercase mb-6 text-center">
+          <h2 className="text-2xl font-black tracking-wider text-[#1F2937] uppercase mb-6 text-center">
             Admin Access
           </h2>
 
@@ -73,30 +73,30 @@ export default function AdminLogin() {
 
           <form onSubmit={handleLogin} className="space-y-5">
             <div>
-              <label className="block text-[#9BA8AB] text-xs font-bold mb-2 uppercase tracking-wide">Username</label>
+              <label className="block text-[#4B5563] text-xs font-bold mb-2 uppercase tracking-wide">Username</label>
               <input 
                 type="text" 
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full bg-[#06141B] border border-[#253745] rounded p-3 text-[#CCD0CF] focus:outline-none focus:border-[#4A5C6A] transition-colors"
+                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded p-3 text-[#1F2937] focus:outline-none focus:border-[#D1D5DB] transition-colors"
                 placeholder="Enter username"
                 required
               />
             </div>
             <div>
-              <label className="block text-[#9BA8AB] text-xs font-bold mb-2 uppercase tracking-wide">Password</label>
+              <label className="block text-[#4B5563] text-xs font-bold mb-2 uppercase tracking-wide">Password</label>
               <input 
                 type="password" 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-[#06141B] border border-[#253745] rounded p-3 text-[#CCD0CF] focus:outline-none focus:border-[#4A5C6A] transition-colors"
+                className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded p-3 text-[#1F2937] focus:outline-none focus:border-[#D1D5DB] transition-colors"
                 placeholder="••••••••"
                 required
               />
             </div>
             <button 
               type="submit"
-              className="w-full bg-[#253745] hover:bg-[#4A5C6A] text-white px-4 py-4 rounded font-black uppercase tracking-widest text-sm transition-colors mt-2 shadow-lg"
+              className="w-full bg-[#E5E7EB] hover:bg-[#D1D5DB] text-gray-900 px-4 py-4 rounded font-black uppercase tracking-widest text-sm transition-colors mt-2 shadow-lg"
             >
               Secure Login
             </button>

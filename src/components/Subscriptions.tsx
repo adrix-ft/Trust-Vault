@@ -13,13 +13,13 @@ export default function Subscriptions() {
   return (
     <div className="w-full mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 py-16">
       <div className="flex flex-col items-center text-center space-y-3 mb-12">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#253745]/50 border border-[#4A5C6A]/30 text-[#CCD0CF] text-xs font-bold uppercase tracking-wider">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E5E7EB]/50 border border-[#D1D5DB]/30 text-[#1F2937] text-xs font-bold uppercase tracking-wider">
           <span>Official Subscriptions</span>
         </div>
-        <h2 className="text-3xl md:text-4xl font-black text-white uppercase tracking-wider">
+        <h2 className="text-3xl md:text-4xl font-black text-gray-900 uppercase tracking-wider">
           Premium Subscriptions
         </h2>
-        <p className="text-[#9BA8AB] text-sm max-w-lg">
+        <p className="text-[#4B5563] text-sm max-w-lg">
           Get verified passes and membership accounts instantly with guaranteed safety and support.
         </p>
       </div>
@@ -27,29 +27,29 @@ export default function Subscriptions() {
       {(!subscriptionsLoaded) ? (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
           {[...Array(3)].map((_, i) => (
-            <div key={i} className="bg-[#11212D] rounded-3xl overflow-hidden border border-[#253745] animate-pulse h-96 flex flex-col">
-              <div className="h-40 bg-[#253745]" />
+            <div key={i} className="bg-[#FFFFFF] rounded-3xl overflow-hidden border border-[#E5E7EB] animate-pulse h-96 flex flex-col">
+              <div className="h-40 bg-[#E5E7EB]" />
               <div className="p-6 flex-1 flex flex-col gap-4">
                 <div className="flex gap-4 items-end -mt-10">
-                  <div className="w-20 h-20 bg-[#06141B] rounded-2xl border-2 border-[#11212D] z-10" />
+                  <div className="w-20 h-20 bg-[#F9FAFB] rounded-2xl border-2 border-[#FFFFFF] z-10" />
                   <div className="flex-1 space-y-2 pb-2">
-                    <div className="h-5 bg-[#253745] rounded w-3/4" />
-                    <div className="h-3 bg-[#253745] rounded w-1/2" />
+                    <div className="h-5 bg-[#E5E7EB] rounded w-3/4" />
+                    <div className="h-3 bg-[#E5E7EB] rounded w-1/2" />
                   </div>
                 </div>
                 <div className="space-y-2 mt-4">
-                  <div className="h-3 bg-[#253745] rounded w-full" />
-                  <div className="h-3 bg-[#253745] rounded w-5/6" />
+                  <div className="h-3 bg-[#E5E7EB] rounded w-full" />
+                  <div className="h-3 bg-[#E5E7EB] rounded w-5/6" />
                 </div>
               </div>
             </div>
           ))}
         </div>
       ) : subscriptions.length === 0 ? (
-        <div className="text-center py-20 bg-[#11212D]/50 border border-[#253745] rounded-2xl max-w-3xl mx-auto">
-          <Repeat className="w-12 h-12 text-[#4A5C6A] mx-auto mb-4" />
-          <h3 className="text-lg font-bold text-white uppercase tracking-wider mb-2">No Subscriptions Available</h3>
-          <p className="text-[#9BA8AB] text-sm">We are currently updating our subscription plans. Check back later!</p>
+        <div className="text-center py-20 bg-[#FFFFFF]/50 border border-[#E5E7EB] rounded-2xl max-w-3xl mx-auto">
+          <Repeat className="w-12 h-12 text-[#D1D5DB] mx-auto mb-4" />
+          <h3 className="text-lg font-bold text-gray-900 uppercase tracking-wider mb-2">No Subscriptions Available</h3>
+          <p className="text-[#4B5563] text-sm">We are currently updating our subscription plans. Check back later!</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
@@ -64,13 +64,13 @@ export default function Subscriptions() {
             return (
               <div 
                 key={sub.id}
-                className="relative bg-[#0a151b] rounded-3xl overflow-hidden border border-[#253745] hover:border-[#4A5C6A] flex flex-col justify-between transition-all duration-300 shadow-[0_8px_30px_rgb(0,0,0,0.5)] hover:shadow-[0_8px_40px_rgb(0,0,0,0.8)] group transform hover:-translate-y-1"
+                className="relative bg-[#0a151b] rounded-3xl overflow-hidden border border-[#E5E7EB] hover:border-[#D1D5DB] flex flex-col justify-between transition-all duration-300 shadow-[0_8px_30px_rgb(0,0,0,0.5)] hover:shadow-[0_8px_40px_rgb(0,0,0,0.8)] group transform hover:-translate-y-1"
                 style={{ 
                   '--sub-color': sub.themeColor || '#10b981',
                 } as React.CSSProperties}
               >
                 {/* Banner & Badge */}
-                <div className="relative h-40 w-full bg-[#11212D]">
+                <div className="relative h-40 w-full bg-[#FFFFFF]">
                   {sub.bannerUrl ? (
                     <>
                       <div className="absolute inset-0 bg-gradient-to-t from-[#0a151b] via-transparent to-transparent z-10" />
@@ -82,7 +82,7 @@ export default function Subscriptions() {
                   )}
                   
                   {sub.badge && (
-                    <div className="absolute top-4 right-4 z-20 px-3 py-1 rounded-full bg-black/60 backdrop-blur-sm border border-[var(--sub-color)]/30 text-white text-[10px] font-black uppercase tracking-widest shadow-lg">
+                    <div className="absolute top-4 right-4 z-20 px-3 py-1 rounded-full bg-black/60 backdrop-blur-sm border border-[var(--sub-color)]/30 text-gray-900 text-[10px] font-black uppercase tracking-widest shadow-lg">
                       {sub.badge}
                     </div>
                   )}
@@ -92,13 +92,13 @@ export default function Subscriptions() {
                   {/* Logo & Title */}
                   <div className="flex items-end gap-4 mb-5">
                     <div 
-                      className="w-20 h-20 rounded-2xl bg-[#06141B] border-2 border-[#11212D] flex items-center justify-center overflow-hidden shadow-xl shrink-0 relative z-30"
-                      style={{ borderColor: 'color-mix(in srgb, var(--sub-color) 30%, #11212D)' }}
+                      className="w-20 h-20 rounded-2xl bg-[#0a151b] border-2 border-white/20 flex items-center justify-center overflow-hidden shadow-xl shrink-0 relative z-30"
+                      style={{ borderColor: 'color-mix(in srgb, var(--sub-color) 30%, rgba(255,255,255,0.2))' }}
                     >
                       {sub.logoUrl ? (
                         <img src={sub.logoUrl} alt={sub.name} className="w-full h-full object-cover" />
                       ) : (
-                        <Repeat className="w-8 h-8 text-[#4A5C6A]" />
+                        <Repeat className="w-8 h-8 text-white/50" />
                       )}
                     </div>
                     <div className="pb-2">
@@ -109,14 +109,14 @@ export default function Subscriptions() {
 
                   {/* Description */}
                   {sub.description && (
-                    <p className="text-[#9BA8AB] text-xs leading-relaxed mb-6">
+                    <p className="text-gray-300 text-xs leading-relaxed mb-6">
                       {sub.description}
                     </p>
                   )}
 
                   {/* Pricing Selection */}
-                  <div className="mb-6 bg-[#11212D]/40 p-4 rounded-2xl border border-[#253745]/50">
-                    <label className="block text-[#9BA8AB] text-[10px] font-bold uppercase tracking-wider mb-3">Select Plan</label>
+                  <div className="mb-6 bg-white/10 p-4 rounded-2xl border border-white/20">
+                    <label className="block text-gray-400 text-[10px] font-bold uppercase tracking-wider mb-3">Select Plan</label>
                     <div className="space-y-2">
                       {currentPricingArray.map((p, idx) => {
                         const isSelected = currentPricingIdx === idx;
@@ -126,8 +126,8 @@ export default function Subscriptions() {
                             onClick={() => handleSelectPricing(sub.id, idx)}
                             className={`w-full flex items-center justify-between px-4 py-3 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
                               isSelected 
-                                ? 'bg-[#06141B] text-white shadow-lg' 
-                                : 'bg-[#0a151b] border-[#253745]/50 text-[#9BA8AB] hover:border-[#4A5C6A] hover:bg-[#11212D]'
+                                ? 'bg-white text-gray-900 shadow-lg' 
+                                : 'bg-black/20 border-white/10 text-gray-300 hover:border-white/30 hover:bg-black/40'
                             }`}
                             style={isSelected ? { borderColor: 'var(--sub-color)' } : {}}
                           >
@@ -136,7 +136,7 @@ export default function Subscriptions() {
                               {p.originalPrice && (
                                 <span className="text-[10px] text-red-400/80 line-through font-semibold">{p.originalPrice}</span>
                               )}
-                              <span style={isSelected ? { color: 'var(--sub-color)' } : {}} className={isSelected ? '' : 'text-white'}>
+                              <span style={isSelected ? { color: 'var(--sub-color)' } : {}} className={isSelected ? '' : 'text-gray-300'}>
                                 {p.price || 'Free'}
                               </span>
                             </div>
@@ -149,10 +149,10 @@ export default function Subscriptions() {
                   {/* Features */}
                   <div className="space-y-3 mb-8 flex-1">
                     {featureList.map((feature, idx) => (
-                      <div key={idx} className="flex items-start gap-3 text-xs text-[#CCD0CF]">
+                      <div key={idx} className="flex items-start gap-3 text-xs text-gray-300">
                         <div 
                           className="w-4 h-4 rounded-full flex items-center justify-center shrink-0 mt-0.5 shadow-sm"
-                          style={{ backgroundColor: 'color-mix(in srgb, var(--sub-color) 20%, #11212D)', color: 'var(--sub-color)' }}
+                          style={{ backgroundColor: 'color-mix(in srgb, var(--sub-color) 20%, #FFFFFF)', color: 'var(--sub-color)' }}
                         >
                           <Check className="w-2.5 h-2.5 stroke-[3]" />
                         </div>
@@ -176,8 +176,8 @@ export default function Subscriptions() {
                     disabled={currentPricingArray.length === 0}
                     className="relative w-full py-4 rounded-2xl font-black transition-all text-center uppercase tracking-wider text-xs shadow-xl flex items-center justify-center gap-2 cursor-pointer overflow-hidden group/btn"
                     style={{ 
-                      backgroundColor: currentPricingArray.length === 0 ? '#11212D' : 'var(--sub-color)',
-                      color: currentPricingArray.length === 0 ? '#4A5C6A' : '#000',
+                      backgroundColor: currentPricingArray.length === 0 ? '#FFFFFF' : 'var(--sub-color)',
+                      color: currentPricingArray.length === 0 ? '#D1D5DB' : '#000',
                       opacity: currentPricingArray.length === 0 ? 0.5 : 1
                     }}
                   >

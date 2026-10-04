@@ -129,22 +129,22 @@ export default function CartDrawer() {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'tween', duration: 0.3, ease: [0.25, 1, 0.5, 1] }}
-            className="fixed top-0 right-0 h-full w-full sm:w-[420px] bg-[#06141B] border-l border-[#253745] z-[70] flex flex-col shadow-2xl"
+            className="fixed top-0 right-0 h-full w-full sm:w-[420px] bg-[#F9FAFB] border-l border-[#E5E7EB] z-[70] flex flex-col shadow-2xl"
           >
-            <div className="p-6 border-b border-[#253745] flex items-center justify-between bg-[#06141B]">
-              <h2 className="text-xl font-black tracking-widest text-[#CCD0CF]">CART</h2>
+            <div className="p-6 border-b border-[#E5E7EB] flex items-center justify-between bg-[#F9FAFB]">
+              <h2 className="text-xl font-black tracking-widest text-[#1F2937]">CART</h2>
               <button 
                 onClick={() => !isSubmitting && setIsCartOpen(false)} 
                 disabled={isSubmitting}
-                className="p-2 text-[#9BA8AB] hover:text-white bg-[#11212D] rounded-full hover:bg-[#253745] transition-colors disabled:opacity-50"
+                className="p-2 text-[#4B5563] hover:text-gray-900 bg-[#FFFFFF] rounded-full hover:bg-[#E5E7EB] transition-colors disabled:opacity-50"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
             
-            <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-[#06141B]">
+            <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-[#F9FAFB]">
               {cart.length === 0 ? (
-                <div className="h-full flex flex-col items-center justify-center text-[#4A5C6A]">
+                <div className="h-full flex flex-col items-center justify-center text-[#D1D5DB]">
                   <div className="text-6xl mb-4">🛒</div>
                   <p className="text-sm font-medium tracking-wide">Your cart is empty.</p>
                 </div>
@@ -160,21 +160,21 @@ export default function CartDrawer() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95 }}
                         transition={{ duration: 0.2 }}
-                        className="bg-[#11212D] border border-[#253745] rounded-lg p-4 flex items-start gap-4 shadow-sm relative overflow-hidden"
+                        className="bg-[#FFFFFF] border border-[#E5E7EB] rounded-lg p-4 flex items-start gap-4 shadow-sm relative overflow-hidden"
                       >
                         <div className="absolute inset-0 w-24 opacity-20 bg-cover bg-center mix-blend-overlay" style={{ backgroundImage: `url('${item.customCoverUrl || getGameCoverUrl(item.title)}')` }}></div>
                         
-                        <div className="w-12 h-16 shrink-0 bg-cover bg-center rounded-sm border border-[#253745] z-10" style={{ backgroundImage: `url('${item.customCoverUrl || getGameCoverUrl(item.title)}')` }}></div>
+                        <div className="w-12 h-16 shrink-0 bg-cover bg-center rounded-sm border border-[#E5E7EB] z-10" style={{ backgroundImage: `url('${item.customCoverUrl || getGameCoverUrl(item.title)}')` }}></div>
                         
                         <div className="flex-1 z-10 min-w-0 pr-1">
-                          <h3 className="text-sm font-bold text-[#CCD0CF] leading-snug">
+                          <h3 className="text-sm font-bold text-[#1F2937] leading-snug">
                             {item.title} {item.purchaseType === 'rent' && <span className="text-orange-400 text-[10px] ml-1 uppercase">(Rent: {item.rentPeriod || 'Limited'})</span>}
                           </h3>
                           
                           {platforms.length > 0 && (
                             <div className="flex gap-1 mt-1">
                               {platforms.map(plat => (
-                                <span key={plat} className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#06141B] text-[#9BA8AB] border border-[#253745]">
+                                <span key={plat} className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#F9FAFB] text-[#4B5563] border border-[#E5E7EB]">
                                   {plat}
                                 </span>
                               ))}
@@ -185,7 +185,7 @@ export default function CartDrawer() {
                             {item.onSale && item.originalPrice && item.purchaseType !== 'rent' && (
                               <span className="text-xs font-bold text-red-400 line-through decoration-red-400/50">{item.originalPrice}</span>
                             )}
-                            <p className="text-[#4A5C6A] text-xs font-semibold">
+                            <p className="text-[#D1D5DB] text-xs font-semibold">
                               {item.purchaseType === 'rent' ? (item.rentPrice || item.price) : item.price}
                             </p>
                           </div>
@@ -195,7 +195,7 @@ export default function CartDrawer() {
                           <button 
                             onClick={() => !isSubmitting && removeFromCart(item.title)} 
                             disabled={isSubmitting}
-                            className="p-2 text-[#4A5C6A] hover:text-red-400 transition-colors bg-[#06141B] rounded-full border border-[#253745] disabled:opacity-50 cursor-pointer"
+                            className="p-2 text-[#D1D5DB] hover:text-red-400 transition-colors bg-[#F9FAFB] rounded-full border border-[#E5E7EB] disabled:opacity-50 cursor-pointer"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -208,24 +208,24 @@ export default function CartDrawer() {
             </div>
             
             {cart.length > 0 && (
-              <div className="p-6 border-t border-[#253745] bg-[#06141B] space-y-4">
-                <div className="space-y-3 bg-[#11212D]/60 p-3.5 rounded-xl border border-[#253745]">
-                  <p className="text-[11px] font-bold text-[#9BA8AB] uppercase tracking-wider">Customer Details</p>
+              <div className="p-6 border-t border-[#E5E7EB] bg-[#F9FAFB] space-y-4">
+                <div className="space-y-3 bg-[#FFFFFF]/60 p-3.5 rounded-xl border border-[#E5E7EB]">
+                  <p className="text-[11px] font-bold text-[#4B5563] uppercase tracking-wider">Customer Details</p>
                   
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4A5C6A]" />
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#D1D5DB]" />
                     <input
                       type="text"
                       placeholder="Your Name (Letters only)"
                       value={customerName}
                       disabled={isSubmitting}
                       onChange={(e) => setCustomerName(e.target.value)}
-                      className="w-full bg-[#06141B] border border-[#253745] rounded-lg py-2 pl-9 pr-3 text-xs text-white placeholder:text-[#4A5C6A] focus:outline-none focus:border-[#4A5C6A] disabled:opacity-50"
+                      className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg py-2 pl-9 pr-3 text-xs text-gray-900 placeholder:text-[#D1D5DB] focus:outline-none focus:border-[#D1D5DB] disabled:opacity-50"
                     />
                   </div>
 
                   <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4A5C6A]" />
+                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#D1D5DB]" />
                     <input
                       type="tel"
                       placeholder="Mobile Number (10 digits)"
@@ -233,7 +233,7 @@ export default function CartDrawer() {
                       disabled={isSubmitting}
                       onChange={handlePhoneChange}
                       maxLength={10}
-                      className="w-full bg-[#06141B] border border-[#253745] rounded-lg py-2 pl-9 pr-3 text-xs text-white placeholder:text-[#4A5C6A] focus:outline-none focus:border-[#4A5C6A] disabled:opacity-50"
+                      className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg py-2 pl-9 pr-3 text-xs text-gray-900 placeholder:text-[#D1D5DB] focus:outline-none focus:border-[#D1D5DB] disabled:opacity-50"
                     />
                   </div>
 
@@ -243,7 +243,7 @@ export default function CartDrawer() {
                 </div>
 
                 <div className="space-y-1.5 pt-1">
-                  <div className="flex justify-between text-[#9BA8AB] text-xs font-medium">
+                  <div className="flex justify-between text-[#4B5563] text-xs font-medium">
                     <span>Subtotal</span>
                     <div className="flex gap-2">
                        {totalSavings > 0 && (
@@ -258,7 +258,7 @@ export default function CartDrawer() {
                       <span>- {totalSavings}Rs</span>
                     </div>
                   )}
-                  <div className="flex justify-between text-[#CCD0CF] text-base font-black tracking-wide pt-1 border-t border-[#253745]/50">
+                  <div className="flex justify-between text-[#1F2937] text-base font-black tracking-wide pt-1 border-t border-[#E5E7EB]/50">
                     <span>TOTAL</span>
                     <span>{total}Rs</span>
                   </div>
@@ -268,18 +268,18 @@ export default function CartDrawer() {
                   <button 
                     onClick={() => !isSubmitting && clearCart()}
                     disabled={isSubmitting}
-                    className="px-4 py-3 rounded-lg font-bold tracking-widest text-xs text-[#9BA8AB] bg-[#11212D] hover:bg-[#253745] transition-colors border border-[#253745] uppercase disabled:opacity-50 cursor-pointer"
+                    className="px-4 py-3 rounded-lg font-bold tracking-widest text-xs text-[#4B5563] bg-[#FFFFFF] hover:bg-[#E5E7EB] transition-colors border border-[#E5E7EB] uppercase disabled:opacity-50 cursor-pointer"
                   >
                     Clear
                   </button>
                   <button 
                     onClick={handleCheckout}
                     disabled={isSubmitting}
-                    className="flex-1 flex items-center justify-center gap-2 bg-[#253745] hover:bg-[#4A5C6A] border border-[#4A5C6A] text-[#CCD0CF] py-3 rounded-lg font-bold tracking-widest text-xs uppercase transition-all shadow-[0_0_15px_rgba(37,55,69,0.4)] disabled:opacity-50 cursor-pointer"
+                    className="flex-1 flex items-center justify-center gap-2 bg-[#E5E7EB] hover:bg-[#D1D5DB] border border-[#D1D5DB] text-[#1F2937] py-3 rounded-lg font-bold tracking-widest text-xs uppercase transition-all shadow-[0_0_15px_rgba(37,55,69,0.4)] disabled:opacity-50 cursor-pointer"
                   >
                     {isSubmitting ? (
                       <>
-                        <Loader2 className="w-4 h-4 animate-spin text-white" />
+                        <Loader2 className="w-4 h-4 animate-spin text-gray-900" />
                         <span>Processing...</span>
                       </>
                     ) : (

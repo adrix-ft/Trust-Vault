@@ -64,28 +64,28 @@ export default function Hero() {
   if (!catalogLoaded && heroGames.length === 0) {
     return (
       <div className="w-full mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 pt-6 md:pt-8 pb-4">
-        <div className="flex flex-col lg:flex-row gap-0 bg-[#11212D] rounded-2xl overflow-hidden border border-[#253745] shadow-2xl w-full animate-pulse h-[350px] lg:h-[400px]">
+        <div className="flex flex-col lg:flex-row gap-0 bg-[#FFFFFF] rounded-2xl overflow-hidden border border-[#E5E7EB] shadow-2xl w-full animate-pulse h-[350px] lg:h-[400px]">
            {/* Left Image Skeleton */}
-           <div className="w-full lg:w-2/3 h-full bg-[#06141B] relative overflow-hidden hidden lg:block">
+           <div className="w-full lg:w-2/3 h-full bg-[#F9FAFB] relative overflow-hidden hidden lg:block">
              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_1.5s_infinite]" />
            </div>
            {/* Right Content Skeleton */}
-           <div className="w-full lg:w-1/3 bg-[#11212D] p-6 lg:p-8 flex flex-col justify-center gap-4 relative">
+           <div className="w-full lg:w-1/3 bg-[#FFFFFF] p-6 lg:p-8 flex flex-col justify-center gap-4 relative">
              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_1.5s_infinite]" />
-             <div className="h-4 bg-[#253745] rounded-md w-1/4"></div>
-             <div className="h-8 bg-[#253745] rounded-md w-3/4"></div>
+             <div className="h-4 bg-[#E5E7EB] rounded-md w-1/4"></div>
+             <div className="h-8 bg-[#E5E7EB] rounded-md w-3/4"></div>
              <div className="space-y-2 mt-2">
-               <div className="h-3 bg-[#253745] rounded-md w-full"></div>
-               <div className="h-3 bg-[#253745] rounded-md w-5/6"></div>
-               <div className="h-3 bg-[#253745] rounded-md w-4/6"></div>
+               <div className="h-3 bg-[#E5E7EB] rounded-md w-full"></div>
+               <div className="h-3 bg-[#E5E7EB] rounded-md w-5/6"></div>
+               <div className="h-3 bg-[#E5E7EB] rounded-md w-4/6"></div>
              </div>
              <div className="flex gap-2 mt-4">
-               <div className="h-6 bg-[#253745] rounded-md w-16"></div>
-               <div className="h-6 bg-[#253745] rounded-md w-24"></div>
+               <div className="h-6 bg-[#E5E7EB] rounded-md w-16"></div>
+               <div className="h-6 bg-[#E5E7EB] rounded-md w-24"></div>
              </div>
              <div className="flex items-center justify-between mt-auto pt-6">
-               <div className="h-8 bg-[#253745] rounded-md w-1/3"></div>
-               <div className="h-10 bg-[#253745] rounded-xl w-1/3"></div>
+               <div className="h-8 bg-[#E5E7EB] rounded-md w-1/3"></div>
+               <div className="h-10 bg-[#E5E7EB] rounded-xl w-1/3"></div>
              </div>
            </div>
         </div>
@@ -101,10 +101,10 @@ export default function Hero() {
   return (
     <div className="w-full mx-auto px-4 sm:px-6 lg:px-12 xl:px-24 pt-6 md:pt-8 pb-4">
       
-      <div className="flex flex-col lg:flex-row gap-0 bg-[#11212D] rounded-2xl overflow-hidden border border-[#253745] shadow-2xl w-full">
+      <div className="flex flex-col lg:flex-row gap-0 bg-[#FFFFFF] rounded-2xl overflow-hidden border border-[#E5E7EB] shadow-2xl w-full">
         
         {/* Left: 16:9 Banner */}
-        <div className="w-full lg:w-2/3 aspect-video relative group overflow-hidden bg-[#06141B]">
+        <div className="w-full lg:w-2/3 aspect-video relative group overflow-hidden bg-[#F9FAFB]">
           <AnimatePresence mode="popLayout">
             <motion.div
               key={activeGame.title}
@@ -123,27 +123,28 @@ export default function Hero() {
               }}
             />
           </AnimatePresence>
-          <div className="absolute inset-0 bg-gradient-to-t from-[#11212D] via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-[#11212D]" />
+          {/* subtle inner shadow to frame the image nicely without a harsh overlay */}
+          <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.05)] pointer-events-none" />
           
           <PlatformTags platforms={activeGame.categories} tagColors={activeGame.tagColors} />
           
           <button 
             onClick={() => setActiveIndex((prev) => (prev - 1 + heroGames.length) % heroGames.length)}
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#06141B]/70 border border-[#4A5C6A]/50 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#4A5C6A] cursor-pointer"
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#F9FAFB]/70 border border-[#D1D5DB]/50 flex items-center justify-center text-gray-900 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#D1D5DB] cursor-pointer"
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
           
           <button 
             onClick={() => setActiveIndex((prev) => (prev + 1) % heroGames.length)}
-            className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#06141B]/70 border border-[#4A5C6A]/50 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#4A5C6A] cursor-pointer"
+            className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#F9FAFB]/70 border border-[#D1D5DB]/50 flex items-center justify-center text-gray-900 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#D1D5DB] cursor-pointer"
           >
             <ChevronRight className="w-6 h-6" />
           </button>
         </div>
 
         {/* Right: Game Details */}
-        <div className="w-full lg:w-1/3 p-5 sm:p-6 lg:p-8 flex flex-col justify-between relative bg-[#11212D] overflow-hidden">
+        <div className="w-full lg:w-1/3 p-5 sm:p-6 lg:p-8 flex flex-col justify-between relative bg-[#FFFFFF] overflow-hidden">
           <AnimatePresence mode="popLayout">
             <motion.div
               key={activeGame.title}
@@ -154,16 +155,16 @@ export default function Hero() {
               className="flex flex-col h-full justify-between"
             >
               <div className="min-h-[160px] sm:min-h-[220px] flex flex-col justify-start">
-                <div className="inline-block px-3 py-1 mb-3 rounded-full bg-[#253745]/60 border border-[#4A5C6A]/40 text-[#CCD0CF] text-[10px] font-bold tracking-widest uppercase self-start shadow-sm shrink-0">
+                <div className="inline-block px-3 py-1 mb-3 rounded-full bg-[#E5E7EB]/60 border border-[#D1D5DB]/40 text-[#1F2937] text-[10px] font-bold tracking-widest uppercase self-start shadow-sm shrink-0">
                   {activeGame.onSale ? 'Trending Now' : 'Featured'}
                 </div>
-                <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-wider mb-1 drop-shadow-md line-clamp-2 sm:line-clamp-1">
+                <h2 className="text-xl sm:text-2xl font-black text-gray-900 uppercase tracking-wider mb-1 drop-shadow-md line-clamp-2 sm:line-clamp-1">
                   {activeGame.title}
                 </h2>
-                <p className="text-[#9BA8AB] text-[10px] font-extrabold tracking-widest uppercase mb-2 shrink-0">
+                <p className="text-[#4B5563] text-[10px] font-extrabold tracking-widest uppercase mb-2 shrink-0">
                   EXPERIENCE THE JOURNEY
                 </p>
-                <p className="text-[#9BA8AB] text-[11px] sm:text-sm leading-relaxed line-clamp-3">
+                <p className="text-[#4B5563] text-[11px] sm:text-sm leading-relaxed line-clamp-3">
                   {(activeGame.description || 'Dive into an unforgettable adventure.').replace(/<[^>]*>?/gm, '')}
                 </p>
               </div>
@@ -180,7 +181,7 @@ export default function Hero() {
                       {displayOriginalPrice && (
                         <span className="text-[11px] sm:text-xs font-bold text-red-400 line-through decoration-red-400/50">{displayOriginalPrice}</span>
                       )}
-                      <span className="text-2xl sm:text-3xl font-black text-white">{displayPrice}</span>
+                      <span className="text-2xl sm:text-3xl font-black text-gray-900">{displayPrice}</span>
                     </div>
                   );
                 })()}
@@ -188,9 +189,9 @@ export default function Hero() {
                 <div className="flex gap-2">
                   <button
                     onClick={() => setSelectedCategory('Game: ' + activeGame.title)}
-                    className={`flex-1 py-3.5 rounded-xl bg-gradient-to-r from-[#253745] to-[#4A5C6A] hover:from-[#4A5C6A] hover:to-[#596F80] border border-[#4A5C6A]/60 text-white font-bold transition-all shadow-[0_4px_20px_rgba(37,55,69,0.4)] flex items-center justify-center gap-2.5 uppercase tracking-wider text-xs sm:text-sm cursor-pointer group`}
+                    className={`flex-1 py-3.5 rounded-xl bg-gray-900 hover:bg-gray-800 border border-transparent text-white font-bold transition-all shadow-[0_8px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_10px_25px_rgba(0,0,0,0.25)] flex items-center justify-center gap-2.5 uppercase tracking-wider text-xs sm:text-sm cursor-pointer group hover:-translate-y-0.5`}
                   >
-                    <ShoppingCart className="w-4 h-4 text-[#CCD0CF] group-hover:scale-110 transition-transform" />
+                    <ShoppingCart className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
                     <span>Buy Now</span>
                   </button>
                 </div>
@@ -198,12 +199,12 @@ export default function Hero() {
             </motion.div>
           </AnimatePresence>
 
-          <div className="flex items-center justify-center gap-2 mt-4 pt-4 border-t border-[#253745]/60">
+          <div className="flex items-center justify-center gap-2 mt-4 pt-4 border-t border-[#E5E7EB]/60">
             {heroGames.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => setActiveIndex(idx)}
-                className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${idx === safeIndex ? 'bg-white w-6' : 'bg-[#4A5C6A]/60 w-2 hover:bg-[#9BA8AB]'}`}
+                className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${idx === safeIndex ? 'bg-white w-6' : 'bg-[#D1D5DB]/60 w-2 hover:bg-[#4B5563]'}`}
               />
             ))}
           </div>

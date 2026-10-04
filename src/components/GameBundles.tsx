@@ -42,13 +42,13 @@ export default function GameBundles() {
           <div className="flex items-center gap-2 mb-6">
             <button
               onClick={() => handleScroll('left')}
-              className="p-2 rounded-xl bg-[#11212D] border border-[#253745] hover:border-[#4A5C6A] text-[#9BA8AB] hover:text-white transition-all shadow-md cursor-pointer"
+              className="p-2 rounded-xl bg-[#FFFFFF] border border-[#E5E7EB] hover:border-[#D1D5DB] text-[#4B5563] hover:text-gray-900 transition-all shadow-md cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button
               onClick={() => handleScroll('right')}
-              className="p-2 rounded-xl bg-[#11212D] border border-[#253745] hover:border-[#4A5C6A] text-[#9BA8AB] hover:text-white transition-all shadow-md cursor-pointer"
+              className="p-2 rounded-xl bg-[#FFFFFF] border border-[#E5E7EB] hover:border-[#D1D5DB] text-[#4B5563] hover:text-gray-900 transition-all shadow-md cursor-pointer"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -66,15 +66,15 @@ export default function GameBundles() {
       >
         {loading ? (
           Array.from({ length: 2 }).map((_, i) => (
-            <div key={i} className="min-w-full md:min-w-[calc(50%-12px)] flex flex-col md:flex-row bg-[#11212D] border border-[#253745] rounded-3xl overflow-hidden shadow-2xl animate-pulse snap-center">
-              <div className="w-full md:w-[45%] h-64 md:h-auto bg-[#253745]" />
+            <div key={i} className="min-w-full md:min-w-[calc(50%-12px)] flex flex-col md:flex-row bg-[#FFFFFF] border border-[#E5E7EB] rounded-3xl overflow-hidden shadow-2xl animate-pulse snap-center">
+              <div className="w-full md:w-[45%] h-64 md:h-auto bg-[#E5E7EB]" />
               <div className="flex-1 p-6 md:p-8 flex flex-col justify-center">
-                <div className="h-6 bg-[#253745] rounded w-3/4 mb-4" />
+                <div className="h-6 bg-[#E5E7EB] rounded w-3/4 mb-4" />
                 <div className="space-y-2 mb-6">
-                  <div className="h-4 bg-[#253745] rounded w-full" />
-                  <div className="h-4 bg-[#253745] rounded w-5/6" />
+                  <div className="h-4 bg-[#E5E7EB] rounded w-full" />
+                  <div className="h-4 bg-[#E5E7EB] rounded w-5/6" />
                 </div>
-                <div className="h-10 bg-[#253745] rounded w-1/2" />
+                <div className="h-10 bg-[#E5E7EB] rounded w-1/2" />
               </div>
             </div>
           ))
@@ -100,7 +100,7 @@ export default function GameBundles() {
                 style={{ backgroundImage: `url('${glowImage}')` }}
               />
 
-              <div className="bg-gradient-to-br from-[#11212D] to-[#06141B] rounded-2xl border border-[#253745] group-hover:border-[#4A5C6A] p-5 md:p-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 shadow-xl group-hover:shadow-2xl h-full transition-colors relative z-10 overflow-hidden">
+              <div className="bg-gradient-to-br from-[#FFFFFF] to-[#F9FAFB] rounded-2xl border border-[#E5E7EB] group-hover:border-[#D1D5DB] p-5 md:p-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 shadow-xl group-hover:shadow-2xl h-full transition-colors relative z-10 overflow-hidden">
                 <PlatformTags platforms={bundle.categories} tagColors={bundle.tagColors} />
                 
                 {/* Left Side Visual Fan */}
@@ -115,7 +115,7 @@ export default function GameBundles() {
                         return (
                           <div 
                             key={i} 
-                            className={`rounded-xl overflow-hidden border border-[#253745] shadow-2xl absolute transition-all duration-500 group-hover:scale-105 ease-out ${
+                            className={`rounded-xl overflow-hidden border border-[#E5E7EB] shadow-2xl absolute transition-all duration-500 group-hover:scale-105 ease-out ${
                               isCrowded ? 'w-22 sm:w-26 h-34 sm:h-38' : 'w-26 sm:w-30 h-38 sm:h-42'
                             }`}
                             style={{ 
@@ -131,7 +131,7 @@ export default function GameBundles() {
                     </div>
                   ) : (
                     <div 
-                      className="w-28 h-40 rounded-xl overflow-hidden border border-[#253745] shadow-2xl transition-transform duration-500 group-hover:scale-105"
+                      className="w-28 h-40 rounded-xl overflow-hidden border border-[#E5E7EB] shadow-2xl transition-transform duration-500 group-hover:scale-105"
                       style={{ backgroundImage: `url('${fallbackCover}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
                     />
                   )}
@@ -139,17 +139,17 @@ export default function GameBundles() {
 
                 {/* Right Side Content */}
                 <div className="flex-1 flex flex-col justify-center text-center sm:text-left w-full min-w-0">
-                  <div className="relative overflow-hidden inline-block bg-gradient-to-r from-amber-500 to-orange-500 text-[#06141B] text-[9px] font-black py-1 px-3 rounded-full uppercase tracking-widest mb-2.5 self-center sm:self-start shadow-md shrink-0">
+                  <div className="relative overflow-hidden inline-block bg-gradient-to-r from-amber-500 to-orange-500 text-[#F9FAFB] text-[9px] font-black py-1 px-3 rounded-full uppercase tracking-widest mb-2.5 self-center sm:self-start shadow-md shrink-0">
                     <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 to-transparent animate-shimmer pointer-events-none" />
                     <span className="relative z-10">Bundle Deal</span>
                   </div>
                   
-                  <h3 className="text-base sm:text-lg font-black text-white uppercase tracking-wider mb-2 leading-tight drop-shadow-md truncate">
+                  <h3 className="text-base sm:text-lg font-black text-gray-900 uppercase tracking-wider mb-2 leading-tight drop-shadow-md truncate">
                     {bundle.title}
                   </h3>
                   
-                  <div className="text-xs font-semibold text-[#CCD0CF] mb-3 space-y-1 bg-[#06141B]/50 p-2.5 rounded-xl border border-[#253745] max-h-[85px] overflow-y-auto hide-scrollbar">
-                    <span className="text-[#4A5C6A] uppercase tracking-wider text-[9px] block mb-0.5">Items Included:</span>
+                  <div className="text-xs font-semibold text-[#1F2937] mb-3 space-y-1 bg-[#F9FAFB]/50 p-2.5 rounded-xl border border-[#E5E7EB] max-h-[85px] overflow-y-auto hide-scrollbar">
+                    <span className="text-[#D1D5DB] uppercase tracking-wider text-[9px] block mb-0.5">Items Included:</span>
                     {includedGames.length > 0 ? (
                       includedGames.map((g, i) => (
                         <div key={i} className="flex items-center gap-1.5 justify-center sm:justify-start">
@@ -158,21 +158,21 @@ export default function GameBundles() {
                         </div>
                       ))
                     ) : (
-                      <p className="line-clamp-2 text-[#9BA8AB] font-normal text-[11px]">{bundle.description || 'Amazing games bundled together!'}</p>
+                      <p className="line-clamp-2 text-[#4B5563] font-normal text-[11px]">{bundle.description || 'Amazing games bundled together!'}</p>
                     )}
                   </div>
 
-                  <div className="mt-auto pt-2.5 border-t border-[#253745]/60 flex items-center justify-between gap-2">
+                  <div className="mt-auto pt-2.5 border-t border-[#E5E7EB]/60 flex items-center justify-between gap-2">
                     <div className="flex flex-col items-start min-w-0">
                       {bundle.originalPrice && (
                         <span className="text-[10px] font-bold text-red-400 line-through decoration-red-400/50 mb-0.5">{bundle.originalPrice}</span>
                       )}
-                      <span className="text-lg sm:text-xl font-black text-white tracking-wider truncate">{bundle.price}</span>
+                      <span className="text-lg sm:text-xl font-black text-gray-900 tracking-wider truncate">{bundle.price}</span>
                     </div>
                     
                     <button 
                       onClick={() => addToCart(bundle)}
-                      className="relative overflow-hidden bg-[#253745] hover:bg-green-600 text-white px-4 py-2 rounded-xl font-bold uppercase tracking-wider text-xs transition-all duration-300 shadow-lg border border-[#4A5C6A] hover:border-green-500 shrink-0 group/btn"
+                      className="relative overflow-hidden bg-[#E5E7EB] hover:bg-green-600 text-white px-4 py-2 rounded-xl font-bold uppercase tracking-wider text-xs transition-all duration-300 shadow-lg border border-[#D1D5DB] hover:border-green-500 shrink-0 group/btn"
                     >
                       <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer pointer-events-none" />
                       <span className="relative z-10 flex items-center justify-center gap-2">

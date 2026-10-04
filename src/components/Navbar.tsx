@@ -79,7 +79,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="relative flex items-center justify-between px-4 sm:px-6 lg:px-12 xl:px-24 py-4 sm:py-5 bg-[#06141B]/95 backdrop-blur-2xl border-b border-[#253745]/60 shadow-[0_4px_30px_rgba(0,0,0,0.4)] sticky top-0 z-50 gap-3 min-h-[64px]">
+    <nav className="relative flex items-center justify-between px-4 sm:px-6 lg:px-12 xl:px-24 py-4 sm:py-5 bg-[#F9FAFB]/95 backdrop-blur-2xl border-b border-[#E5E7EB]/60 shadow-[0_4px_30px_rgba(0,0,0,0.4)] sticky top-0 z-50 gap-3 min-h-[64px]">
 
       <div className={`flex items-center gap-4 sm:gap-8 md:gap-14 overflow-hidden transition-all duration-300 ease-in-out ${isSearchFocused ? 'hidden sm:flex flex-1' : 'flex-1'} ${isMobileSearchActive ? 'hidden sm:flex' : 'flex'}`}>
         <motion.div
@@ -92,15 +92,15 @@ export default function Navbar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center gap-1.5 whitespace-nowrap"
+            className="text-xl sm:text-2xl font-black tracking-tight text-gray-900 flex items-center gap-1.5 whitespace-nowrap"
           >
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-[#CCD0CF] to-[#9BA8AB] group-hover:opacity-90 transition-opacity">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-gray-700 to-gray-500 group-hover:opacity-80 transition-opacity">
               Trust Vault
             </span>
           </motion.div>
         </motion.div>
 
-        <div className={`hidden md:flex items-center gap-6 lg:gap-8 text-[11px] lg:text-xs font-bold tracking-wider uppercase text-[#9BA8AB] transition-opacity duration-200`}>
+        <div className={`hidden md:flex items-center gap-6 lg:gap-8 text-[11px] lg:text-xs font-bold tracking-wider uppercase text-[#4B5563] transition-opacity duration-200`}>
           {filters.map(filter => {
             const Icon = filter.icon;
             const isActive = filter.type === 'category'
@@ -108,8 +108,8 @@ export default function Navbar() {
               : (filter.id === 'PS' ? isPlayStationPlatform(platformFilter) : platformFilter === filter.id) && selectedCategory === 'Store';
 
             const isProofsHover = filter.id === 'Proofs' && !isActive
-              ? 'hover:border-green-500/50 hover:bg-green-500/5 hover:text-white'
-              : 'hover:border-[#4A5C6A] hover:text-white';
+              ? 'hover:border-green-400 hover:bg-green-50 hover:text-green-600'
+              : 'hover:border-gray-300 hover:text-gray-900 hover:bg-gray-50';
 
             return (
               <button
@@ -122,9 +122,9 @@ export default function Navbar() {
                     setSelectedCategory('Store');
                   }
                 }}
-                className={`group flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg font-bold text-[9px] sm:text-[10px] tracking-wider uppercase transition-all duration-300 border shadow-sm cursor-pointer shrink-0 whitespace-nowrap ${isActive
-                  ? 'bg-[#4A5C6A] text-white border-[#4A5C6A]'
-                  : `bg-[#11212D] text-[#9BA8AB] border-[#253745] ${isProofsHover}`
+                className={`group flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl font-bold text-[10px] sm:text-xs tracking-wider uppercase transition-all duration-300 border-2 border-transparent cursor-pointer shrink-0 whitespace-nowrap ${isActive
+                  ? 'bg-gray-900 text-white animate-active-border-glow'
+                  : `bg-[#FFFFFF] text-[#4B5563] animate-border-glow ${isProofsHover}`
                   }`}
               >
                 <Icon className={filter.isCustom ? `text-[10px] sm:text-[11px] ${filter.iconClass || ''}` : `w-3.5 h-3.5 transition-colors ${filter.iconClass || ''} ${isActive && filter.id === 'Proofs' ? 'text-green-300' : ''}`} />
@@ -140,7 +140,7 @@ export default function Navbar() {
         {!isMobileSearchActive && (
           <button
             onClick={() => setIsMobileSearchActive(true)}
-            className="sm:hidden p-2 rounded-full text-[#9BA8AB] hover:text-white hover:bg-[#11212D] transition-colors"
+            className="sm:hidden p-2 rounded-full text-[#4B5563] hover:text-gray-900 hover:bg-[#FFFFFF] transition-colors"
           >
             <Search className="w-5 h-5" />
           </button>
@@ -150,7 +150,7 @@ export default function Navbar() {
           className={`relative group transition-all duration-300 ease-in-out ${isMobileSearchActive ? 'flex-1 flex' : 'hidden sm:block'} ${isSearchFocused ? 'sm:w-[350px] lg:w-[400px]' : 'sm:w-[200px] lg:w-64'}`}
           ref={searchRef}
         >
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4A5C6A] group-focus-within:text-white transition-colors z-10" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#D1D5DB] group-focus-within:text-gray-900 transition-colors z-10" />
 
           <input
             type="text"
@@ -159,7 +159,7 @@ export default function Navbar() {
             onChange={(e) => setSearchQuery(e.target.value)}
             onFocus={() => setIsSearchFocused(true)}
             autoFocus={isMobileSearchActive}
-            className="bg-[#11212D]/80 border border-[#253745] rounded-full py-2.5 pl-10 pr-9 text-xs font-medium text-white placeholder:text-[#4A5C6A] focus:outline-none focus:border-[#4A5C6A] focus:ring-2 focus:ring-[#4A5C6A]/20 transition-all w-full relative z-10 shadow-inner"
+            className="bg-[#FFFFFF]/80 border border-[#E5E7EB] rounded-full py-2.5 pl-10 pr-9 text-xs font-medium text-gray-900 placeholder:text-[#D1D5DB] focus:outline-none focus:border-[#D1D5DB] focus:ring-2 focus:ring-[#D1D5DB]/20 transition-all w-full relative z-10 shadow-inner"
           />
 
           <button
@@ -169,7 +169,7 @@ export default function Navbar() {
               setActiveHoverTitle(null);
               if (window.innerWidth < 640) setIsMobileSearchActive(false);
             }}
-            className={`absolute right-3 top-1/2 -translate-y-1/2 text-[#4A5C6A] hover:text-white z-20 p-1 transition-colors ${!searchQuery && window.innerWidth >= 640 ? 'hidden' : 'block'}`}
+            className={`absolute right-3 top-1/2 -translate-y-1/2 text-[#D1D5DB] hover:text-gray-900 z-20 p-1 transition-colors ${!searchQuery && window.innerWidth >= 640 ? 'hidden' : 'block'}`}
           >
             <X className="w-4 h-4" />
           </button>
@@ -181,7 +181,7 @@ export default function Navbar() {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 8, scale: 0.98 }}
                 transition={{ duration: 0.2 }}
-                className="absolute top-full mt-3 left-0 w-full sm:w-[350px] lg:w-[400px] bg-[#11212D]/95 backdrop-blur-3xl border border-[#253745] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.7)] overflow-hidden z-[100]"
+                className="absolute top-full mt-3 left-0 w-full sm:w-[350px] lg:w-[400px] bg-[#FFFFFF]/95 backdrop-blur-3xl border border-[#E5E7EB] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.7)] overflow-hidden z-[100]"
               >
                 <div className="max-h-[60vh] sm:max-h-[400px] overflow-y-auto scroll-smooth p-2 space-y-1">
 
@@ -189,7 +189,7 @@ export default function Navbar() {
                   {!searchQuery && searchResults.length > 0 && (
                     <div className="px-3 pb-2 pt-3 flex items-center gap-1.5">
                       <TrendingUp className="w-3.5 h-3.5 text-amber-500" />
-                      <span className="text-[10px] font-black text-[#9BA8AB] uppercase tracking-widest">Popular Suggestions</span>
+                      <span className="text-[10px] font-black text-[#4B5563] uppercase tracking-widest">Popular Suggestions</span>
                     </div>
                   )}
 
@@ -209,9 +209,9 @@ export default function Navbar() {
                             setIsSearchFocused(false);
                             if (window.innerWidth < 640) setIsMobileSearchActive(false);
                           }}
-                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#06141B] transition-all cursor-pointer group/item border border-transparent hover:border-[#253745]"
+                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#F9FAFB] transition-all cursor-pointer group/item border border-transparent hover:border-[#E5E7EB]"
                         >
-                          <div className="w-12 h-16 rounded-lg overflow-hidden flex-shrink-0 border border-[#253745] bg-[#06141B] shadow-sm">
+                          <div className="w-12 h-16 rounded-lg overflow-hidden flex-shrink-0 border border-[#E5E7EB] bg-[#F9FAFB] shadow-sm">
                             <img
                               src={coverUrl}
                               alt={game.title}
@@ -224,7 +224,7 @@ export default function Navbar() {
                           </div>
 
                           <div className="flex-1 min-w-0">
-                            <h4 className="text-sm font-bold text-[#CCD0CF] group-hover/item:text-white truncate uppercase tracking-wide">{game.title}</h4>
+                            <h4 className="text-sm font-bold text-[#1F2937] group-hover/item:text-gray-900 truncate uppercase tracking-wide">{game.title}</h4>
 
                             <div className="flex flex-wrap gap-1 mt-1">
                               {game.categories?.map(cat => {
@@ -233,7 +233,7 @@ export default function Navbar() {
                                   return (
                                     <span
                                       key={cat}
-                                      className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#06141B] text-[#9BA8AB] border border-[#253745]"
+                                      className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#F9FAFB] text-[#4B5563] border border-[#E5E7EB]"
                                     >
                                       {cat}
                                     </span>
@@ -242,7 +242,7 @@ export default function Navbar() {
                                 return null;
                               })}
                             </div>
-                            <p className="text-xs font-black text-white mt-1.5">{game.price}</p>
+                            <p className="text-xs font-black text-gray-900 mt-1.5">{game.price}</p>
                           </div>
 
                           <div className="shrink-0 ml-2 flex gap-1">
@@ -256,7 +256,7 @@ export default function Navbar() {
                                     e.stopPropagation();
                                     handleBuyNow(game);
                                   }}
-                                  className="flex items-center gap-1.5 bg-[#253745] hover:bg-[#4A5C6A] text-white px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider shadow-lg transition-all border border-[#4A5C6A]"
+                                  className="flex items-center gap-1.5 bg-[#E5E7EB] hover:bg-[#D1D5DB] text-gray-900 px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider shadow-lg transition-all border border-[#D1D5DB]"
                                 >
                                   <Zap className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
                                   <span>Buy</span>
@@ -274,7 +274,7 @@ export default function Navbar() {
                                       setIsSearchFocused(false);
                                       if (window.innerWidth < 640) setIsMobileSearchActive(false);
                                     }}
-                                    className="flex items-center gap-1.5 bg-[#253745] hover:bg-[#4A5C6A] text-white px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider shadow-lg transition-all border border-[#4A5C6A]"
+                                    className="flex items-center gap-1.5 bg-[#E5E7EB] hover:bg-[#D1D5DB] text-gray-900 px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider shadow-lg transition-all border border-[#D1D5DB]"
                                   >
                                     <Clock className="w-3.5 h-3.5" />
                                     <span>Rent</span>
@@ -292,8 +292,8 @@ export default function Navbar() {
                                   }}
                                   disabled={inCart}
                                   className={`flex items-center justify-center w-9 h-9 rounded-full border transition-all shadow-md ${inCart
-                                    ? 'bg-[#4A5C6A] border-[#4A5C6A] text-white cursor-default'
-                                    : 'bg-[#253745] border-[#4A5C6A]/50 text-[#9BA8AB] hover:text-white hover:bg-[#4A5C6A]'
+                                    ? 'bg-[#D1D5DB] border-[#D1D5DB] text-gray-900 cursor-default'
+                                    : 'bg-[#E5E7EB] border-[#D1D5DB]/50 text-[#4B5563] hover:text-gray-900 hover:bg-[#D1D5DB]'
                                     }`}
                                 >
                                   {inCart ? <Check className="w-4 h-4" /> : <ShoppingCart className="w-4 h-4" />}
@@ -308,7 +308,7 @@ export default function Navbar() {
                                       setIsSearchFocused(false);
                                       if (window.innerWidth < 640) setIsMobileSearchActive(false);
                                     }}
-                                    className={`flex items-center justify-center w-9 h-9 rounded-full border transition-all shadow-md bg-[#253745] border-[#4A5C6A]/50 text-[#9BA8AB] hover:text-white hover:bg-[#4A5C6A]`}
+                                    className={`flex items-center justify-center w-9 h-9 rounded-full border transition-all shadow-md bg-[#E5E7EB] border-[#D1D5DB]/50 text-[#4B5563] hover:text-gray-900 hover:bg-[#D1D5DB]`}
                                   >
                                     <Clock className="w-4 h-4" />
                                   </button>
@@ -321,8 +321,8 @@ export default function Navbar() {
                     })
                   ) : (
                     <div className="p-6 text-center space-y-3">
-                      <p className="text-[#CCD0CF] text-xs font-bold uppercase tracking-wide">Didn't find your game?</p>
-                      <p className="text-[#9BA8AB] text-[11px] leading-relaxed">
+                      <p className="text-[#1F2937] text-xs font-bold uppercase tracking-wide">Didn't find your game?</p>
+                      <p className="text-[#4B5563] text-[11px] leading-relaxed">
                         No titles found matching "{searchQuery}". Ask us directly and we'll get it for you!
                       </p>
                       <a
@@ -345,14 +345,14 @@ export default function Navbar() {
         <div className={`items-center gap-3 transition-all duration-300 flex ${isMobileSearchActive ? 'hidden' : ''}`}>
           <button
             onClick={() => setIsCartOpen(true)}
-            className="relative p-2.5 rounded-full bg-[#11212D]/60 border border-[#253745]/60 text-[#9BA8AB] hover:text-white hover:border-[#4A5C6A] transition-all cursor-pointer shadow-sm group shrink-0"
+            className="relative p-2.5 rounded-full bg-[#FFFFFF]/60 border border-[#E5E7EB]/60 text-[#4B5563] hover:text-gray-900 hover:border-[#D1D5DB] transition-all cursor-pointer shadow-sm group shrink-0"
           >
             <ShoppingCart className="w-5 h-5 group-hover:scale-110 transition-transform" />
             {cartItemCount > 0 && (
               <motion.span
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                className="absolute -top-1.5 -right-1.5 bg-gradient-to-r from-[#4A5C6A] to-[#CCD0CF] text-[#06141B] text-[10px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center shadow-md border border-[#06141B]"
+                className="absolute -top-1.5 -right-1.5 bg-gradient-to-r from-[#D1D5DB] to-[#1F2937] text-[#F9FAFB] text-[10px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center shadow-md border border-[#F9FAFB]"
               >
                 {cartItemCount}
               </motion.span>

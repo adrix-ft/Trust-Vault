@@ -38,18 +38,18 @@ export default function GameLibrary() {
             {(!catalogLoaded && displayedGames.length === 0) && Array.from({ length: 10 }).map((_, index) => (
               <div 
                 key={`skeleton-${index}`}
-                className="bg-[#11212D] border border-[#253745] rounded-xl overflow-hidden flex flex-col relative"
+                className="bg-[#FFFFFF] border border-[#E5E7EB] rounded-xl overflow-hidden flex flex-col relative"
               >
                 <div className="absolute inset-0 z-20 -translate-x-full bg-gradient-to-r from-transparent via-white/5 to-transparent animate-sweep pointer-events-none" />
-                <div className="aspect-[3/4] w-full bg-[#06141B]" />
+                <div className="aspect-[3/4] w-full bg-[#F9FAFB]" />
                 <div className="p-4 flex flex-col flex-1 justify-between gap-4">
                   <div>
-                    <div className="h-4 bg-[#253745] rounded w-3/4 mb-2" />
-                    <div className="h-3 bg-[#253745] rounded w-1/2" />
+                    <div className="h-4 bg-[#E5E7EB] rounded w-3/4 mb-2" />
+                    <div className="h-3 bg-[#E5E7EB] rounded w-1/2" />
                   </div>
                   <div className="flex items-center justify-between">
-                    <div className="h-5 bg-[#253745] rounded w-1/3" />
-                    <div className="w-8 h-8 rounded-full bg-[#253745]" />
+                    <div className="h-5 bg-[#E5E7EB] rounded w-1/3" />
+                    <div className="w-8 h-8 rounded-full bg-[#E5E7EB]" />
                   </div>
                 </div>
               </div>
@@ -69,7 +69,7 @@ export default function GameLibrary() {
           <div className="mt-10 flex justify-center">
             <button
               onClick={() => setVisibleCount(prev => prev + 30)}
-              className="flex items-center gap-2 px-6 py-3 rounded-full bg-[#11212D] border border-[#253745] hover:border-[#4A5C6A] text-[#CCD0CF] hover:text-white text-xs font-bold tracking-wider uppercase transition-all shadow-lg hover:scale-105"
+              className="flex items-center gap-2 px-6 py-3 rounded-full bg-[#FFFFFF] border border-[#E5E7EB] hover:border-[#D1D5DB] text-[#1F2937] hover:text-gray-900 text-xs font-bold tracking-wider uppercase transition-all shadow-lg hover:scale-105"
             >
               <span>Show More Games</span>
               <ChevronDown className="w-4 h-4" />
@@ -94,38 +94,33 @@ const GameCard = memo(({ game, index, isSelected, setSelectedCategory, inCart, p
       className={`relative transition-transform duration-200 ease-out hover:-translate-y-1.5 hover:scale-[1.02] hover:shadow-xl group flex flex-col cursor-pointer will-change-transform z-10 hover:z-20`}
     >
       
-      {/* UPGRADE: CINEMATIC AMBIENT GLOW (PS5 Effect) */}
-      <div className="absolute -inset-2.5 z-[-1] opacity-0 group-hover:opacity-60 blur-2xl transition-opacity duration-500 rounded-xl pointer-events-none overflow-hidden">
-        <img src={coverUrl} alt="" className="w-full h-full object-cover" loading="lazy" />
-      </div>
-
       {/* Inner card container holds the borders and hides overflow */}
-      <div className={`flex flex-col h-full rounded-xl overflow-hidden border transition-colors ${isSelected ? 'bg-[#06141B] border-[#4A5C6A] shadow-lg' : 'bg-[#11212D] border-[#253745] group-hover:border-[#4A5C6A]'}`}>
-        <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#06141B]">
+      <div className={`flex flex-col h-full rounded-xl overflow-hidden border transition-all ${isSelected ? 'bg-[#F9FAFB] border-[#D1D5DB] shadow-lg scale-[1.02]' : 'bg-[#FFFFFF] border-[#E5E7EB] group-hover:border-[#D1D5DB] group-hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)]'}`}>
+        <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#F9FAFB]">
           <img 
             src={coverUrl}
             alt={game.title}
             loading="lazy"
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-105 saturate-[1.1]"
           />
-          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#06141B] via-[#06141B]/40 to-transparent opacity-80 pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
           
           <PlatformTags platforms={game.categories} tagColors={game.tagColors} />
           {game.onSale && (
             /* UPGRADE: SHIMMER ON SALE BADGE */
-            <div className="absolute top-2 left-2 bg-green-500 text-[10px] font-black px-2 py-0.5 rounded text-[#06141B] shadow uppercase tracking-wider z-10 overflow-hidden">
+            <div className="absolute top-2 left-2 bg-green-500 text-[10px] font-black px-2 py-0.5 rounded text-[#F9FAFB] shadow uppercase tracking-wider z-10 overflow-hidden">
               <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 to-transparent animate-shimmer pointer-events-none" />
               <span className="relative z-10">SALE</span>
             </div>
           )}
         </div>
         
-        <div className="p-4 flex flex-col flex-1 justify-between bg-[#11212D] relative z-10">
+        <div className="p-4 flex flex-col flex-1 justify-between bg-[#FFFFFF] relative z-10">
           <div>
-            <h3 className={`text-sm font-bold leading-tight transition-colors truncate uppercase ${isSelected ? 'text-white' : 'text-[#CCD0CF] group-hover:text-white'}`}>
+            <h3 className={`text-sm font-bold leading-tight transition-colors truncate uppercase ${isSelected ? 'text-gray-900' : 'text-[#1F2937] group-hover:text-gray-900'}`}>
               {game.title}
             </h3>
-            <p className="text-[10px] text-[#4A5C6A] font-bold tracking-widest uppercase mt-1">Digital Edition</p>
+            <p className="text-[10px] text-[#D1D5DB] font-bold tracking-widest uppercase mt-1">Digital Edition</p>
           </div>
           
           <div className="mt-4 flex items-center justify-between">
@@ -140,7 +135,7 @@ const GameCard = memo(({ game, index, isSelected, setSelectedCategory, inCart, p
                   {displayOriginalPrice && (
                     <span className="text-[10px] font-bold text-red-400 line-through decoration-red-400/50 mb-0.5">{displayOriginalPrice}</span>
                   )}
-                  <span className="text-base font-black text-[#CCD0CF] tracking-wider">{displayPrice}</span>
+                  <span className="text-base font-black text-[#1F2937] tracking-wider">{displayPrice}</span>
                 </div>
               );
             })()}
@@ -156,8 +151,8 @@ const GameCard = memo(({ game, index, isSelected, setSelectedCategory, inCart, p
               }}
               className={`relative overflow-hidden flex-1 py-2 px-2 rounded-lg font-bold text-[10px] uppercase tracking-wider transition-all border ${
                 inCart 
-                  ? 'bg-[#4A5C6A] text-white border-[#4A5C6A]' 
-                  : 'bg-[#253745] hover:bg-[#4A5C6A] text-[#CCD0CF] hover:text-white border-[#4A5C6A]/50 shadow-[0_0_10px_rgba(37,55,69,0.3)]'
+                  ? 'bg-gray-100 text-gray-500 border-gray-200 shadow-inner' 
+                  : 'bg-white hover:bg-gray-50 text-gray-900 border-gray-200 hover:border-gray-300 shadow-sm hover:shadow'
               }`}
             >
               {!inCart && (

@@ -12,11 +12,11 @@
     height: 8px;
   }
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: #11212D;
+    background: #FFFFFF;
     border-radius: 8px;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #4A5C6A;
+    background: #D1D5DB;
     border-radius: 8px;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
@@ -93,5 +93,55 @@
   }
   .animate-blink-bar {
     animation: blink-bar 1.2s infinite ease-in-out;
+  }
+
+  /* 4. Infinite Marquee */
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-100% - 1.5rem)); }
+  }
+  .animate-marquee {
+    animation: marquee 75s linear infinite;
+  }
+  
+  @keyframes marquee-reverse {
+    0% { transform: translateX(calc(-100% - 1.5rem)); }
+    100% { transform: translateX(0); }
+  }
+  .animate-marquee-reverse {
+    animation: marquee-reverse 75s linear infinite;
+  }
+  
+  .group:hover .animate-marquee,
+  .group:hover .animate-marquee-reverse {
+    animation-play-state: paused;
+  }
+  
+  @keyframes border-glow {
+    0%, 100% {
+      border-color: rgba(229, 231, 235, 1); /* gray-200 */
+      box-shadow: 0 0 0px transparent;
+    }
+    50% {
+      border-color: rgba(156, 163, 175, 1); /* gray-400 */
+      box-shadow: 0 0 12px rgba(156, 163, 175, 0.4);
+    }
+  }
+  .animate-border-glow {
+    animation: border-glow 3s infinite ease-in-out;
+  }
+  
+  @keyframes active-border-glow {
+    0%, 100% {
+      border-color: rgba(16, 185, 129, 0.5); /* emerald-500 */
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+    }
+    50% {
+      border-color: rgba(16, 185, 129, 1); /* emerald-500 */
+      box-shadow: 0 0 25px rgba(16, 185, 129, 0.8), inset 0 0 10px rgba(16, 185, 129, 0.2);
+    }
+  }
+  .animate-active-border-glow {
+    animation: active-border-glow 2.5s infinite ease-in-out;
   }
 }

@@ -716,17 +716,17 @@ export default function AdminDashboard() {
   const existingBundles = catalog.filter(g => g.categories?.includes('Bundle-Eligible'));
 
   return (
-    <div className="min-h-screen bg-[#06141B] text-[#CCD0CF] p-4 sm:p-8 font-sans">
+    <div className="min-h-screen bg-[#F9FAFB] text-[#1F2937] p-4 sm:p-8 font-sans">
       <div className="max-w-7xl mx-auto space-y-8">
 
-        <div className="flex flex-col md:flex-row justify-between items-center bg-[#11212D]/80 backdrop-blur-md border border-[#253745] p-6 rounded-2xl shadow-xl gap-4">
+        <div className="flex flex-col md:flex-row justify-between items-center bg-[#FFFFFF]/80 backdrop-blur-md border border-[#E5E7EB] p-6 rounded-2xl shadow-xl gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#253745] to-[#4A5C6A] border border-[#4A5C6A]/50 flex items-center justify-center text-white shadow-lg">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#E5E7EB] to-[#D1D5DB] border border-[#D1D5DB]/50 flex items-center justify-center text-gray-900 shadow-lg">
               <Database className="w-6 h-6" />
             </div>
             <div>
-              <h1 className="text-2xl font-black tracking-wider uppercase text-white">Admin Management Hub</h1>
-              <p className="text-[#9BA8AB] text-xs font-semibold tracking-wide mt-0.5">Trust Vault Control Center</p>
+              <h1 className="text-2xl font-black tracking-wider uppercase text-gray-900">Admin Management Hub</h1>
+              <p className="text-[#4B5563] text-xs font-semibold tracking-wide mt-0.5">Trust Vault Control Center</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -740,7 +740,7 @@ export default function AdminDashboard() {
                   }
                 });
               }}
-              className="flex items-center gap-2 bg-[#06141B] hover:bg-[#253745] text-[#CCD0CF] px-4 py-2.5 rounded-xl font-bold uppercase tracking-wider text-xs transition-all border border-[#253745] hover:border-[#4A5C6A] cursor-pointer shadow-sm"
+              className="flex items-center gap-2 bg-[#F9FAFB] hover:bg-[#E5E7EB] text-[#1F2937] px-4 py-2.5 rounded-xl font-bold uppercase tracking-wider text-xs transition-all border border-[#E5E7EB] hover:border-[#D1D5DB] cursor-pointer shadow-sm"
             >
               <RefreshCw className="w-3.5 h-3.5" /> Reset Catalog
             </button>
@@ -759,7 +759,7 @@ export default function AdminDashboard() {
 
         <div className="flex flex-col lg:flex-row gap-6 items-start">
           {/* Sidebar Tabs */}
-          <div className="w-full lg:w-auto shrink-0 flex flex-col gap-1.5 bg-[#11212D]/50 border border-[#253745] p-2 rounded-2xl overflow-x-auto lg:overflow-x-visible">
+          <div className="w-full lg:w-auto shrink-0 flex flex-col gap-1.5 bg-[#FFFFFF]/50 border border-[#E5E7EB] p-2 rounded-2xl overflow-x-auto lg:overflow-x-visible">
             <div className="flex lg:flex-col gap-1.5">
           {[
             { id: 'hero_pc', label: 'Hero - PC', icon: Monitor, count: catalog.filter(g => g.showInHero && (g.categories?.some(c => c.toUpperCase() === 'PC' || c.toUpperCase() === 'STEAM'))).length },
@@ -778,12 +778,12 @@ export default function AdminDashboard() {
                 key={tab.id}
                 title={tab.label}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center justify-center p-3.5 rounded-xl transition-all cursor-pointer relative ${isActive ? 'bg-gradient-to-r from-[#253745] to-[#4A5C6A] text-white shadow-lg border border-[#4A5C6A]' : 'text-[#9BA8AB] hover:text-white hover:bg-[#11212D] border border-transparent'
+                className={`flex items-center justify-center p-3.5 rounded-xl transition-all cursor-pointer relative ${isActive ? 'bg-gradient-to-r from-[#E5E7EB] to-[#D1D5DB] text-white shadow-lg border border-[#D1D5DB]' : 'text-[#4B5563] hover:text-white hover:bg-[#FFFFFF] border border-transparent'
                   }`}
               >
-                <Icon className={`w-6 h-6 shrink-0 ${isActive ? 'text-white' : 'text-[#4A5C6A]'}`} />
+                <Icon className={`w-6 h-6 shrink-0 ${isActive ? 'text-gray-900' : 'text-[#D1D5DB]'}`} />
                 {tab.count !== undefined && (
-                  <span className={`absolute -top-1 -right-1 text-[9px] px-1.5 py-0.5 rounded-full font-black shadow-md ${isActive ? 'bg-cyan-500 text-black' : 'bg-[#06141B] text-[#9BA8AB] border border-[#253745]'}`}>
+                  <span className={`absolute -top-1 -right-1 text-[9px] px-1.5 py-0.5 rounded-full font-black shadow-md ${isActive ? 'bg-cyan-500 text-black' : 'bg-[#F9FAFB] text-[#4B5563] border border-[#E5E7EB]'}`}>
                     {tab.count}
                   </span>
                 )}
@@ -796,61 +796,61 @@ export default function AdminDashboard() {
           {/* Main Content Area */}
           <div className="flex-1 w-full min-w-0">
             {activeTab === 'subscriptions' && (
-          <div className="bg-[#11212D] border border-[#253745] rounded-2xl overflow-hidden shadow-2xl p-6">
-            <h2 className="text-xl font-bold text-white mb-4">Manage Subscriptions</h2>
-            <p className="text-[#9BA8AB] text-sm">Add, edit, or remove subscription offerings from your store.</p>
+          <div className="bg-[#FFFFFF] border border-[#E5E7EB] rounded-2xl overflow-hidden shadow-2xl p-6">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Manage Subscriptions</h2>
+            <p className="text-[#4B5563] text-sm">Add, edit, or remove subscription offerings from your store.</p>
 
-            <div className="mt-6 border border-[#253745] p-6 rounded-xl bg-[#06141B]">
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">{editingSubId ? 'Edit Subscription' : 'Add New Subscription'}</h3>
+            <div className="mt-6 border border-[#E5E7EB] p-6 rounded-xl bg-[#F9FAFB]">
+              <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">{editingSubId ? 'Edit Subscription' : 'Add New Subscription'}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[#9BA8AB] text-[10px] font-bold uppercase tracking-wider mb-1">Name</label>
-                  <input type="text" value={subFormData.name} onChange={e => setSubFormData({ ...subFormData, name: e.target.value })} className="w-full bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="e.g. Netflix Premium" />
+                  <label className="block text-[#4B5563] text-[10px] font-bold uppercase tracking-wider mb-1">Name</label>
+                  <input type="text" value={subFormData.name} onChange={e => setSubFormData({ ...subFormData, name: e.target.value })} className="w-full bg-[#FFFFFF] text-gray-900 px-4 py-2.5 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="e.g. Netflix Premium" />
                 </div>
                 <div>
-                  <label className="block text-[#9BA8AB] text-[10px] font-bold uppercase tracking-wider mb-1">Logo URL</label>
-                  <input type="text" value={subFormData.logoUrl} onChange={e => setSubFormData({ ...subFormData, logoUrl: e.target.value })} className="w-full bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="https://..." />
+                  <label className="block text-[#4B5563] text-[10px] font-bold uppercase tracking-wider mb-1">Logo URL</label>
+                  <input type="text" value={subFormData.logoUrl} onChange={e => setSubFormData({ ...subFormData, logoUrl: e.target.value })} className="w-full bg-[#FFFFFF] text-gray-900 px-4 py-2.5 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="https://..." />
                 </div>
                 <div>
-                  <label className="block text-[#9BA8AB] text-[10px] font-bold uppercase tracking-wider mb-1">Banner Image URL</label>
-                  <input type="text" value={subFormData.bannerUrl} onChange={e => setSubFormData({ ...subFormData, bannerUrl: e.target.value })} className="w-full bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="https://..." />
+                  <label className="block text-[#4B5563] text-[10px] font-bold uppercase tracking-wider mb-1">Banner Image URL</label>
+                  <input type="text" value={subFormData.bannerUrl} onChange={e => setSubFormData({ ...subFormData, bannerUrl: e.target.value })} className="w-full bg-[#FFFFFF] text-gray-900 px-4 py-2.5 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="https://..." />
                 </div>
                 <div className="flex gap-4">
                   <div className="flex-1">
-                    <label className="block text-[#9BA8AB] text-[10px] font-bold uppercase tracking-wider mb-1">Theme Color</label>
+                    <label className="block text-[#4B5563] text-[10px] font-bold uppercase tracking-wider mb-1">Theme Color</label>
                     <div className="flex items-center gap-2">
-                      <input type="color" value={subFormData.themeColor || '#10b981'} onChange={e => setSubFormData({ ...subFormData, themeColor: e.target.value })} className="w-10 h-10 rounded cursor-pointer border border-[#253745] bg-[#11212D]" />
-                      <input type="text" value={subFormData.themeColor} onChange={e => setSubFormData({ ...subFormData, themeColor: e.target.value })} className="flex-1 bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="#HEX" />
+                      <input type="color" value={subFormData.themeColor || '#10b981'} onChange={e => setSubFormData({ ...subFormData, themeColor: e.target.value })} className="w-10 h-10 rounded cursor-pointer border border-[#E5E7EB] bg-[#FFFFFF]" />
+                      <input type="text" value={subFormData.themeColor} onChange={e => setSubFormData({ ...subFormData, themeColor: e.target.value })} className="flex-1 bg-[#FFFFFF] text-gray-900 px-4 py-2.5 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="#HEX" />
                     </div>
                   </div>
                   <div className="flex-1">
-                    <label className="block text-[#9BA8AB] text-[10px] font-bold uppercase tracking-wider mb-1">Badge Text</label>
-                    <input type="text" value={subFormData.badge} onChange={e => setSubFormData({ ...subFormData, badge: e.target.value })} className="w-full bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="e.g. Popular" />
+                    <label className="block text-[#4B5563] text-[10px] font-bold uppercase tracking-wider mb-1">Badge Text</label>
+                    <input type="text" value={subFormData.badge} onChange={e => setSubFormData({ ...subFormData, badge: e.target.value })} className="w-full bg-[#FFFFFF] text-gray-900 px-4 py-2.5 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="e.g. Popular" />
                   </div>
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-[#9BA8AB] text-[10px] font-bold uppercase tracking-wider mb-1">Short Description</label>
-                  <input type="text" value={subFormData.description} onChange={e => setSubFormData({ ...subFormData, description: e.target.value })} className="w-full bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="A short catchy description of the plan..." />
+                  <label className="block text-[#4B5563] text-[10px] font-bold uppercase tracking-wider mb-1">Short Description</label>
+                  <input type="text" value={subFormData.description} onChange={e => setSubFormData({ ...subFormData, description: e.target.value })} className="w-full bg-[#FFFFFF] text-gray-900 px-4 py-2.5 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="A short catchy description of the plan..." />
                 </div>
 
                 <div className="md:col-span-2 space-y-2">
                   <div className="flex items-center justify-between">
-                    <label className="block text-[#9BA8AB] text-[10px] font-bold uppercase tracking-wider">Pricing Options</label>
+                    <label className="block text-[#4B5563] text-[10px] font-bold uppercase tracking-wider">Pricing Options</label>
                     <button onClick={() => setSubFormData({ ...subFormData, pricing: [...subFormData.pricing, { duration: '', price: '' }] })} className="text-emerald-400 hover:text-emerald-300 text-xs font-bold flex items-center gap-1 cursor-pointer"><Plus className="w-3 h-3" /> Add Option</button>
                   </div>
                   {(subFormData.pricing || []).map((p, idx) => (
                     <div key={idx} className="flex items-center gap-2">
-                      <input type="text" value={p.duration} onChange={e => { const newP = [...subFormData.pricing]; newP[idx].duration = e.target.value; setSubFormData({ ...subFormData, pricing: newP }); }} className="flex-1 bg-[#11212D] text-white px-4 py-2 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="Duration (1 Month)" />
-                      <input type="text" value={p.price} onChange={e => { const newP = [...subFormData.pricing]; newP[idx].price = e.target.value; setSubFormData({ ...subFormData, pricing: newP }); }} className="flex-1 bg-[#11212D] text-white px-4 py-2 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="Price (500Rs)" />
-                      <input type="text" value={p.originalPrice || ''} onChange={e => { const newP = [...subFormData.pricing]; newP[idx].originalPrice = e.target.value; setSubFormData({ ...subFormData, pricing: newP }); }} className="flex-1 bg-[#11212D] text-[#9BA8AB] px-4 py-2 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none" placeholder="Old Price (Optional)" />
+                      <input type="text" value={p.duration} onChange={e => { const newP = [...subFormData.pricing]; newP[idx].duration = e.target.value; setSubFormData({ ...subFormData, pricing: newP }); }} className="flex-1 bg-[#FFFFFF] text-gray-900 px-4 py-2 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="Duration (1 Month)" />
+                      <input type="text" value={p.price} onChange={e => { const newP = [...subFormData.pricing]; newP[idx].price = e.target.value; setSubFormData({ ...subFormData, pricing: newP }); }} className="flex-1 bg-[#FFFFFF] text-gray-900 px-4 py-2 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="Price (500Rs)" />
+                      <input type="text" value={p.originalPrice || ''} onChange={e => { const newP = [...subFormData.pricing]; newP[idx].originalPrice = e.target.value; setSubFormData({ ...subFormData, pricing: newP }); }} className="flex-1 bg-[#FFFFFF] text-[#4B5563] px-4 py-2 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none" placeholder="Old Price (Optional)" />
                       <button onClick={() => setSubFormData({ ...subFormData, pricing: subFormData.pricing.filter((_, i) => i !== idx) })} className="p-2 bg-red-500/10 text-red-400 rounded-xl hover:bg-red-500/20 cursor-pointer"><Trash2 className="w-4 h-4" /></button>
                     </div>
                   ))}
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className="block text-[#9BA8AB] text-[10px] font-bold uppercase tracking-wider mb-1">Subscription Details (One feature per line)</label>
-                  <textarea value={subFormData.details} onChange={e => setSubFormData({ ...subFormData, details: e.target.value })} className="w-full bg-[#11212D] text-white px-4 py-2.5 rounded-xl border border-[#253745] focus:border-[#4A5C6A] outline-none h-24" placeholder="4K Ultra HD&#10;4 Screens&#10;No Ads"></textarea>
+                  <label className="block text-[#4B5563] text-[10px] font-bold uppercase tracking-wider mb-1">Subscription Details (One feature per line)</label>
+                  <textarea value={subFormData.details} onChange={e => setSubFormData({ ...subFormData, details: e.target.value })} className="w-full bg-[#FFFFFF] text-gray-900 px-4 py-2.5 rounded-xl border border-[#E5E7EB] focus:border-[#D1D5DB] outline-none h-24" placeholder="4K Ultra HD&#10;4 Screens&#10;No Ads"></textarea>
                 </div>
               </div>
 
@@ -859,7 +859,7 @@ export default function AdminDashboard() {
                   {editingSubId ? 'Update Subscription' : 'Save Subscription'}
                 </button>
                 {editingSubId && (
-                  <button onClick={() => { setEditingSubId(null); setSubFormData(defaultSubscription); }} className="bg-[#253745] hover:bg-[#4A5C6A] text-white font-bold uppercase tracking-wider text-xs px-6 py-2.5 rounded-xl shadow-lg transition-colors cursor-pointer">
+                  <button onClick={() => { setEditingSubId(null); setSubFormData(defaultSubscription); }} className="bg-[#E5E7EB] hover:bg-[#D1D5DB] text-gray-900 font-bold uppercase tracking-wider text-xs px-6 py-2.5 rounded-xl shadow-lg transition-colors cursor-pointer">
                     Cancel
                   </button>
                 )}
@@ -867,9 +867,9 @@ export default function AdminDashboard() {
             </div>
 
             <div className="mt-8 space-y-4">
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider">Current Subscriptions ({subscriptions.length})</h3>
+              <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider">Current Subscriptions ({subscriptions.length})</h3>
               {subscriptions.length === 0 ? (
-                <div className="text-[#9BA8AB] text-sm text-center py-10 bg-[#06141B] rounded-xl border border-[#253745]">
+                <div className="text-[#4B5563] text-sm text-center py-10 bg-[#F9FAFB] rounded-xl border border-[#E5E7EB]">
                   No subscriptions added yet.
                 </div>
               ) : (
@@ -890,19 +890,19 @@ export default function AdminDashboard() {
                         reorderSubscriptions(newSubs);
                         setDraggedSubIndex(null);
                       }}
-                      className="bg-[#06141B] border border-[#253745] p-4 rounded-xl flex flex-col justify-between shadow-lg cursor-grab active:cursor-grabbing"
+                      className="bg-[#F9FAFB] border border-[#E5E7EB] p-4 rounded-xl flex flex-col justify-between shadow-lg cursor-grab active:cursor-grabbing"
                     >
                       <div className="flex justify-between items-start">
                         <div className="flex items-center gap-3">
-                          <GripVertical className="w-5 h-5 text-[#4A5C6A] cursor-grab" />
+                          <GripVertical className="w-5 h-5 text-[#D1D5DB] cursor-grab" />
                           {sub.logoUrl ? (
                             <img src={sub.logoUrl} alt={sub.name} className="w-10 h-10 rounded-lg object-cover bg-white p-0.5" />
                           ) : (
-                            <div className="w-10 h-10 rounded-lg bg-[#253745] flex items-center justify-center text-[#9BA8AB]">
+                            <div className="w-10 h-10 rounded-lg bg-[#E5E7EB] flex items-center justify-center text-[#4B5563]">
                               <Repeat className="w-5 h-5" />
                             </div>
                           )}
-                          <h4 className="text-base font-bold text-white">{sub.name}</h4>
+                          <h4 className="text-base font-bold text-gray-900">{sub.name}</h4>
                         </div>
                         <div className="flex items-center gap-2">
                           <button onClick={() => {
@@ -927,9 +927,9 @@ export default function AdminDashboard() {
                           </button>
                         </div>
                       </div>
-                      <div className="mt-4 text-[11px] text-[#9BA8AB] space-y-1">
-                        <p><strong className="text-[#CCD0CF]">Pricing:</strong> {sub.pricing ? sub.pricing.map(p => `${p.duration} (${p.price})`).join(', ') : ''}</p>
-                        <p><strong className="text-[#CCD0CF]">Features:</strong> {(sub.details || sub.features || []).length} listed</p>
+                      <div className="mt-4 text-[11px] text-[#4B5563] space-y-1">
+                        <p><strong className="text-[#1F2937]">Pricing:</strong> {sub.pricing ? sub.pricing.map(p => `${p.duration} (${p.price})`).join(', ') : ''}</p>
+                        <p><strong className="text-[#1F2937]">Features:</strong> {(sub.details || sub.features || []).length} listed</p>
                       </div>
                     </div>
                   ))}
@@ -940,18 +940,18 @@ export default function AdminDashboard() {
         )}
 
         {(activeTab === 'pc_games' || activeTab === 'ps_games' || activeTab === 'hero_pc' || activeTab === 'hero_ps') && (
-          <div className="bg-[#11212D] border border-[#253745] rounded-2xl overflow-hidden shadow-2xl space-y-0">
-            <div className="p-5 border-b border-[#253745] flex flex-col lg:flex-row justify-between items-center gap-4 bg-[#11212D]">
+          <div className="bg-[#FFFFFF] border border-[#E5E7EB] rounded-2xl overflow-hidden shadow-2xl space-y-0">
+            <div className="p-5 border-b border-[#E5E7EB] flex flex-col lg:flex-row justify-between items-center gap-4 bg-[#FFFFFF]">
               <div className="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
                 <input
                   type="text" placeholder="Search inventory..." value={searchTerm}
                   onChange={e => { setSearchTerm(e.target.value); setCurrentPage(1); }}
-                  className="bg-[#06141B] border border-[#253745] rounded-xl px-4 py-2.5 text-xs text-white placeholder:text-[#4A5C6A] focus:outline-none focus:border-[#4A5C6A] w-full sm:w-72 shadow-inner"
+                  className="bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-4 py-2.5 text-xs text-gray-900 placeholder:text-[#D1D5DB] focus:outline-none focus:border-[#D1D5DB] w-full sm:w-72 shadow-inner"
                 />
                 <div className="flex items-center gap-2 w-full sm:w-auto">
                   <select
                     value={sortBy} onChange={(e) => { setSortBy(e.target.value as any); setCurrentPage(1); }}
-                    className="bg-[#06141B] border border-[#253745] rounded-xl px-3.5 py-2.5 text-xs font-bold uppercase tracking-wider text-[#CCD0CF] focus:outline-none focus:border-[#4A5C6A] w-full sm:w-auto shadow-inner"
+                    className="bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-3.5 py-2.5 text-xs font-bold uppercase tracking-wider text-[#1F2937] focus:outline-none focus:border-[#D1D5DB] w-full sm:w-auto shadow-inner"
                   >
                     <option value="default">Sort: Newest First (Custom)</option>
                     <option value="az">Alphabetical (A - Z)</option>
@@ -964,12 +964,12 @@ export default function AdminDashboard() {
 
               <div className="flex items-center justify-between w-full lg:w-auto gap-4">
                 <div className="flex items-center gap-3">
-                  <span className="text-xs text-[#9BA8AB] hidden xl:inline">
+                  <span className="text-xs text-[#4B5563] hidden xl:inline">
                     Showing {viewAll ? 'All' : `${startIndex + 1}-${Math.min(startIndex + itemsPerPage, filteredCatalog.length)}`} of {filteredCatalog.length}
                   </span>
                   <button
                     onClick={() => { setViewAll(!viewAll); setCurrentPage(1); }}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase border transition-colors cursor-pointer ${viewAll ? 'bg-cyan-900/50 text-cyan-400 border-cyan-500/50 shadow-[0_0_10px_rgba(34,211,238,0.2)]' : 'bg-[#06141B] text-[#9BA8AB] border-[#253745] hover:text-white hover:bg-[#253745]'}`}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase border transition-colors cursor-pointer ${viewAll ? 'bg-cyan-900/50 text-cyan-400 border-cyan-500/50 shadow-[0_0_10px_rgba(34,211,238,0.2)]' : 'bg-[#F9FAFB] text-[#4B5563] border-[#E5E7EB] hover:text-gray-900 hover:bg-[#E5E7EB]'}`}
                   >
                     {viewAll ? <Layers className="w-3.5 h-3.5" /> : <List className="w-3.5 h-3.5" />}
                     {viewAll ? 'Pages Mode' : 'View All'}
@@ -983,7 +983,7 @@ export default function AdminDashboard() {
                 </button>
                 <button
                   onClick={openAddForm}
-                  className="flex items-center gap-2 bg-gradient-to-r from-[#253745] to-[#4A5C6A] hover:from-[#4A5C6A] hover:to-[#596F80] text-white px-5 py-2.5 rounded-xl font-bold uppercase tracking-wider text-xs transition-all shadow-md whitespace-nowrap cursor-pointer border border-[#4A5C6A]/50"
+                  className="flex items-center gap-2 bg-gradient-to-r from-[#E5E7EB] to-[#D1D5DB] hover:from-[#D1D5DB] hover:to-[#596F80] text-white px-5 py-2.5 rounded-xl font-bold uppercase tracking-wider text-xs transition-all shadow-md whitespace-nowrap cursor-pointer border border-[#D1D5DB]/50"
                 >
                   <Plus className="w-4 h-4" /> Add Game
                 </button>
@@ -992,7 +992,7 @@ export default function AdminDashboard() {
 
             <div className="w-full">
               <table className="w-full text-left">
-                <thead className="bg-[#06141B]/80 text-[#9BA8AB] text-[11px] uppercase tracking-wider border-b border-[#253745]">
+                <thead className="bg-[#F9FAFB]/80 text-[#4B5563] text-[11px] uppercase tracking-wider border-b border-[#E5E7EB]">
                   <tr>
                     <th className="p-4 font-bold w-auto">Cover</th>
                     <th className="p-4 font-bold w-full max-w-[250px]">Title & Status</th>
@@ -1002,11 +1002,11 @@ export default function AdminDashboard() {
                     <th className="p-4 font-bold text-right w-auto whitespace-nowrap">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#253745]/60">
+                <tbody className="divide-y divide-[#E5E7EB]/60">
                   {currentTableData.map((game, index) => (
                     <tr 
                       key={game.title} 
-                      className="hover:bg-[#06141B]/40 transition-colors cursor-grab active:cursor-grabbing"
+                      className="hover:bg-[#F9FAFB]/40 transition-colors cursor-grab active:cursor-grabbing"
                       draggable
                       onDragStart={() => setDraggedGameTitle(game.title)}
                       onDragOver={(e) => e.preventDefault()}
@@ -1049,16 +1049,16 @@ export default function AdminDashboard() {
                       }}
                     >
                       <td className="p-4 flex items-center gap-3">
-                        <div className="flex flex-col items-center gap-1.5 shrink-0 bg-[#06141B] p-1.5 rounded-lg border border-[#253745]">
+                        <div className="flex flex-col items-center gap-1.5 shrink-0 bg-[#F9FAFB] p-1.5 rounded-lg border border-[#E5E7EB]">
                           <button 
                             type="button" 
                             title="Move to Top"
                             onClick={() => handleMoveToTop(game.title)}
-                            className="p-1 text-[#9BA8AB] hover:text-emerald-400 hover:bg-[#253745] rounded transition-colors"
+                            className="p-1 text-[#4B5563] hover:text-emerald-400 hover:bg-[#E5E7EB] rounded transition-colors"
                           >
                             <ArrowUpToLine className="w-3.5 h-3.5" />
                           </button>
-                          <GripVertical className="w-4 h-4 text-[#4A5C6A] cursor-grab" />
+                          <GripVertical className="w-4 h-4 text-[#D1D5DB] cursor-grab" />
                           <input 
                             type="text" 
                             title="Exact position (press Enter to move)"
@@ -1068,24 +1068,24 @@ export default function AdminDashboard() {
                                 handleMoveToPosition(game.title, parseInt(e.currentTarget.value) - 1);
                               }
                             }}
-                            className="w-7 h-5 text-center text-[9px] font-bold bg-[#11212D] border border-[#253745] rounded text-[#9BA8AB] focus:text-white focus:border-cyan-400 focus:outline-none"
+                            className="w-7 h-5 text-center text-[9px] font-bold bg-[#FFFFFF] border border-[#E5E7EB] rounded text-[#4B5563] focus:text-gray-900 focus:border-cyan-400 focus:outline-none"
                           />
                           <button 
                             type="button" 
                             title="Move to Bottom"
                             onClick={() => handleMoveToBottom(game.title)}
-                            className="p-1 text-[#9BA8AB] hover:text-red-400 hover:bg-[#253745] rounded transition-colors"
+                            className="p-1 text-[#4B5563] hover:text-red-400 hover:bg-[#E5E7EB] rounded transition-colors"
                           >
                             <ArrowDownToLine className="w-3.5 h-3.5" />
                           </button>
                         </div>
                         <div
-                          className="w-12 h-16 shrink-0 bg-cover bg-center rounded-lg border border-[#253745] shadow-md"
+                          className="w-12 h-16 shrink-0 bg-cover bg-center rounded-lg border border-[#E5E7EB] shadow-md"
                           style={{ backgroundImage: `url('${game.customCoverUrl || getGameCoverUrl(game.title)}')` }}
                         />
                       </td>
                       <td className="p-4 truncate">
-                        <div className="font-bold text-sm tracking-wide text-white uppercase truncate" title={game.title}>{game.title}</div>
+                        <div className="font-bold text-sm tracking-wide text-gray-900 uppercase truncate" title={game.title}>{game.title}</div>
                         {game.onSale && (
                           <span className="inline-block mt-1 bg-green-500/15 text-green-400 text-[9px] px-2 py-0.5 rounded-full font-black tracking-widest uppercase border border-green-500/30 shadow-sm">
                             ON SALE
@@ -1094,7 +1094,7 @@ export default function AdminDashboard() {
                       </td>
                       <td className="p-4">
                         <div className="flex flex-col">
-                          <span className="font-bold text-white text-sm">{game.price}</span>
+                          <span className="font-bold text-gray-900 text-sm">{game.price}</span>
                           {game.onSale && game.originalPrice && (
                             <span className="text-[11px] text-red-400 line-through decoration-red-400/50">{game.originalPrice}</span>
                           )}
@@ -1103,7 +1103,7 @@ export default function AdminDashboard() {
                       <td className="p-4">
                         <div className="flex flex-wrap gap-1 max-w-[150px]">
                           {game.categories?.map(cat => (
-                            <span key={cat} className="bg-[#253745]/80 text-[#9BA8AB] text-[10px] px-2.5 py-0.5 rounded-md font-bold uppercase tracking-wider whitespace-nowrap border border-[#4A5C6A]/30">
+                            <span key={cat} className="bg-[#E5E7EB]/80 text-[#4B5563] text-[10px] px-2.5 py-0.5 rounded-md font-bold uppercase tracking-wider whitespace-nowrap border border-[#D1D5DB]/30">
                               {cat}
                             </span>
                           ))}
@@ -1111,16 +1111,16 @@ export default function AdminDashboard() {
                       </td>
                       <td className="p-4 text-center">
                         <div className="flex items-center justify-center gap-1.5 flex-wrap mx-auto">
-                          <label className={`flex items-center gap-1.5 cursor-pointer px-2 py-1 rounded-md border transition-all ${game.showInHero ? 'bg-[#4A5C6A] border-[#4A5C6A]' : 'bg-[#06141B] border-[#253745]'}`}>
+                          <label className={`flex items-center gap-1.5 cursor-pointer px-2 py-1 rounded-md border transition-all ${game.showInHero ? 'bg-[#D1D5DB] border-[#D1D5DB]' : 'bg-[#F9FAFB] border-[#E5E7EB]'}`}>
                             <input
                               type="checkbox" checked={game.showInHero || false}
                               onChange={(e) => updateGame(game.title, { ...game, showInHero: e.target.checked })}
                               className="hidden"
                             />
-                            <span className={`text-[9px] font-bold uppercase ${game.showInHero ? 'text-white' : 'text-[#9BA8AB]'}`}>Hero</span>
+                            <span className={`text-[9px] font-bold uppercase ${game.showInHero ? 'text-gray-900' : 'text-[#4B5563]'}`}>Hero</span>
                           </label>
 
-                          <label className={`flex items-center gap-1.5 cursor-pointer px-2 py-1 rounded-md border transition-all ${game.categories?.includes('Bundle-Eligible') ? 'bg-[#4A5C6A] border-[#4A5C6A]' : 'bg-[#06141B] border-[#253745]'}`}>
+                          <label className={`flex items-center gap-1.5 cursor-pointer px-2 py-1 rounded-md border transition-all ${game.categories?.includes('Bundle-Eligible') ? 'bg-[#D1D5DB] border-[#D1D5DB]' : 'bg-[#F9FAFB] border-[#E5E7EB]'}`}>
                             <input
                               type="checkbox" checked={game.categories?.includes('Bundle-Eligible') || false}
                               onChange={(e) => {
@@ -1131,10 +1131,10 @@ export default function AdminDashboard() {
                               }}
                               className="hidden"
                             />
-                            <span className={`text-[9px] font-bold uppercase ${game.categories?.includes('Bundle-Eligible') ? 'text-white' : 'text-[#9BA8AB]'}`}>Bundle</span>
+                            <span className={`text-[9px] font-bold uppercase ${game.categories?.includes('Bundle-Eligible') ? 'text-gray-900' : 'text-[#4B5563]'}`}>Bundle</span>
                           </label>
 
-                          <label className={`flex items-center gap-1.5 cursor-pointer px-2 py-1 rounded-md border transition-all ${game.categories?.includes('DELUXE EDITION') ? 'bg-cyan-950/80 border-cyan-400' : 'bg-[#06141B] border-[#253745]'}`}>
+                          <label className={`flex items-center gap-1.5 cursor-pointer px-2 py-1 rounded-md border transition-all ${game.categories?.includes('DELUXE EDITION') ? 'bg-cyan-950/80 border-cyan-400' : 'bg-[#F9FAFB] border-[#E5E7EB]'}`}>
                             <input
                               type="checkbox" checked={game.categories?.includes('DELUXE EDITION') || false}
                               onChange={(e) => {
@@ -1145,7 +1145,7 @@ export default function AdminDashboard() {
                               }}
                               className="hidden"
                             />
-                            <span className={`text-[9px] font-bold uppercase ${game.categories?.includes('DELUXE EDITION') ? 'text-cyan-400' : 'text-[#9BA8AB]'}`}>Deluxe</span>
+                            <span className={`text-[9px] font-bold uppercase ${game.categories?.includes('DELUXE EDITION') ? 'text-cyan-400' : 'text-[#4B5563]'}`}>Deluxe</span>
                           </label>
 
                           <button
@@ -1160,7 +1160,7 @@ export default function AdminDashboard() {
                                 }
                               }
                             }}
-                            className="flex items-center justify-center px-2 py-1 rounded-md border border-[#253745] bg-[#06141B] hover:bg-[#253745] text-[#9BA8AB] hover:text-white transition-colors cursor-pointer"
+                            className="flex items-center justify-center px-2 py-1 rounded-md border border-[#E5E7EB] bg-[#F9FAFB] hover:bg-[#E5E7EB] text-[#4B5563] hover:text-gray-900 transition-colors cursor-pointer"
                             title="Add Custom Tag"
                           >
                             <Plus className="w-3.5 h-3.5" />
@@ -1169,8 +1169,8 @@ export default function AdminDashboard() {
                       </td>
                       <td className="p-4 text-right pr-6 whitespace-nowrap">
                         <div className="flex items-center justify-end gap-1">
-                          <button onClick={() => handleDuplicateGame(game)} className="p-2 text-[#9BA8AB] hover:text-white hover:bg-[#253745] rounded-xl transition-colors cursor-pointer"><Copy className="w-4 h-4" /></button>
-                          <button onClick={() => openEditForm(game)} className="p-2 text-[#9BA8AB] hover:text-white hover:bg-[#253745] rounded-xl transition-colors cursor-pointer"><Edit2 className="w-4 h-4" /></button>
+                          <button onClick={() => handleDuplicateGame(game)} className="p-2 text-[#4B5563] hover:text-gray-900 hover:bg-[#E5E7EB] rounded-xl transition-colors cursor-pointer"><Copy className="w-4 h-4" /></button>
+                          <button onClick={() => openEditForm(game)} className="p-2 text-[#4B5563] hover:text-gray-900 hover:bg-[#E5E7EB] rounded-xl transition-colors cursor-pointer"><Edit2 className="w-4 h-4" /></button>
                           <button
                             onClick={() => {
                               setConfirmReq({
@@ -1194,10 +1194,10 @@ export default function AdminDashboard() {
             </div>
 
             {!viewAll && totalPages > 1 && (
-              <div className="p-4 border-t border-[#253745] flex items-center justify-between bg-[#06141B]">
-                <button onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1} className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#11212D] border border-[#253745] text-xs font-bold uppercase disabled:opacity-40 cursor-pointer"><ChevronLeft className="w-4 h-4" /> Previous</button>
-                <span className="text-xs font-bold text-[#9BA8AB]">Page {currentPage} of {totalPages}</span>
-                <button onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages} className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#11212D] border border-[#253745] text-xs font-bold uppercase disabled:opacity-40 cursor-pointer">Next <ChevronRight className="w-4 h-4" /></button>
+              <div className="p-4 border-t border-[#E5E7EB] flex items-center justify-between bg-[#F9FAFB]">
+                <button onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1} className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#FFFFFF] border border-[#E5E7EB] text-xs font-bold uppercase disabled:opacity-40 cursor-pointer"><ChevronLeft className="w-4 h-4" /> Previous</button>
+                <span className="text-xs font-bold text-[#4B5563]">Page {currentPage} of {totalPages}</span>
+                <button onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages} className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#FFFFFF] border border-[#E5E7EB] text-xs font-bold uppercase disabled:opacity-40 cursor-pointer">Next <ChevronRight className="w-4 h-4" /></button>
               </div>
             )}
           </div>
@@ -1205,23 +1205,23 @@ export default function AdminDashboard() {
 
         {activeTab === 'bundles' && (
           <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-center bg-[#11212D] border border-[#253745] p-6 rounded-2xl shadow-xl gap-4">
+            <div className="flex flex-col sm:flex-row justify-between items-center bg-[#FFFFFF] border border-[#E5E7EB] p-6 rounded-2xl shadow-xl gap-4">
               <div>
-                <h2 className="text-xl font-black tracking-wider text-white uppercase flex items-center gap-2.5">
+                <h2 className="text-xl font-black tracking-wider text-gray-900 uppercase flex items-center gap-2.5">
                   <Package className="w-5 h-5 text-emerald-400" />
                   Bundle Game List
                 </h2>
-                <p className="text-[#9BA8AB] text-xs mt-1">Games tagged for visitors to create their own custom bundles.</p>
+                <p className="text-[#4B5563] text-xs mt-1">Games tagged for visitors to create their own custom bundles.</p>
               </div>
             </div>
 
-            <div className="bg-[#11212D] border border-[#253745] p-6 rounded-2xl shadow-xl">
-              <h3 className="text-sm font-black tracking-wider text-white uppercase mb-4">Discount Configurations</h3>
+            <div className="bg-[#FFFFFF] border border-[#E5E7EB] p-6 rounded-2xl shadow-xl">
+              <h3 className="text-sm font-black tracking-wider text-gray-900 uppercase mb-4">Discount Configurations</h3>
               <div className="space-y-3">
                 {bundleDiscounts.sort((a, b) => a.minGames - b.minGames).map((discount, idx) => (
-                  <div key={idx} className="flex items-center gap-3 bg-[#06141B] p-3 rounded-xl border border-[#253745]">
+                  <div key={idx} className="flex items-center gap-3 bg-[#F9FAFB] p-3 rounded-xl border border-[#E5E7EB]">
                     <div className="flex flex-col flex-1">
-                      <label className="text-[10px] uppercase text-[#9BA8AB] font-bold">Minimum Games</label>
+                      <label className="text-[10px] uppercase text-[#4B5563] font-bold">Minimum Games</label>
                       <input
                         type="number"
                         value={discount.minGames}
@@ -1233,12 +1233,12 @@ export default function AdminDashboard() {
                             updateBundleDiscounts(newDiscounts);
                           }
                         }}
-                        className="bg-transparent border-none text-white text-xs font-bold focus:outline-none"
+                        className="bg-transparent border-none text-gray-900 text-xs font-bold focus:outline-none"
                         min="3"
                       />
                     </div>
-                    <div className="flex flex-col flex-1 border-l border-[#253745] pl-3">
-                      <label className="text-[10px] uppercase text-[#9BA8AB] font-bold">Discount %</label>
+                    <div className="flex flex-col flex-1 border-l border-[#E5E7EB] pl-3">
+                      <label className="text-[10px] uppercase text-[#4B5563] font-bold">Discount %</label>
                       <input
                         type="number"
                         value={discount.discountPercentage}
@@ -1250,7 +1250,7 @@ export default function AdminDashboard() {
                             updateBundleDiscounts(newDiscounts);
                           }
                         }}
-                        className="bg-transparent border-none text-white text-xs font-bold focus:outline-none"
+                        className="bg-transparent border-none text-gray-900 text-xs font-bold focus:outline-none"
                         min="0" max="100"
                       />
                     </div>
@@ -1271,15 +1271,15 @@ export default function AdminDashboard() {
                   const newDiscounts = [...bundleDiscounts, { minGames: 3, discountPercentage: 10 }];
                   updateBundleDiscounts(newDiscounts);
                 }}
-                className="mt-4 flex items-center gap-2 bg-[#253745] hover:bg-[#4A5C6A] text-white px-4 py-2 rounded-xl text-[11px] font-bold uppercase transition-colors"
+                className="mt-4 flex items-center gap-2 bg-[#E5E7EB] hover:bg-[#D1D5DB] text-gray-900 px-4 py-2 rounded-xl text-[11px] font-bold uppercase transition-colors"
               >
                 <Plus className="w-3.5 h-3.5" /> Add Discount Tier
               </button>
             </div>
 
-            <div className="overflow-x-auto bg-[#11212D] border border-[#253745] rounded-2xl shadow-2xl">
+            <div className="overflow-x-auto bg-[#FFFFFF] border border-[#E5E7EB] rounded-2xl shadow-2xl">
               <table className="w-full text-left">
-                <thead className="bg-[#06141B]/80 text-[#9BA8AB] text-[11px] uppercase tracking-wider border-b border-[#253745]">
+                <thead className="bg-[#F9FAFB]/80 text-[#4B5563] text-[11px] uppercase tracking-wider border-b border-[#E5E7EB]">
                   <tr>
                     <th className="p-4 font-bold">Cover</th>
                     <th className="p-4 font-bold w-1/4">Title & Status</th>
@@ -1288,27 +1288,27 @@ export default function AdminDashboard() {
                     <th className="p-4 font-bold text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#253745]/60">
+                <tbody className="divide-y divide-[#E5E7EB]/60">
                   {existingBundles.map(game => (
-                    <tr key={game.title} className="hover:bg-[#06141B]/40 transition-colors">
+                    <tr key={game.title} className="hover:bg-[#F9FAFB]/40 transition-colors">
                       <td className="p-4">
                         <div
-                          className="w-12 h-16 bg-cover bg-center rounded-lg border border-[#253745] shadow-md"
+                          className="w-12 h-16 bg-cover bg-center rounded-lg border border-[#E5E7EB] shadow-md"
                           style={{ backgroundImage: `url('${game.customCoverUrl || getGameCoverUrl(game.title)}')` }}
                         />
                       </td>
                       <td className="p-4">
-                        <div className="font-bold text-sm tracking-wide text-white uppercase truncate" title={game.title}>{game.title}</div>
+                        <div className="font-bold text-sm tracking-wide text-gray-900 uppercase truncate" title={game.title}>{game.title}</div>
                       </td>
                       <td className="p-4">
                         <div className="flex flex-col">
-                          <span className="font-bold text-white text-sm">{game.price}</span>
+                          <span className="font-bold text-gray-900 text-sm">{game.price}</span>
                         </div>
                       </td>
                       <td className="p-4">
                         <div className="flex flex-wrap gap-1 max-w-[150px]">
                           {game.categories?.map(cat => (
-                            <span key={cat} className="bg-[#253745]/80 text-[#9BA8AB] text-[10px] px-2.5 py-0.5 rounded-md font-bold uppercase tracking-wider whitespace-nowrap border border-[#4A5C6A]/30">
+                            <span key={cat} className="bg-[#E5E7EB]/80 text-[#4B5563] text-[10px] px-2.5 py-0.5 rounded-md font-bold uppercase tracking-wider whitespace-nowrap border border-[#D1D5DB]/30">
                               {cat}
                             </span>
                           ))}
@@ -1316,14 +1316,14 @@ export default function AdminDashboard() {
                       </td>
                       <td className="p-4 text-right">
                         <div className="flex items-center justify-end gap-1.5">
-                          <button onClick={() => openEditForm(game)} className="p-2 text-[#9BA8AB] hover:text-white hover:bg-[#253745] rounded-xl transition-colors cursor-pointer"><Edit2 className="w-4 h-4" /></button>
+                          <button onClick={() => openEditForm(game)} className="p-2 text-[#4B5563] hover:text-gray-900 hover:bg-[#E5E7EB] rounded-xl transition-colors cursor-pointer"><Edit2 className="w-4 h-4" /></button>
                         </div>
                       </td>
                     </tr>
                   ))}
                   {existingBundles.length === 0 && (
                     <tr>
-                      <td colSpan={5} className="p-8 text-center text-[#9BA8AB] text-xs font-bold uppercase tracking-wider">
+                      <td colSpan={5} className="p-8 text-center text-[#4B5563] text-xs font-bold uppercase tracking-wider">
                         No games tagged for custom bundles yet.
                       </td>
                     </tr>
@@ -1335,21 +1335,21 @@ export default function AdminDashboard() {
         )}
 
         {activeTab === 'proofs' && (
-          <div className="bg-[#11212D] border border-[#253745] rounded-2xl p-6 sm:p-8 shadow-2xl mx-auto space-y-8">
+          <div className="bg-[#FFFFFF] border border-[#E5E7EB] rounded-2xl p-6 sm:p-8 shadow-2xl mx-auto space-y-8">
             <div className="text-center space-y-2">
               <div className="w-12 h-12 rounded-2xl bg-green-500/10 border border-green-500/30 flex items-center justify-center text-green-400 mx-auto">
                 <ShieldCheck className="w-6 h-6" />
               </div>
-              <h2 className="text-xl font-black text-white uppercase tracking-wider">Manage Customer Proofs</h2>
-              <p className="text-[#9BA8AB] text-xs max-w-sm mx-auto">Upload and manage transaction screenshots for the verification feed.</p>
+              <h2 className="text-xl font-black text-gray-900 uppercase tracking-wider">Manage Customer Proofs</h2>
+              <p className="text-[#4B5563] text-xs max-w-sm mx-auto">Upload and manage transaction screenshots for the verification feed.</p>
             </div>
 
-            <div className="bg-[#06141B] border border-[#253745] p-6 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="bg-[#F9FAFB] border border-[#E5E7EB] p-6 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="space-y-1 text-center sm:text-left">
-                <span className="text-xs font-bold text-white uppercase tracking-wider block">Upload New Screenshot</span>
-                <p className="text-[11px] text-[#9BA8AB]">Supports PNG, JPG, WEBP formats.</p>
+                <span className="text-xs font-bold text-gray-900 uppercase tracking-wider block">Upload New Screenshot</span>
+                <p className="text-[11px] text-[#4B5563]">Supports PNG, JPG, WEBP formats.</p>
               </div>
-              <label className="cursor-pointer bg-gradient-to-r from-[#253745] to-[#4A5C6A] hover:from-[#4A5C6A] hover:to-[#596F80] text-white px-6 py-3 rounded-xl flex items-center justify-center font-bold text-xs uppercase transition-all shadow-md shrink-0 border border-[#4A5C6A]/50">
+              <label className="cursor-pointer bg-gradient-to-r from-[#E5E7EB] to-[#D1D5DB] hover:from-[#D1D5DB] hover:to-[#596F80] text-white px-6 py-3 rounded-xl flex items-center justify-center font-bold text-xs uppercase transition-all shadow-md shrink-0 border border-[#D1D5DB]/50">
                 <Upload className="w-4 h-4 mr-2" />
                 <span>Select & Upload</span>
                 <input
@@ -1388,13 +1388,13 @@ export default function AdminDashboard() {
             </div>
 
             <div>
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4 border-b border-[#253745] pb-2">Uploaded Proofs</h3>
+              <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4 border-b border-[#E5E7EB] pb-2">Uploaded Proofs</h3>
               {proofs.length === 0 ? (
-                <p className="text-[#9BA8AB] text-xs">No proofs uploaded yet.</p>
+                <p className="text-[#4B5563] text-xs">No proofs uploaded yet.</p>
               ) : (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                   {proofs.map((url, i) => (
-                    <div key={i} className="relative group rounded-xl overflow-hidden border border-[#253745] aspect-[3/4] bg-[#06141B]">
+                    <div key={i} className="relative group rounded-xl overflow-hidden border border-[#E5E7EB] aspect-[3/4] bg-[#F9FAFB]">
                       <img src={url} alt="Proof" className="w-full h-full object-cover" />
                       <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 backdrop-blur-sm">
                          <a href={url} target="_blank" rel="noreferrer" className="p-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/40 cursor-pointer">
@@ -1413,9 +1413,9 @@ export default function AdminDashboard() {
         )}
 
         {activeTab === 'rents' && (
-          <div className="bg-[#11212D] border border-[#253745] rounded-2xl p-6 shadow-2xl">
+          <div className="bg-[#FFFFFF] border border-[#E5E7EB] rounded-2xl p-6 shadow-2xl">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-              <h2 className="text-xl font-black text-white uppercase tracking-wider flex items-center gap-2">
+              <h2 className="text-xl font-black text-gray-900 uppercase tracking-wider flex items-center gap-2">
                 <Database className="w-5 h-5 text-orange-400" /> Rent Tracking
               </h2>
               <button 
@@ -1430,11 +1430,11 @@ export default function AdminDashboard() {
               </button>
             </div>
             {rents.length === 0 ? (
-              <p className="text-[#9BA8AB] text-xs">No active rents found.</p>
+              <p className="text-[#4B5563] text-xs">No active rents found.</p>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-[#06141B] text-[#9BA8AB] uppercase tracking-wider border-b border-[#253745]">
+                  <thead className="bg-[#F9FAFB] text-[#4B5563] uppercase tracking-wider border-b border-[#E5E7EB]">
                     <tr>
                       <th className="p-4 font-bold">Customer Info</th>
                       <th className="p-4 font-bold">Games</th>
@@ -1444,13 +1444,13 @@ export default function AdminDashboard() {
                       <th className="p-4 font-bold text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#253745]">
+                  <tbody className="divide-y divide-[#E5E7EB]">
                     {rents.map((rent: any) => {
                       const isDone = rent.status === 'DONE';
                       return (
-                        <tr key={rent.id} className="hover:bg-[#06141B]/50 transition-colors">
-                          <td className="p-4 text-white font-bold">{rent.customerName} <br /><span className="text-[#9BA8AB] font-normal">{rent.mobileNumber}</span></td>
-                          <td className="p-4 text-white">
+                        <tr key={rent.id} className="hover:bg-[#F9FAFB]/50 transition-colors">
+                          <td className="p-4 text-gray-900 font-bold">{rent.customerName} <br /><span className="text-[#4B5563] font-normal">{rent.mobileNumber}</span></td>
+                          <td className="p-4 text-gray-900">
                             {rent.items?.map((item: any) => {
                               const remainingDays = calculateRemaining(item, rent.created_at);
                               const isOver = remainingDays !== null && remainingDays <= 0;
@@ -1468,7 +1468,7 @@ export default function AdminDashboard() {
                             })}
                           </td>
                           <td className="p-4 text-orange-400 font-bold">{rent.totalAmount}Rs</td>
-                          <td className="p-4 text-[#9BA8AB]">{new Date(rent.created_at).toLocaleDateString()}</td>
+                          <td className="p-4 text-[#4B5563]">{new Date(rent.created_at).toLocaleDateString()}</td>
                           <td className="p-4">
                             <span className={`px-2 py-1 rounded-md font-bold uppercase ${isDone ? 'bg-gray-500/20 text-gray-400' : 'bg-green-500/20 text-green-400'}`}>
                               {rent.status}
@@ -1534,33 +1534,33 @@ export default function AdminDashboard() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="bg-[#06141B] border border-[#253745] rounded-2xl p-6 max-w-xl w-full max-h-[90vh] overflow-y-auto"
+                className="bg-[#F9FAFB] border border-[#E5E7EB] rounded-2xl p-6 max-w-xl w-full max-h-[90vh] overflow-y-auto"
               >
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-2xl font-black text-white uppercase">New Rent Record</h2>
-                  <button onClick={() => setShowRentForm(false)} className="text-[#9BA8AB] hover:text-white cursor-pointer"><X className="w-6 h-6" /></button>
+                  <h2 className="text-2xl font-black text-gray-900 uppercase">New Rent Record</h2>
+                  <button onClick={() => setShowRentForm(false)} className="text-[#4B5563] hover:text-gray-900 cursor-pointer"><X className="w-6 h-6" /></button>
                 </div>
 
                 <form onSubmit={handleSaveRent} className="space-y-4 text-left">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-bold text-[#9BA8AB] uppercase tracking-wider mb-2">Customer Name</label>
-                      <input type="text" required value={rentFormData.customerName} onChange={e => setRentFormData({...rentFormData, customerName: e.target.value})} className="w-full bg-[#11212D] border border-[#253745] rounded-lg p-3 text-white focus:border-emerald-500 outline-none" />
+                      <label className="block text-xs font-bold text-[#4B5563] uppercase tracking-wider mb-2">Customer Name</label>
+                      <input type="text" required value={rentFormData.customerName} onChange={e => setRentFormData({...rentFormData, customerName: e.target.value})} className="w-full bg-[#FFFFFF] border border-[#E5E7EB] rounded-lg p-3 text-gray-900 focus:border-emerald-500 outline-none" />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-[#9BA8AB] uppercase tracking-wider mb-2">Mobile Number</label>
-                      <input type="text" required value={rentFormData.mobileNumber} onChange={e => setRentFormData({...rentFormData, mobileNumber: e.target.value.replace(/[^0-9]/g, '')})} maxLength={10} className="w-full bg-[#11212D] border border-[#253745] rounded-lg p-3 text-white focus:border-emerald-500 outline-none" />
+                      <label className="block text-xs font-bold text-[#4B5563] uppercase tracking-wider mb-2">Mobile Number</label>
+                      <input type="text" required value={rentFormData.mobileNumber} onChange={e => setRentFormData({...rentFormData, mobileNumber: e.target.value.replace(/[^0-9]/g, '')})} maxLength={10} className="w-full bg-[#FFFFFF] border border-[#E5E7EB] rounded-lg p-3 text-gray-900 focus:border-emerald-500 outline-none" />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-[#9BA8AB] uppercase tracking-wider mb-2">Total Amount (Rs)</label>
-                    <input type="number" required value={rentFormData.totalAmount} onChange={e => setRentFormData({...rentFormData, totalAmount: e.target.value})} className="w-full bg-[#11212D] border border-[#253745] rounded-lg p-3 text-white focus:border-emerald-500 outline-none" />
+                    <label className="block text-xs font-bold text-[#4B5563] uppercase tracking-wider mb-2">Total Amount (Rs)</label>
+                    <input type="number" required value={rentFormData.totalAmount} onChange={e => setRentFormData({...rentFormData, totalAmount: e.target.value})} className="w-full bg-[#FFFFFF] border border-[#E5E7EB] rounded-lg p-3 text-gray-900 focus:border-emerald-500 outline-none" />
                   </div>
 
-                  <div className="border-t border-[#253745] pt-4 mt-4">
+                  <div className="border-t border-[#E5E7EB] pt-4 mt-4">
                     <div className="flex justify-between items-center mb-4">
-                      <h3 className="text-sm font-bold text-white uppercase">Rented Games</h3>
+                      <h3 className="text-sm font-bold text-gray-900 uppercase">Rented Games</h3>
                       <button type="button" onClick={() => setRentFormData({...rentFormData, items: [...rentFormData.items, { title: '', startDate: '', endDate: '' }]})} className="text-emerald-400 text-xs font-bold flex items-center gap-1 cursor-pointer hover:text-emerald-300">
                         <Plus className="w-3 h-3" /> Add Game
                       </button>
@@ -1581,14 +1581,14 @@ export default function AdminDashboard() {
                               newItems[idx].title = e.target.value;
                               setRentFormData({...rentFormData, items: newItems});
                             }} 
-                            className="w-full bg-[#11212D] border border-[#253745] rounded-lg p-3 text-white text-sm focus:border-emerald-500 outline-none" 
+                            className="w-full bg-[#FFFFFF] border border-[#E5E7EB] rounded-lg p-3 text-gray-900 text-sm focus:border-emerald-500 outline-none" 
                           />
                           {activeRentGameSearch === idx && item.title.length > 0 && (
-                            <div className="absolute top-full left-0 right-0 mt-1 bg-[#06141B] border border-[#253745] rounded-lg shadow-xl max-h-40 overflow-y-auto z-[200]">
+                            <div className="absolute top-full left-0 right-0 mt-1 bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg shadow-xl max-h-40 overflow-y-auto z-[200]">
                               {catalog.filter(g => g.title.toLowerCase().includes(item.title.toLowerCase())).map(game => (
                                 <div 
                                   key={game.title} 
-                                  className="p-3 text-sm text-white hover:bg-[#253745] cursor-pointer border-b border-[#253745]/50 last:border-0"
+                                  className="p-3 text-sm text-gray-900 hover:bg-[#E5E7EB] cursor-pointer border-b border-[#E5E7EB]/50 last:border-0"
                                   onClick={() => {
                                     const newItems = [...rentFormData.items];
                                     newItems[idx].title = game.title;
@@ -1600,7 +1600,7 @@ export default function AdminDashboard() {
                                 </div>
                               ))}
                               {catalog.filter(g => g.title.toLowerCase().includes(item.title.toLowerCase())).length === 0 && (
-                                <div className="p-3 text-sm text-[#9BA8AB] italic">No games found</div>
+                                <div className="p-3 text-sm text-[#4B5563] italic">No games found</div>
                               )}
                             </div>
                           )}
@@ -1610,12 +1610,12 @@ export default function AdminDashboard() {
                             const newItems = [...rentFormData.items];
                             newItems[idx].startDate = e.target.value;
                             setRentFormData({...rentFormData, items: newItems});
-                          }} className="w-1/2 bg-[#11212D] border border-[#253745] rounded-lg p-3 text-white text-xs focus:border-emerald-500 outline-none" />
+                          }} className="w-1/2 bg-[#FFFFFF] border border-[#E5E7EB] rounded-lg p-3 text-gray-900 text-xs focus:border-emerald-500 outline-none" />
                           <input type="date" title="End Date" required value={item.endDate || ''} onChange={e => {
                             const newItems = [...rentFormData.items];
                             newItems[idx].endDate = e.target.value;
                             setRentFormData({...rentFormData, items: newItems});
-                          }} className="w-1/2 bg-[#11212D] border border-[#253745] rounded-lg p-3 text-white text-xs focus:border-emerald-500 outline-none" />
+                          }} className="w-1/2 bg-[#FFFFFF] border border-[#E5E7EB] rounded-lg p-3 text-gray-900 text-xs focus:border-emerald-500 outline-none" />
                         </div>
                         {rentFormData.items.length > 1 && (
                           <button type="button" onClick={() => {
@@ -1641,55 +1641,55 @@ export default function AdminDashboard() {
         <AnimatePresence>
           {editingCollection && (
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setEditingCollection(null)} className="fixed inset-0 bg-[#06141B]/90 backdrop-blur-sm cursor-pointer" />
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="bg-[#11212D] border border-[#253745] rounded-2xl p-6 sm:p-8 shadow-2xl w-full max-w-xl relative z-10 my-8 space-y-5 max-h-[90vh] overflow-y-auto">
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setEditingCollection(null)} className="fixed inset-0 bg-[#F9FAFB]/90 backdrop-blur-sm cursor-pointer" />
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="bg-[#FFFFFF] border border-[#E5E7EB] rounded-2xl p-6 sm:p-8 shadow-2xl w-full max-w-xl relative z-10 my-8 space-y-5 max-h-[90vh] overflow-y-auto">
                 <div className="flex justify-between items-center mb-2">
-                  <h2 className="text-xl font-black tracking-wider text-white uppercase">Edit Collection</h2>
-                  <button onClick={() => setEditingCollection(null)} className="text-[#9BA8AB] hover:text-white p-2 cursor-pointer"><X className="w-5 h-5" /></button>
+                  <h2 className="text-xl font-black tracking-wider text-gray-900 uppercase">Edit Collection</h2>
+                  <button onClick={() => setEditingCollection(null)} className="text-[#4B5563] hover:text-gray-900 p-2 cursor-pointer"><X className="w-5 h-5" /></button>
                 </div>
 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Collection Title</label>
+                    <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Collection Title</label>
                     <input
                       type="text"
                       value={editingCollection.title}
                       onChange={(e) => setEditingCollection({ ...editingCollection, title: e.target.value })}
-                      className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]"
+                      className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]"
                     />
                   </div>
                   <div>
-                    <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Description</label>
+                    <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Description</label>
                     <textarea
                       value={editingCollection.description || ''}
                       onChange={(e) => setEditingCollection({ ...editingCollection, description: e.target.value })}
-                      className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A] h-20 resize-none"
+                      className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB] h-20 resize-none"
                     />
                   </div>
                   <div>
-                    <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Banner Image URL</label>
+                    <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Banner Image URL</label>
                     <input
                       type="text"
                       value={editingCollection.customBannerUrl || ''}
                       onChange={(e) => setEditingCollection({ ...editingCollection, customBannerUrl: e.target.value })}
-                      className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]"
+                      className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]"
                       placeholder="https://..."
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Assigned Games (Toggle Keywords)</label>
+                    <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Assigned Games (Toggle Keywords)</label>
                     <div className="relative mb-3">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4A5C6A]" />
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#D1D5DB]" />
                       <input
                         type="text"
                         placeholder="Search catalog to assign..."
                         value={collectionGameSearch}
                         onChange={(e) => setCollectionGameSearch(e.target.value)}
-                        className="w-full bg-[#06141B] border border-[#253745] rounded-lg py-2 pl-9 pr-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A] shadow-inner"
+                        className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg py-2 pl-9 pr-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB] shadow-inner"
                       />
                     </div>
-                    <div className="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto p-3 bg-[#06141B] border border-[#253745] rounded-xl shadow-inner">
+                    <div className="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto p-3 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl shadow-inner">
                       {catalog
                         .filter(g => g.title.toLowerCase().includes(collectionGameSearch.toLowerCase()))
                         .map(game => {
@@ -1706,8 +1706,8 @@ export default function AdminDashboard() {
                                 setEditingCollection({ ...editingCollection, keywords: updatedKw });
                               }}
                               className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase transition-colors border cursor-pointer ${isAssigned
-                                  ? 'bg-[#4A5C6A] text-white border-[#4A5C6A]'
-                                  : 'bg-[#11212D] text-[#9BA8AB] border-[#253745] hover:border-[#4A5C6A]'
+                                  ? 'bg-[#D1D5DB] text-gray-900 border-[#D1D5DB]'
+                                  : 'bg-[#FFFFFF] text-[#4B5563] border-[#E5E7EB] hover:border-[#D1D5DB]'
                                 }`}
                             >
                               {game.title} {isAssigned ? ' ' : '+'}
@@ -1715,19 +1715,19 @@ export default function AdminDashboard() {
                           );
                         })}
                       {catalog.filter(g => g.title.toLowerCase().includes(collectionGameSearch.toLowerCase())).length === 0 && (
-                        <div className="text-xs text-[#4A5C6A] italic py-2">No games found matching your search.</div>
+                        <div className="text-xs text-[#D1D5DB] italic py-2">No games found matching your search.</div>
                       )}
                     </div>
                   </div>
 
-                  <div className="flex justify-end pt-4 border-t border-[#253745]">
+                  <div className="flex justify-end pt-4 border-t border-[#E5E7EB]">
                     <button
                       onClick={() => {
                         updateCollection(editingCollection.id, editingCollection);
                         setEditingCollection(null);
                         showToast('Collection updated', 'success');
                       }}
-                      className="w-full bg-gradient-to-r from-[#253745] to-[#4A5C6A] hover:from-[#4A5C6A] hover:to-[#596F80] text-white py-3 rounded-xl font-bold uppercase tracking-wider text-xs transition-all shadow-md cursor-pointer border border-[#4A5C6A]/50"
+                      className="w-full bg-gradient-to-r from-[#E5E7EB] to-[#D1D5DB] hover:from-[#D1D5DB] hover:to-[#596F80] text-white py-3 rounded-xl font-bold uppercase tracking-wider text-xs transition-all shadow-md cursor-pointer border border-[#D1D5DB]/50"
                     >
                       Save Changes
                     </button>
@@ -1741,23 +1741,23 @@ export default function AdminDashboard() {
         <AnimatePresence>
           {showForm && (
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowForm(false)} className="fixed inset-0 bg-[#06141B]/90 backdrop-blur-sm cursor-pointer" />
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="bg-[#11212D] border border-[#253745] rounded-2xl p-6 sm:p-8 shadow-2xl w-full max-w-3xl relative z-10 my-8 max-h-[90vh] overflow-y-auto">
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowForm(false)} className="fixed inset-0 bg-[#F9FAFB]/90 backdrop-blur-sm cursor-pointer" />
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="bg-[#FFFFFF] border border-[#E5E7EB] rounded-2xl p-6 sm:p-8 shadow-2xl w-full max-w-3xl relative z-10 my-8 max-h-[90vh] overflow-y-auto">
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-xl font-black tracking-wider text-white uppercase">{editingTitle ? 'Edit Game' : 'Add New Game'}</h2>
-                  <button onClick={() => setShowForm(false)} className="text-[#9BA8AB] hover:text-white cursor-pointer"><X className="w-5 h-5" /></button>
+                  <h2 className="text-xl font-black tracking-wider text-gray-900 uppercase">{editingTitle ? 'Edit Game' : 'Add New Game'}</h2>
+                  <button onClick={() => setShowForm(false)} className="text-[#4B5563] hover:text-gray-900 cursor-pointer"><X className="w-5 h-5" /></button>
                 </div>
 
                 <form onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="space-y-3">
-                    <label className="block text-[#9BA8AB] text-[11px] font-bold uppercase tracking-wide">Cover Preview</label>
-                    <div className="aspect-[3/4] rounded-xl border-2 border-dashed border-[#253745] overflow-hidden flex flex-col items-center justify-center bg-[#06141B] relative shadow-inner">
+                    <label className="block text-[#4B5563] text-[11px] font-bold uppercase tracking-wide">Cover Preview</label>
+                    <div className="aspect-[3/4] rounded-xl border-2 border-dashed border-[#E5E7EB] overflow-hidden flex flex-col items-center justify-center bg-[#F9FAFB] relative shadow-inner">
                       {currentCoverPreview ? (
                         <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${currentCoverPreview}')` }} />
                       ) : (
                         <>
-                          <ImageIcon className="w-10 h-10 text-[#253745] mb-2" />
-                          <span className="text-[#4A5C6A] text-xs">No image</span>
+                          <ImageIcon className="w-10 h-10 text-[#E5E7EB] mb-2" />
+                          <span className="text-[#D1D5DB] text-xs">No image</span>
                         </>
                       )}
                     </div>
@@ -1766,21 +1766,21 @@ export default function AdminDashboard() {
                   <div className="md:col-span-2 space-y-4">
                     <div className="space-y-4">
                         <div>
-                          <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Game Title</label>
+                          <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Game Title</label>
                           <div className="flex gap-2">
-                            <input type="text" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} className="flex-1 bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" required />
+                            <input type="text" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} className="flex-1 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]" required />
                             <button type="button" onClick={() => searchSteam(formData.title)} disabled={isSearchingSteam} className="bg-blue-600 hover:bg-blue-500 text-white rounded-xl px-4 py-3 flex items-center justify-center font-bold text-xs uppercase shrink-0 transition-colors disabled:opacity-50">
                               <Search className="w-3.5 h-3.5 mr-1.5" /> Steam
                             </button>
                           </div>
 
                           {steamResults.length > 0 && (
-                            <div className="mt-2 bg-[#06141B] border border-[#253745] rounded-xl max-h-40 overflow-y-auto z-50 p-1 shadow-2xl relative">
-                              <button type="button" onClick={() => setSteamResults([])} className="absolute right-2 top-2 text-[#4A5C6A] hover:text-white"><X className="w-3 h-3" /></button>
+                            <div className="mt-2 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl max-h-40 overflow-y-auto z-50 p-1 shadow-2xl relative">
+                              <button type="button" onClick={() => setSteamResults([])} className="absolute right-2 top-2 text-[#D1D5DB] hover:text-gray-900"><X className="w-3 h-3" /></button>
                               {steamResults.map(game => (
-                                <div key={game.steam_app_id} onClick={() => selectSteamGame(game.steam_app_id)} className="flex items-center gap-3 p-2 hover:bg-[#11212D] cursor-pointer rounded-lg transition-colors mt-4 first:mt-0">
+                                <div key={game.steam_app_id} onClick={() => selectSteamGame(game.steam_app_id)} className="flex items-center gap-3 p-2 hover:bg-[#FFFFFF] cursor-pointer rounded-lg transition-colors mt-4 first:mt-0">
                                   <img src={game.cover_image_url} alt={game.title} className="w-8 h-10 object-cover rounded" />
-                                  <span className="text-xs text-white font-bold">{game.title}</span>
+                                  <span className="text-xs text-gray-900 font-bold">{game.title}</span>
                                 </div>
                               ))}
                             </div>
@@ -1788,18 +1788,18 @@ export default function AdminDashboard() {
                         </div>
 
                         <div className="mt-4">
-                          <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Game Description (Optional for Non-Steam)</label>
-                          <textarea value={formData.description || ''} onChange={e => setFormData({ ...formData, description: e.target.value })} className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A] min-h-[120px]" placeholder="Enter description manually for games not on Steam (supports HTML formatting)"></textarea>
+                          <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Game Description (Optional for Non-Steam)</label>
+                          <textarea value={formData.description || ''} onChange={e => setFormData({ ...formData, description: e.target.value })} className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB] min-h-[120px]" placeholder="Enter description manually for games not on Steam (supports HTML formatting)"></textarea>
                         </div>
                       </div>
                     
 
                     <div className="space-y-4">
                         <div>
-                          <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Cover URL / Upload</label>
+                          <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Cover URL / Upload</label>
                       <div className="flex gap-2">
-                        <input type="text" value={formData.customCoverUrl || ''} onChange={e => setFormData({ ...formData, customCoverUrl: e.target.value })} className="flex-1 bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" placeholder="Image URL" />
-                        <label className="cursor-pointer bg-[#253745] hover:bg-[#4A5C6A] border border-[#4A5C6A] text-white rounded-xl px-4 py-3 flex items-center justify-center font-bold text-xs uppercase transition-colors shrink-0">
+                        <input type="text" value={formData.customCoverUrl || ''} onChange={e => setFormData({ ...formData, customCoverUrl: e.target.value })} className="flex-1 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]" placeholder="Image URL" />
+                        <label className="cursor-pointer bg-[#E5E7EB] hover:bg-[#D1D5DB] border border-[#D1D5DB] text-gray-900 rounded-xl px-4 py-3 flex items-center justify-center font-bold text-xs uppercase transition-colors shrink-0">
                           <Upload className="w-3.5 h-3.5 mr-1.5" /> Upload
                           <input type="file" accept="image/*" className="hidden" onChange={(e) => {
                             const file = e.target.files?.[0];
@@ -1825,34 +1825,34 @@ export default function AdminDashboard() {
                     </div>
 
                     <div className="mt-4">
-                      <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Hero Horizontal Cover URL</label>
+                      <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Hero Horizontal Cover URL</label>
                       <div className="flex gap-2">
-                        <input type="text" value={formData.horizontalCoverUrl || ''} onChange={e => setFormData({ ...formData, horizontalCoverUrl: e.target.value })} className="flex-1 bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" placeholder="Horizontal Image URL (for Hero Banner)" />
+                        <input type="text" value={formData.horizontalCoverUrl || ''} onChange={e => setFormData({ ...formData, horizontalCoverUrl: e.target.value })} className="flex-1 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]" placeholder="Horizontal Image URL (for Hero Banner)" />
                       </div>
                     </div>
 
                     <div className="mt-4">
-                      <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Game Description (Optional for Non-Steam)</label>
-                      <textarea value={formData.description || ''} onChange={e => setFormData({ ...formData, description: e.target.value })} className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A] min-h-[100px]" placeholder="Enter description manually for games not on Steam (supports HTML formatting)"></textarea>
+                      <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Game Description (Optional for Non-Steam)</label>
+                      <textarea value={formData.description || ''} onChange={e => setFormData({ ...formData, description: e.target.value })} className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB] min-h-[100px]" placeholder="Enter description manually for games not on Steam (supports HTML formatting)"></textarea>
                     </div>
 
                     <div className="mt-4 mb-4">
                       <div className="flex items-center justify-between mb-1.5">
-                        <label className="block text-[#9BA8AB] text-[11px] font-bold uppercase">Gallery Image URLs</label>
+                        <label className="block text-[#4B5563] text-[11px] font-bold uppercase">Gallery Image URLs</label>
                         <button
                           type="button"
                           onClick={() => {
                             const currentScreenshots = formData.screenshots || [];
                             setFormData({ ...formData, screenshots: [...currentScreenshots, ''] });
                           }}
-                          className="bg-[#253745] hover:bg-[#4A5C6A] text-white px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-colors"
+                          className="bg-[#E5E7EB] hover:bg-[#D1D5DB] text-gray-900 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-colors"
                         >
                           + Add Image
                         </button>
                       </div>
                       
                       {(!formData.screenshots || formData.screenshots.length === 0) && (
-                        <div className="text-xs text-[#4A5C6A] bg-[#06141B] border border-dashed border-[#253745] rounded-xl p-4 text-center">
+                        <div className="text-xs text-[#D1D5DB] bg-[#F9FAFB] border border-dashed border-[#E5E7EB] rounded-xl p-4 text-center">
                           No gallery images. Click + Add Image to add URLs manually for non-Steam games.
                         </div>
                       )}
@@ -1869,7 +1869,7 @@ export default function AdminDashboard() {
                                   newScreenshots[idx] = e.target.value;
                                   setFormData({ ...formData, screenshots: newScreenshots });
                                 }}
-                                className="flex-1 bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]"
+                                className="flex-1 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]"
                                 placeholder="https://image-url.jpg"
                               />
                               <button
@@ -1878,7 +1878,7 @@ export default function AdminDashboard() {
                                   const newScreenshots = (formData.screenshots || []).filter((_, i) => i !== idx);
                                   setFormData({ ...formData, screenshots: newScreenshots.length > 0 ? newScreenshots : undefined });
                                 }}
-                                className="text-red-400 hover:text-white hover:bg-red-500/20 px-3 py-2 rounded-xl border border-[#253745] hover:border-red-500/50 transition-colors shrink-0"
+                                className="text-red-400 hover:text-white hover:bg-red-500/20 px-3 py-2 rounded-xl border border-[#E5E7EB] hover:border-red-500/50 transition-colors shrink-0"
                               >
                                 <Trash2 className="w-4 h-4" />
                               </button>
@@ -1893,10 +1893,10 @@ export default function AdminDashboard() {
                   <div className="space-y-4">
                       {/* UPGRADE: New section for Store Placements inside the Edit Game modal */}
                       <div>
-                      <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Store Placements</label>
-                      <div className="flex items-center gap-3 bg-[#06141B] border border-[#253745] rounded-xl p-3 h-[42px]">
-                        <label className="flex items-center gap-2 cursor-pointer text-white text-xs">
-                          <input type="checkbox" checked={formData.showInHero || false} onChange={e => setFormData({ ...formData, showInHero: e.target.checked })} className="accent-[#4A5C6A] cursor-pointer" />
+                      <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Store Placements</label>
+                      <div className="flex items-center gap-3 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 h-[42px]">
+                        <label className="flex items-center gap-2 cursor-pointer text-gray-900 text-xs">
+                          <input type="checkbox" checked={formData.showInHero || false} onChange={e => setFormData({ ...formData, showInHero: e.target.checked })} className="accent-[#D1D5DB] cursor-pointer" />
                           <span>Hero Carousel</span>
                         </label>
 
@@ -1907,13 +1907,13 @@ export default function AdminDashboard() {
                       <>
                         <div className="grid grid-cols-2 gap-3">
                           <div>
-                            <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Price (Rs)</label>
-                            <input type="text" value={formData.price} onChange={e => setFormData({ ...formData, price: e.target.value })} className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" placeholder="199Rs" required />
+                            <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Price (Rs)</label>
+                            <input type="text" value={formData.price} onChange={e => setFormData({ ...formData, price: e.target.value })} className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]" placeholder="199Rs" required />
                           </div>
                           <div>
-                            <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Sale Status</label>
-                            <label className="flex items-center gap-2 bg-[#06141B] border border-[#253745] rounded-xl p-3 cursor-pointer text-white text-xs h-[42px]">
-                              <input type="checkbox" checked={formData.onSale || false} onChange={e => setFormData({ ...formData, onSale: e.target.checked })} className="accent-[#4A5C6A] cursor-pointer" />
+                            <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Sale Status</label>
+                            <label className="flex items-center gap-2 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 cursor-pointer text-gray-900 text-xs h-[42px]">
+                              <input type="checkbox" checked={formData.onSale || false} onChange={e => setFormData({ ...formData, onSale: e.target.checked })} className="accent-[#D1D5DB] cursor-pointer" />
                               <span>Mark On Sale</span>
                             </label>
                           </div>
@@ -1921,17 +1921,17 @@ export default function AdminDashboard() {
 
                         {formData.onSale && (
                           <div>
-                            <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Original Price (Rs)</label>
-                            <input type="text" value={formData.originalPrice || ''} onChange={e => setFormData({ ...formData, originalPrice: e.target.value })} className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-red-400 text-xs focus:outline-none focus:border-[#4A5C6A]" placeholder="399Rs" />
+                            <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Original Price (Rs)</label>
+                            <input type="text" value={formData.originalPrice || ''} onChange={e => setFormData({ ...formData, originalPrice: e.target.value })} className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 text-red-400 text-xs focus:outline-none focus:border-[#D1D5DB]" placeholder="399Rs" />
                           </div>
                         )}
                       </>
                     )}
 
                     <div>
-                      <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Rent Options</label>
-                      <label className="flex items-center gap-2 bg-[#06141B] border border-[#253745] rounded-xl p-3 cursor-pointer text-white text-xs h-[42px] mb-3">
-                        <input type="checkbox" checked={formData.isRentable || false} onChange={e => setFormData({ ...formData, isRentable: e.target.checked })} className="accent-[#4A5C6A] cursor-pointer" />
+                      <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Rent Options</label>
+                      <label className="flex items-center gap-2 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 cursor-pointer text-gray-900 text-xs h-[42px] mb-3">
+                        <input type="checkbox" checked={formData.isRentable || false} onChange={e => setFormData({ ...formData, isRentable: e.target.checked })} className="accent-[#D1D5DB] cursor-pointer" />
                         <span>Enable Renting</span>
                       </label>
                     </div>
@@ -1939,8 +1939,8 @@ export default function AdminDashboard() {
                     {formData.isRentable && (
                       <div className="grid grid-cols-1 gap-3 mb-4">
                         <div>
-                          <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Rent Price Per Month (Rs)</label>
-                          <input type="text" value={formData.rentPrice || ''} onChange={e => setFormData({ ...formData, rentPrice: e.target.value })} className="w-full bg-[#06141B] border border-[#253745] rounded-xl p-3 text-white text-xs focus:outline-none focus:border-[#4A5C6A]" placeholder="99Rs" />
+                          <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Rent Price Per Month (Rs)</label>
+                          <input type="text" value={formData.rentPrice || ''} onChange={e => setFormData({ ...formData, rentPrice: e.target.value })} className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]" placeholder="99Rs" />
                         </div>
                       </div>
                     )}
@@ -1952,14 +1952,14 @@ export default function AdminDashboard() {
                     {formData.categories?.some(c => c.includes('PS')) && (
                       <div className="pt-2">
                         <div className="flex items-center justify-between mb-3">
-                          <label className="block text-[#9BA8AB] text-[11px] font-bold uppercase">Game Variants (Editions)</label>
+                          <label className="block text-[#4B5563] text-[11px] font-bold uppercase">Game Variants (Editions)</label>
                           <button
                             type="button"
                             onClick={() => {
                               const currentVariants = formData.variants || [];
                               setFormData({ ...formData, variants: [...currentVariants, { name: 'New Edition', price: '' }] });
                             }}
-                            className="bg-[#253745] hover:bg-[#4A5C6A] text-white px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-colors"
+                            className="bg-[#E5E7EB] hover:bg-[#D1D5DB] text-gray-900 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-colors"
                           >
                             + Add Variant
                           </button>
@@ -1990,9 +1990,9 @@ export default function AdminDashboard() {
                                   newVariants.splice(index, 0, dragged);
                                   setFormData({ ...formData, variants: newVariants });
                                 }}
-                                className="flex gap-2 items-start bg-[#06141B] border border-[#253745] p-3 rounded-xl cursor-move hover:border-[#4A5C6A] transition-colors"
+                                className="flex gap-2 items-start bg-[#F9FAFB] border border-[#E5E7EB] p-3 rounded-xl cursor-move hover:border-[#D1D5DB] transition-colors"
                               >
-                                <div className="pt-2 text-[#4A5C6A] shrink-0">
+                                <div className="pt-2 text-[#D1D5DB] shrink-0">
                                   <GripVertical className="w-5 h-5" />
                                 </div>
                                 <div className="flex-1 space-y-2">
@@ -2005,7 +2005,7 @@ export default function AdminDashboard() {
                                       setFormData({ ...formData, variants: newVariants });
                                     }}
                                     placeholder="Edition Name"
-                                    className="w-full bg-[#11212D] border border-[#253745] rounded-lg p-2 text-white text-xs focus:outline-none focus:border-[#4A5C6A]"
+                                    className="w-full bg-[#FFFFFF] border border-[#E5E7EB] rounded-lg p-2 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]"
                                   />
                                   <div className="flex gap-2">
                                     <input
@@ -2017,7 +2017,7 @@ export default function AdminDashboard() {
                                         setFormData({ ...formData, variants: newVariants });
                                       }}
                                       placeholder="Price"
-                                      className="w-1/2 bg-[#11212D] border border-[#253745] rounded-lg p-2 text-white text-xs focus:outline-none focus:border-[#4A5C6A]"
+                                      className="w-1/2 bg-[#FFFFFF] border border-[#E5E7EB] rounded-lg p-2 text-gray-900 text-xs focus:outline-none focus:border-[#D1D5DB]"
                                     />
                                     <input
                                       type="text"
@@ -2028,7 +2028,7 @@ export default function AdminDashboard() {
                                         setFormData({ ...formData, variants: newVariants });
                                       }}
                                       placeholder="Original Price"
-                                      className="w-1/2 bg-[#11212D] border border-[#253745] rounded-lg p-2 text-red-400 text-xs focus:outline-none focus:border-[#4A5C6A]"
+                                      className="w-1/2 bg-[#FFFFFF] border border-[#E5E7EB] rounded-lg p-2 text-red-400 text-xs focus:outline-none focus:border-[#D1D5DB]"
                                     />
                                   </div>
                                 </div>
@@ -2050,7 +2050,7 @@ export default function AdminDashboard() {
                     )}
 
                     <div>
-                      <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Platforms & Categories</label>
+                      <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Platforms & Categories</label>
                       <div className="flex gap-2 flex-wrap">
                         {['PC', 'PS5', 'PS4', 'Bundle-Eligible'].map(plat => (
                           <button
@@ -2058,8 +2058,8 @@ export default function AdminDashboard() {
                             type="button"
                             onClick={() => handleCategoryToggle(plat)}
                             className={`px-4 py-2 rounded-xl text-xs font-bold uppercase border transition-colors cursor-pointer ${formData.categories?.includes(plat)
-                                ? 'bg-white text-[#06141B] border-white shadow-md'
-                                : 'bg-[#06141B] text-[#9BA8AB] border-[#253745] hover:border-[#4A5C6A]'
+                                ? 'bg-white text-[#F9FAFB] border-white shadow-md'
+                                : 'bg-[#F9FAFB] text-[#4B5563] border-[#E5E7EB] hover:border-[#D1D5DB]'
                               }`}
                           >
                             {plat}
@@ -2069,7 +2069,7 @@ export default function AdminDashboard() {
                     </div>
 
                     <div className="pt-2">
-                      <label className="block text-[#9BA8AB] text-[11px] font-bold mb-1.5 uppercase">Custom Tags / Editions</label>
+                      <label className="block text-[#4B5563] text-[11px] font-bold mb-1.5 uppercase">Custom Tags / Editions</label>
                       <div className="flex flex-col gap-3">
                         <div className="flex gap-2 items-center">
                           <button
@@ -2077,14 +2077,14 @@ export default function AdminDashboard() {
                             onClick={() => handleCategoryToggle('DELUXE EDITION')}
                             className={`px-4 py-2 rounded-xl text-xs font-bold uppercase border transition-colors cursor-pointer ${formData.categories?.includes('DELUXE EDITION')
                                 ? 'bg-cyan-950/80 text-cyan-400 border-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.5)]'
-                                : 'bg-[#06141B] text-[#9BA8AB] border-[#253745] hover:border-cyan-500/50 hover:text-cyan-400'
+                                : 'bg-[#F9FAFB] text-[#4B5563] border-[#E5E7EB] hover:border-cyan-500/50 hover:text-cyan-400'
                               }`}
                           >
                             Deluxe Edition
                           </button>
                           {formData.categories?.includes('DELUXE EDITION') && (
-                            <div className="flex items-center gap-2 bg-[#06141B] border border-[#253745] px-2 py-1 rounded-xl h-full shadow-sm">
-                              <label className="text-[9px] text-[#9BA8AB] font-bold uppercase tracking-wider">Color:</label>
+                            <div className="flex items-center gap-2 bg-[#F9FAFB] border border-[#E5E7EB] px-2 py-1 rounded-xl h-full shadow-sm">
+                              <label className="text-[9px] text-[#4B5563] font-bold uppercase tracking-wider">Color:</label>
                               <input 
                                 type="color" 
                                 value={formData.tagColors?.['DELUXE EDITION'] || '#22d3ee'} 
@@ -2112,7 +2112,7 @@ export default function AdminDashboard() {
                               }
                             }}
                             placeholder="Add custom tag (e.g. ULTIMATE EDITION)..."
-                            className="flex-1 bg-[#06141B] border border-[#253745] rounded-xl p-2.5 text-sm text-white placeholder-[#4A5C6A] focus:outline-none focus:border-cyan-500 transition-colors"
+                            className="flex-1 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-2.5 text-sm text-gray-900 placeholder-[#D1D5DB] focus:outline-none focus:border-cyan-500 transition-colors"
                           />
                           <button
                             type="button"
@@ -2125,7 +2125,7 @@ export default function AdminDashboard() {
                                 setCustomTagInput('');
                               }
                             }}
-                            className="bg-[#253745] hover:bg-[#4A5C6A] text-white px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
+                            className="bg-[#E5E7EB] hover:bg-[#D1D5DB] text-gray-900 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
                           >
                             Add
                           </button>
@@ -2143,7 +2143,7 @@ export default function AdminDashboard() {
                                   className="w-4 h-4 ml-1 rounded cursor-pointer bg-transparent border-0 p-0"
                                   title="Choose Tag Color"
                                 />
-                                <button type="button" onClick={() => handleCategoryToggle(tag)} className="text-cyan-400 hover:text-white hover:bg-cyan-500/50 rounded-full p-0.5 transition-colors ml-0.5">
+                                <button type="button" onClick={() => handleCategoryToggle(tag)} className="text-cyan-400 hover:text-gray-900 hover:bg-cyan-500/50 rounded-full p-0.5 transition-colors ml-0.5">
                                   <X className="w-3 h-3" />
                                 </button>
                               </div>
@@ -2155,8 +2155,8 @@ export default function AdminDashboard() {
                   </div>
                 
 
-                    <div className="flex justify-end pt-4 border-t border-[#253745]">
-                      <button type="submit" className="bg-gradient-to-r from-[#253745] to-[#4A5C6A] hover:from-[#4A5C6A] hover:to-[#596F80] text-white px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-xs transition-all shadow-md cursor-pointer border border-[#4A5C6A]/50">
+                    <div className="flex justify-end pt-4 border-t border-[#E5E7EB]">
+                      <button type="submit" className="bg-gradient-to-r from-[#E5E7EB] to-[#D1D5DB] hover:from-[#D1D5DB] hover:to-[#596F80] text-white px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-xs transition-all shadow-md cursor-pointer border border-[#D1D5DB]/50">
                         {editingTitle ? 'Update Game' : 'Save Game'}
                       </button>
                     </div>
@@ -2176,20 +2176,20 @@ export default function AdminDashboard() {
       </div>
 
       {showBulkAdd && (
-        <div className="fixed inset-0 bg-[#06141B]/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-[#F9FAFB]/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
-            className="bg-[#11212D] w-full max-w-xl rounded-3xl shadow-2xl border border-[#253745] overflow-hidden flex flex-col max-h-[90vh]"
+            className="bg-[#FFFFFF] w-full max-w-xl rounded-3xl shadow-2xl border border-[#E5E7EB] overflow-hidden flex flex-col max-h-[90vh]"
           >
-            <div className="p-6 border-b border-[#253745] flex justify-between items-center bg-[#06141B]/50 sticky top-0 z-10">
-              <h2 className="text-xl font-black text-white uppercase tracking-wider flex items-center gap-2">
+            <div className="p-6 border-b border-[#E5E7EB] flex justify-between items-center bg-[#F9FAFB]/50 sticky top-0 z-10">
+              <h2 className="text-xl font-black text-gray-900 uppercase tracking-wider flex items-center gap-2">
                 <Database className="w-5 h-5 text-emerald-400" />
                 Bulk Add from Steam
               </h2>
               <button
                 onClick={() => !bulkProgress && setShowBulkAdd(false)}
                 disabled={!!bulkProgress}
-                className="text-[#9BA8AB] hover:text-white transition-colors cursor-pointer disabled:opacity-50"
+                className="text-[#4B5563] hover:text-gray-900 transition-colors cursor-pointer disabled:opacity-50"
               >
                 <X className="w-6 h-6" />
               </button>
@@ -2197,7 +2197,7 @@ export default function AdminDashboard() {
 
             <div className="p-6 overflow-y-auto">
               <div className="space-y-4">
-                <p className="text-sm text-[#9BA8AB]">
+                <p className="text-sm text-[#4B5563]">
                   Paste a list of game names (one per line). The system will automatically search Steam for the best match, pull all data (images, descriptions, system requirements, prices), and add them to your Store Catalog.
                 </p>
                 <textarea
@@ -2205,11 +2205,11 @@ export default function AdminDashboard() {
                   onChange={(e) => setBulkGamesList(e.target.value)}
                   disabled={!!bulkProgress}
                   placeholder="e.g.&#10;Grand Theft Auto V&#10;Red Dead Redemption 2&#10;God of War"
-                  className="w-full h-64 bg-[#06141B] border border-[#253745] rounded-xl p-4 text-sm text-white placeholder-[#4A5C6A] focus:outline-none focus:border-emerald-500 transition-colors"
+                  className="w-full h-64 bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-4 text-sm text-gray-900 placeholder-[#D1D5DB] focus:outline-none focus:border-emerald-500 transition-colors"
                 />
 
                 {bulkProgress && (
-                  <div className="bg-[#06141B] border border-emerald-500/30 rounded-xl p-4 flex items-center gap-3">
+                  <div className="bg-[#F9FAFB] border border-emerald-500/30 rounded-xl p-4 flex items-center gap-3">
                     <RefreshCw className="w-5 h-5 text-emerald-400 animate-spin" />
                     <span className="text-sm font-bold text-emerald-400 uppercase tracking-wider">{bulkProgress}</span>
                   </div>
@@ -2217,10 +2217,10 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            <div className="p-6 border-t border-[#253745] flex justify-end gap-3 bg-[#06141B]/50 sticky bottom-0">
+            <div className="p-6 border-t border-[#E5E7EB] flex justify-end gap-3 bg-[#F9FAFB]/50 sticky bottom-0">
               <button
                 type="button" onClick={() => setShowBulkAdd(false)} disabled={!!bulkProgress}
-                className="px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-xs border border-[#253745] text-[#9BA8AB] hover:text-white hover:bg-[#253745] transition-all cursor-pointer disabled:opacity-50"
+                className="px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-xs border border-[#E5E7EB] text-[#4B5563] hover:text-gray-900 hover:bg-[#E5E7EB] transition-all cursor-pointer disabled:opacity-50"
               >
                 Cancel
               </button>

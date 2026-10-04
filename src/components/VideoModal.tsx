@@ -29,7 +29,7 @@ export default function VideoModal() {
         onClick={() => setPlayingTrailerUrl(null)}
       >
         <button 
-          className="absolute top-4 right-4 text-[#9BA8AB] hover:text-white bg-[#11212D] p-2 rounded-full transition-colors z-[110]"
+          className="absolute top-4 right-4 text-[#4B5563] hover:text-gray-900 bg-[#FFFFFF] p-2 rounded-full transition-colors z-[110]"
           onClick={() => setPlayingTrailerUrl(null)}
         >
           <X className="w-6 h-6" />
@@ -40,7 +40,7 @@ export default function VideoModal() {
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.95, opacity: 0 }}
           transition={{ type: "spring", damping: 25, stiffness: 300 }}
-          className="relative w-full max-w-5xl aspect-video bg-black rounded-xl overflow-hidden shadow-2xl ring-1 ring-[#253745]"
+          className="relative w-full max-w-5xl aspect-video bg-black rounded-xl overflow-hidden shadow-2xl ring-1 ring-[#E5E7EB]"
           onClick={(e) => e.stopPropagation()}
         >
           {isMp4 ? (
