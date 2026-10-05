@@ -65,9 +65,8 @@ export default function PlatformTags({ platforms, tagColors, className }: { plat
             
             return (
               <span key={idx} 
-                className={`font-black text-[9px] md:text-[10px] uppercase tracking-widest border-[1.5px] rounded-full px-2.5 py-0.5 backdrop-blur-sm ${hasCustomColor ? '' : 'bg-cyan-50 text-cyan-700 border-cyan-300 shadow-sm'}`}
+                className={`font-black text-[9px] md:text-[10px] uppercase tracking-widest border-[1.5px] rounded-full px-2.5 py-0.5 backdrop-blur-sm ${hasCustomColor ? 'bg-white' : 'bg-cyan-50 text-cyan-700 border-cyan-300 shadow-sm'}`}
                 style={hasCustomColor ? { 
-                  backgroundColor: `${customColor}15`, 
                   color: customColor, 
                   borderColor: customColor,
                   boxShadow: `0 2px 4px ${customColor}20` 
